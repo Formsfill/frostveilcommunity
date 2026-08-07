@@ -33,7 +33,6 @@
             --purple: #9d00ff;
 
             --cyber-grad: linear-gradient(135deg, var(--accent-primary), var(--accent-indigo));
-            --metallic-grad: linear-gradient(180deg, #ffffff 0%, #8a9bb8 50%, #48566e 100%);
         }
 
         /* Preset Color Themes */
@@ -65,7 +64,7 @@
             display: none !important;
         }
 
-        /* Theme Customizer & Controls Bar */
+        /* Controls Bar */
         .theme-bar {
             display: flex;
             justify-content: space-between;
@@ -239,7 +238,117 @@
 
         .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
 
-        /* Broadcast Main Layout */
+        /* Rewards Module */
+        .rewards-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-top: 2px solid var(--accent-primary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .rewards-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .level-badge-container { display: flex; align-items: center; gap: 12px; }
+
+        .level-number-box {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 900;
+            color: #000;
+            background: var(--accent-primary);
+            padding: 6px 14px;
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .level-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .xp-counter {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .xp-bar-track {
+            width: 100%;
+            height: 12px;
+            background: var(--bg-element);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .xp-bar-fill {
+            height: 100%;
+            width: 65%;
+            background: var(--cyber-grad);
+            box-shadow: 0 0 12px var(--accent-glow);
+            transition: width 0.4s ease;
+        }
+
+        .quests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .quest-item {
+            background: var(--bg-element);
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+        }
+
+        .quest-item.completed {
+            border-color: var(--green);
+            background: rgba(0, 255, 102, 0.05);
+        }
+
+        .quest-info { display: flex; flex-direction: column; gap: 2px; }
+        .quest-title { font-size: 13px; font-weight: 700; }
+        .quest-reward { font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; color: var(--gold); }
+
+        .btn-claim {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 6px 12px;
+            background: var(--accent-primary);
+            color: #000;
+            border: none;
+            cursor: pointer;
+            clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+            transition: all 0.2s;
+        }
+
+        .btn-claim:hover { opacity: 0.9; transform: scale(1.05); }
+        .btn-claim:disabled { background: var(--bg-card); color: var(--text-muted); border: 1px solid var(--border-color); cursor: not-allowed; }
+
+        /* Broadcast Layout */
         .broadcast-layout {
             display: grid;
             grid-template-columns: 1fr 380px;
@@ -259,7 +368,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
 
-        /* 1. Multi-POV & Audio Controls Bar */
         .stream-controls-bar {
             display: flex;
             justify-content: space-between;
@@ -320,6 +428,114 @@
             border: 0;
         }
 
+        /* Replay & Highlight Timeline Bar */
+        .replay-timeline-container {
+            background: var(--bg-element);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 18px;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--accent-primary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .timeline-track-wrapper {
+            position: relative;
+            height: 18px;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-track {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .timeline-progress {
+            height: 100%;
+            width: 70%;
+            background: var(--cyber-grad);
+            border-radius: 3px;
+        }
+
+        .marker-dot {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--bg-body);
+            transition: all 0.2s;
+            z-index: 2;
+        }
+
+        .marker-dot:hover {
+            transform: translate(-50%, -50%) scale(1.4);
+            z-index: 10;
+        }
+
+        .marker-red { background: var(--live-red); box-shadow: 0 0 10px var(--live-red); }
+        .marker-gold { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+        .marker-cyan { background: var(--accent-primary); box-shadow: 0 0 10px var(--accent-primary); }
+        .marker-purple { background: var(--purple); box-shadow: 0 0 10px var(--purple); }
+
+        /* Timeline Marker Tooltip */
+        .marker-dot .marker-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            border: 1px solid var(--accent-primary);
+            border-radius: 6px;
+            padding: 8px;
+            width: 160px;
+            text-align: center;
+            box-shadow: 0 0 15px var(--accent-glow);
+            transition: opacity 0.2s, visibility 0.2s;
+            pointer-events: none;
+        }
+
+        .marker-dot:hover .marker-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip-time {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            color: var(--gold);
+            font-weight: 800;
+        }
+
+        .tooltip-desc {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 2px;
+        }
+
         .stream-meta {
             padding: 20px 24px;
             display: flex;
@@ -327,7 +543,6 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 16px;
-            border-top: 1px solid var(--border-color);
             background: var(--bg-card);
         }
 
@@ -409,7 +624,6 @@
         .tab-content { padding: 20px; flex: 1; overflow-y: auto; }
         .chat-frame { width: 100%; height: 100%; border: 0; min-height: 440px; }
 
-        /* 2. Trivia & Leaderboard Tab Styling */
         .trivia-card {
             background: var(--bg-element);
             border: 1px solid var(--border-color);
@@ -467,7 +681,6 @@
             text-shadow: 0 0 10px var(--accent-glow);
         }
 
-        /* 3. Match Reminders & Calendar Sync */
         .schedule-grid { display: flex; flex-direction: column; gap: 12px; }
         
         .schedule-item {
@@ -477,7 +690,6 @@
             clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
         }
 
-        /* 5. Team Merch Drawer (Slide-Over) */
         .drawer-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(5, 8, 17, 0.85); backdrop-filter: blur(8px);
@@ -502,7 +714,6 @@
             font-size: 40px; margin-bottom: 12px; border: 1px solid var(--border-color);
         }
 
-        /* Sponsor Marquee */
         .sponsor-marquee {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -525,7 +736,6 @@
 
         .sponsor-logo:hover { opacity: 1; color: var(--accent-primary); text-shadow: 0 0 10px var(--accent-glow); }
 
-        /* Modals */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(5, 8, 17, 0.9); backdrop-filter: blur(8px);
@@ -595,6 +805,56 @@
             </div>
         </header>
 
+        <div class="rewards-card optional-widget">
+            <div class="rewards-header">
+                <div class="level-badge-container">
+                    <div class="level-number-box" id="userLevelBox">LVL 5</div>
+                    <div>
+                        <div class="level-title" id="userTitleText">CYBER FAN</div>
+                        <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Rank #142 on Fan Leaderboard</div>
+                    </div>
+                </div>
+                <div class="xp-counter">
+                    <span id="currentXpText" style="color: var(--accent-primary);">650</span> / <span id="maxXpText">1,000</span> XP
+                </div>
+            </div>
+
+            <div class="xp-bar-track">
+                <div class="xp-bar-fill" id="xpBarFill"></div>
+            </div>
+
+            <div class="section-title" style="font-size: 11px; margin-bottom: 12px;">
+                <span>🎯 DAILY WATCH TIME & FAN QUESTS</span>
+                <span style="font-size: 10px; color: var(--text-muted); font-family: 'Rajdhani';">Resets in 14h 22m</span>
+            </div>
+
+            <div class="quests-grid">
+                <div class="quest-item completed" id="quest-1">
+                    <div class="quest-info">
+                        <span class="quest-title">📺 Watch Broadcast (15 Mins)</span>
+                        <span class="quest-reward">+150 XP • Unlocked Badge</span>
+                    </div>
+                    <button class="btn-claim" disabled>CLAIMED</button>
+                </div>
+
+                <div class="quest-item" id="quest-2">
+                    <div class="quest-info">
+                        <span class="quest-title">🧠 Answer 2 Trivia Questions</span>
+                        <span class="quest-reward">+200 XP • Fan Points</span>
+                    </div>
+                    <button class="btn-claim" onclick="claimQuestReward('quest-2', 200)">CLAIM</button>
+                </div>
+
+                <div class="quest-item" id="quest-3">
+                    <div class="quest-info">
+                        <span class="quest-title">🗳️ Vote in Pick'em Prediction</span>
+                        <span class="quest-reward">+100 XP</span>
+                    </div>
+                    <button class="btn-claim" onclick="claimQuestReward('quest-3', 100)">CLAIM</button>
+                </div>
+            </div>
+        </div>
+
         <div class="broadcast-layout">
             
             <div class="stream-card">
@@ -625,7 +885,49 @@
                         allowfullscreen>
                     </iframe>
                 </div>
-                
+
+                <div class="replay-timeline-container">
+                    <div class="timeline-header">
+                        <span class="timeline-title">⚡ MATCH REPLAY MARKERS & HIGHLIGHTS</span>
+                        <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">Hover markers to preview</span>
+                    </div>
+                    
+                    <div class="timeline-track-wrapper">
+                        <div class="timeline-track">
+                            <div class="timeline-progress"></div>
+                            
+                            <div class="marker-dot marker-red" style="left: 15%;" onclick="jumpToClip('00:04:12', 'First Blood')">
+                                <div class="marker-tooltip">
+                                    <div class="tooltip-time">00:04:12</div>
+                                    <div class="tooltip-desc">🩸 First Blood Play</div>
+                                </div>
+                            </div>
+
+                            <div class="marker-dot marker-gold" style="left: 38%;" onclick="jumpToClip('00:11:05', '1v3 Clutch')">
+                                <div class="marker-tooltip">
+                                    <div class="tooltip-time">00:11:05</div>
+                                    <div class="tooltip-desc">🔥 1v3 Clutch Victory</div>
+                                </div>
+                            </div>
+
+                            <div class="marker-dot marker-purple" style="left: 55%;" onclick="jumpToClip('00:18:40', 'Ace Wipeout')">
+                                <div class="marker-tooltip">
+                                    <div class="tooltip-time">00:18:40</div>
+                                    <div class="tooltip-desc">⚡ Ace Team Wipeout</div>
+                                </div>
+                            </div>
+
+                            <div class="marker-dot marker-cyan" style="left: 68%;" onclick="jumpToClip('00:24:15', 'Ninja Defuse')">
+                                <div class="marker-tooltip">
+                                    <div class="tooltip-time">00:24:15</div>
+                                    <div class="tooltip-desc">🥷 Ninja Defuse</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
                 <div class="stream-meta">
                     <div class="match-matchup">
                         <div class="player-box">
@@ -780,6 +1082,41 @@
     </div>
 
     <script>
+        /* Highlight Marker Jump Logic */
+        function jumpToClip(timestamp, title) {
+            alert(`▶️ Jumping to replay marker [${timestamp}] - ${title}`);
+        }
+
+        /* Fan XP & Rewards Logic */
+        let currentXP = 650;
+        let maxXP = 1000;
+        let currentLevel = 5;
+
+        function claimQuestReward(questId, xpReward) {
+            const questEl = document.getElementById(questId);
+            const btn = questEl.querySelector('.btn-claim');
+
+            questEl.classList.add('completed');
+            btn.innerText = 'CLAIMED';
+            btn.disabled = true;
+
+            currentXP += xpReward;
+
+            if (currentXP >= maxXP) {
+                currentLevel++;
+                currentXP -= maxXP;
+                maxXP = Math.floor(maxXP * 1.25);
+                alert(`🎉 LEVEL UP! You reached Level ${currentLevel}!`);
+                document.getElementById('userLevelBox').innerText = `LVL ${currentLevel}`;
+            }
+
+            document.getElementById('currentXpText').innerText = currentXP.toLocaleString();
+            document.getElementById('maxXpText').innerText = maxXP.toLocaleString();
+            
+            const xpPercentage = Math.min((currentXP / maxXP) * 100, 100);
+            document.getElementById('xpBarFill').style.width = `${xpPercentage}%`;
+        }
+
         /* Tab Switcher */
         function switchTab(tabName, btnEl) {
             document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
@@ -789,7 +1126,7 @@
             btnEl.classList.add('active');
         }
 
-        /* 1. Multi-POV & Audio Switcher Logic */
+        /* Stream & Audio Switchers */
         function switchPOV(btnEl, povName) {
             btnEl.parentElement.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
             btnEl.classList.add('active');
@@ -802,7 +1139,7 @@
             alert(`Audio channel switched to: ${lang}`);
         }
 
-        /* 2. Trivia Interactive Logic */
+        /* Trivia Interactivity */
         function answerTrivia(isCorrect, btnEl) {
             if (isCorrect) {
                 btnEl.style.borderColor = 'var(--green)';
@@ -815,7 +1152,7 @@
             }
         }
 
-        /* 3. Calendar Sync & Reminder Logic */
+        /* Calendar & Reminders */
         function toggleReminder(btnEl) {
             if (btnEl.innerText.includes('Remind Me')) {
                 btnEl.innerText = '✅ Reminder Set';
@@ -837,19 +1174,13 @@
             link.click();
         }
 
-        /* 4. Theme & Compact Mode Logic */
-        function setTheme(themeClass) {
-            document.body.className = themeClass;
-        }
+        /* Dynamic Theme & Modes */
+        function setTheme(themeClass) { document.body.className = themeClass; }
+        function toggleCompactMode() { document.body.classList.toggle('compact-mode'); }
 
-        function toggleCompactMode() {
-            document.body.classList.toggle('compact-mode');
-        }
-
-        /* 5. Drawers & Modals Logic */
+        /* Drawer & Modals */
         function openDrawer(id) { document.getElementById(`drawer-${id}`).style.display = 'flex'; }
         function closeDrawer(id) { document.getElementById(`drawer-${id}`).style.display = 'none'; }
-        
         function openModal(modalName) { document.getElementById(`modal-${modalName}`).style.display = 'flex'; }
         function closeModal(modalName) { document.getElementById(`modal-${modalName}`).style.display = 'none'; }
     </script>
