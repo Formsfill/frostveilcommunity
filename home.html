@@ -3,42 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Broadcast - Esports Championship</title>
+    <title>Esports Championship - Live Broadcast & Stats Hub</title>
     <style>
         :root {
-            /* Crisp White / Paper Modern Theme */
-            --bg-main: #f8fafc;
-            --bg-card: #ffffff;
-            --bg-card-hover: #f1f5f9;
-            --border-color: #e2e8f0;
-            --border-accent: #cbd5e1;
+            --bg-body: #090d16;
+            --bg-card: #111827;
+            --bg-card-hover: #1f293d;
+            --bg-element: #1a2234;
             
-            --text-main: #0f172a;
-            --text-muted: #64748b;
+            --border-color: #1e293b;
+            --border-glow: #334155;
             
-            --accent-primary: #2563eb;
-            --accent-glow: rgba(37, 99, 235, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             
-            --live-red: #e11d48;
-            --live-bg: #ffe4e6;
+            --accent-cyan: #06b6d4;
+            --accent-indigo: #6366f1;
+            --accent-glow: rgba(6, 182, 212, 0.15);
             
-            --gold: #b45309;
-            --gold-bg: #fef3c7;
-            --gold-border: #f59e0b;
+            --live-red: #ef4444;
+            --live-bg: rgba(239, 68, 68, 0.1);
+            --live-border: #f87171;
+            
+            --green: #10b981;
+            --gold: #f59e0b;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
 
         body {
-            background-color: var(--bg-main);
+            background-color: var(--bg-body);
             color: var(--text-main);
             padding: 24px;
             min-height: 100vh;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1480px;
             margin: 0 auto;
+        }
+
+        /* Live Bracket Ticker */
+        .bracket-ticker {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 18px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .ticker-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
+            padding-right: 12px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .ticker-item {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-element);
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .ticker-item.live {
+            border-color: var(--live-border);
+            color: var(--live-red);
+            background: var(--live-bg);
         }
 
         /* Top Navigation Header */
@@ -48,31 +93,21 @@
             align-items: center;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            padding: 16px 24px;
+            padding: 18px 28px;
             border-radius: 16px;
             margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             flex-wrap: wrap;
             gap: 16px;
         }
 
-        .brand-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .brand-title h1 {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
+        .brand-title { display: flex; align-items: center; gap: 14px; }
+        .brand-title h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
 
         .badge-live {
             background: var(--live-bg);
             color: var(--live-red);
-            border: 1px solid #fecdd3;
-            padding: 4px 10px;
+            border: 1px solid var(--live-border);
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 800;
@@ -85,70 +120,64 @@
 
         .badge-live::before {
             content: '';
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             background: var(--live-red);
             border-radius: 50%;
-            display: inline-block;
             animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .nav-links { display: flex; align-items: center; gap: 10px; }
 
         .btn {
-            padding: 9px 16px;
-            background: var(--bg-card);
+            padding: 10px 18px;
+            background: var(--bg-element);
             color: var(--text-main);
             font-weight: 600;
             font-size: 12px;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            text-decoration: none;
             transition: all 0.2s ease;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .btn:hover { border-color: var(--accent-primary); background: var(--bg-card-hover); }
-        .btn-primary { background: var(--accent-primary); color: #ffffff; border: none; font-weight: 700; }
-        .btn-primary:hover { opacity: 0.92; background: var(--accent-primary); }
+        .btn:hover { border-color: var(--accent-cyan); background: var(--bg-card-hover); color: var(--accent-cyan); }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo)); color: #ffffff; border: none; font-weight: 700; }
+        .btn-primary:hover { opacity: 0.9; }
 
-        /* Main Broadcast Grid */
+        /* Broadcast Main Layout */
         .broadcast-layout {
             display: grid;
-            grid-template-columns: 1fr 340px;
+            grid-template-columns: 1fr 380px;
             gap: 24px;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 1100px) {
             .broadcast-layout { grid-template-columns: 1fr; }
         }
 
-        /* Stream Player Box */
         .stream-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            padding-bottom: 56.25%;
             height: 0;
-            background: #0f172a;
+            background: #000;
         }
 
         .video-wrapper iframe {
@@ -168,28 +197,26 @@
             border-top: 1px solid var(--border-color);
         }
 
-        .match-matchup {
-            display: flex;
-            align-items: center;
-            gap: 16px;
+        .match-matchup { display: flex; align-items: center; gap: 16px; }
+        .player-box { display: flex; align-items: center; gap: 10px; }
+        .player-avatar {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--accent-glow);
+            border: 2px solid var(--accent-cyan);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 14px; color: var(--accent-cyan);
         }
-
-        .player-tag {
-            font-size: 18px;
-            font-weight: 800;
-        }
-
+        .player-name { font-size: 16px; font-weight: 800; }
         .vs-pill {
-            font-size: 11px;
-            font-weight: 800;
-            background: var(--bg-main);
+            font-size: 11px; font-weight: 800;
+            background: var(--bg-element);
             border: 1px solid var(--border-color);
-            padding: 4px 10px;
-            border-radius: 8px;
+            padding: 4px 10px; border-radius: 8px;
             color: var(--text-muted);
         }
 
-        /* Sidebar: Live Info & Chat Switcher */
+        /* Sidebar Tabs & Modules */
         .sidebar-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -197,20 +224,19 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
             height: 100%;
-            min-height: 500px;
+            min-height: 520px;
         }
 
         .tab-header {
             display: flex;
             border-bottom: 1px solid var(--border-color);
-            background: var(--bg-main);
+            background: var(--bg-element);
         }
 
         .tab-btn {
             flex: 1;
-            padding: 12px;
+            padding: 14px 8px;
             border: none;
             background: transparent;
             font-size: 12px;
@@ -222,122 +248,178 @@
 
         .tab-btn.active {
             background: var(--bg-card);
-            color: var(--accent-primary);
-            border-bottom: 2px solid var(--accent-primary);
+            color: var(--accent-cyan);
+            border-bottom: 2px solid var(--accent-cyan);
         }
 
-        .tab-content {
-            padding: 20px;
-            flex: 1;
-            overflow-y: auto;
+        .tab-content { padding: 20px; flex: 1; overflow-y: auto; }
+        .chat-frame { width: 100%; height: 100%; border: 0; min-height: 440px; }
+
+        /* Map Veto Styling */
+        .veto-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+        .veto-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 14px;
+            background: var(--bg-element);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .veto-item.banned { opacity: 0.4; text-decoration: line-through; border-color: var(--live-border); background: var(--live-bg); }
+        .veto-item.picked { border-color: var(--accent-cyan); background: var(--accent-glow); color: var(--accent-cyan); }
+        .veto-tag { font-size: 10px; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; font-weight: 800; }
+        .veto-tag.ban { background: var(--live-bg); color: var(--live-red); border: 1px solid var(--live-border); }
+        .veto-tag.pick { background: var(--accent-glow); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+
+        /* Match & Player Statistics Cards */
+        .stats-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
         }
 
-        .chat-frame {
-            width: 100%;
-            height: 100%;
-            border: 0;
-            min-height: 400px;
+        .section-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Dashboard Info Grid below Stream */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: var(--bg-element);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .stat-card .value {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-top: 6px;
+            margin-bottom: 2px;
+        }
+
+        .stat-card .label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Head to Head Comparison Bar */
+        .h2h-container {
+            margin-top: 20px;
+            background: var(--bg-element);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .h2h-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .bar-wrapper {
+            height: 10px;
+            background: var(--bg-card);
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .bar-p1 { width: 62%; background: var(--accent-cyan); }
+        .bar-p4 { width: 38%; background: var(--live-red); }
+
+        /* Info Grid */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 24px;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .info-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            padding: 22px;
         }
 
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--accent-primary);
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Prize Pool Table */
-        .prize-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
+        .prize-table { width: 100%; border-collapse: collapse; }
         .prize-table tr { border-bottom: 1px solid var(--border-color); }
         .prize-table tr:last-child { border-bottom: none; }
-        .prize-table td { padding: 10px 0; font-size: 13px; font-weight: 600; }
+        .prize-table td { padding: 12px 0; font-size: 13px; font-weight: 600; }
         .prize-table .place { font-weight: 800; }
         .prize-table .amount { text-align: right; color: var(--gold); font-weight: 800; }
 
-        /* Schedule Timeline */
-        .timeline { display: flex; flex-direction: column; gap: 12px; }
+        .timeline { display: flex; flex-direction: column; gap: 10px; }
         .timeline-item {
-            display: flex;
-            justify-content: space-between;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--bg-element); padding: 12px 16px; border-radius: 10px;
+            border: 1px solid var(--border-color); font-size: 12px; font-weight: 600;
+        }
+        .timeline-item.active { border-color: var(--accent-cyan); background: var(--accent-glow); }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(9, 13, 22, 0.8);
+            backdrop-filter: blur(6px);
+            display: none;
             align-items: center;
-            background: var(--bg-main);
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            font-size: 12px;
-        }
-        .timeline-item.active {
-            border-color: var(--accent-primary);
-            background: var(--accent-glow);
-        }
-
-        /* Sponsors Section */
-        .sponsor-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        }
-
-        .sponsor-title {
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-        }
-
-        .sponsor-grid {
-            display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 32px;
-            flex-wrap: wrap;
+            z-index: 1000;
         }
 
-        .sponsor-card {
-            background: var(--bg-main);
-            border: 1px solid var(--border-color);
-            padding: 14px 28px;
-            border-radius: 10px;
-            font-weight: 800;
-            font-size: 14px;
-            color: var(--text-muted);
-            transition: all 0.2s ease;
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 750px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 28px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        .sponsor-card:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-            transform: translateY(-2px);
+        .close-btn {
+            position: absolute;
+            top: 20px; right: 20px;
+            border: none; background: var(--bg-element);
+            width: 32px; height: 32px; border-radius: 50%;
+            cursor: pointer; font-weight: 800; color: var(--text-muted);
+        }
+
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; color: var(--text-muted); }
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px; border: 1px solid var(--border-color);
+            border-radius: 10px; font-size: 13px; background: var(--bg-element); color: var(--text-main);
         }
     </style>
 </head>
@@ -345,13 +427,21 @@
 
     <div class="container">
         
+        <div class="bracket-ticker">
+            <span class="ticker-label">⚡ Live Matches:</span>
+            <div class="ticker-item live">🔴 WB QF #2: Player 1 vs Player 4 (1 - 0)</div>
+            <div class="ticker-item">Up Next: WB QF #3: Player 2 vs Player 7</div>
+            <div class="ticker-item">LB Round 1: Player 8 vs Player 11</div>
+        </div>
+
         <header>
             <div class="brand-title">
-                <h1>🏆 Winter Esports Invitational</h1>
+                <h1>🏆 Winter Esports Championship</h1>
                 <span class="badge-live">LIVE BROADCAST</span>
             </div>
             <div class="nav-links">
-                <a href="index.html" class="btn">📊 View Bracket</a>
+                <button class="btn" onclick="openModal('bracket')">📊 Quick Bracket</button>
+                <button class="btn" onclick="openModal('report')">📸 Submit Score</button>
                 <a href="index.html?admin=frostveil" class="btn btn-primary">⚡ Admin Control</a>
             </div>
         </header>
@@ -361,129 +451,207 @@
             <div class="stream-card">
                 <div class="video-wrapper">
                     <iframe 
-                        src="https://player.twitch.tv/?channel=esl_csgo&parent=localhost&autoplay=false" 
-                        allowfullscreen="true">
+                        id="streamFrame" 
+                        src="https://www.youtube.com/embed/ZCM4ZONooq8?si=OS6fy8h3o6cA1S6i" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
                     </iframe>
                 </div>
                 <div class="stream-meta">
                     <div class="match-matchup">
-                        <span class="player-tag">Player 1</span>
+                        <div class="player-box">
+                            <div class="player-avatar">P1</div>
+                            <span class="player-name">Player 1</span>
+                        </div>
                         <span class="vs-pill">VS</span>
-                        <span class="player-tag">Player 4</span>
+                        <div class="player-box">
+                            <div class="player-avatar" style="color: var(--live-red); border-color: var(--live-red); background: var(--live-bg);">P4</div>
+                            <span class="player-name">Player 4</span>
+                        </div>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);">
-                        Round: <span style="color: var(--accent-primary);">Winners Quarterfinal #2</span> (BO3)
+                        Stage: <span style="color: var(--accent-cyan);">Winners Quarterfinals</span> (BO3)
                     </div>
                 </div>
             </div>
 
             <div class="sidebar-card">
                 <div class="tab-header">
-                    <button class="tab-btn active" onclick="switchTab('chat')">💬 Live Chat</button>
-                    <button class="tab-btn" onclick="switchTab('status')">📌 Match Info</button>
+                    <button class="tab-btn active" onclick="switchTab('chat', this)">💬 Chat</button>
+                    <button class="tab-btn" onclick="switchTab('veto', this)">🗺️ Map Veto</button>
+                    <button class="tab-btn" onclick="switchTab('predict', this)">🎯 Predictions</button>
                 </div>
                 
                 <div id="tab-chat" class="tab-content" style="padding:0; height: 100%;">
-                    <iframe 
-                        class="chat-frame"
-                        src="https://www.twitch.tv/embed/esl_csgo/chat?parent=localhost">
-                    </iframe>
+                    <iframe class="chat-frame" src="https://www.twitch.tv/embed/esl_csgo/chat?parent=localhost"></iframe>
                 </div>
 
-                <div id="tab-status" class="tab-content" style="display: none;">
-                    <h4 style="font-size: 13px; font-weight: 800; margin-bottom: 12px;">Current Match Details</h4>
-                    <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
-                        Winner advances to Winners Semifinals. Loser drops to Losers Round 2.
-                    </p>
-                    <div style="background: var(--bg-main); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px;">
-                        <div style="margin-bottom: 6px;"><strong>Map 1:</strong> Haven (Player 1 Won)</div>
-                        <div style="margin-bottom: 6px;"><strong>Map 2:</strong> Ascent (In Progress)</div>
-                        <div><strong>Map 3:</strong> Bind (Decider)</div>
+                <div id="tab-veto" class="tab-content" style="display: none;">
+                    <h4 style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">Live Stage Selection Veto</h4>
+                    <div class="veto-grid">
+                        <div class="veto-item banned">
+                            <span>1. Haven</span>
+                            <span class="veto-tag ban">P1 Banned</span>
+                        </div>
+                        <div class="veto-item banned">
+                            <span>2. Split</span>
+                            <span class="veto-tag ban">P4 Banned</span>
+                        </div>
+                        <div class="veto-item picked">
+                            <span>3. Ascent</span>
+                            <span class="veto-tag pick">P1 Picked (Map 1)</span>
+                        </div>
+                        <div class="veto-item picked">
+                            <span>4. Icebox</span>
+                            <span class="veto-tag pick">P4 Picked (Map 2)</span>
+                        </div>
+                        <div class="veto-item">
+                            <span>5. Bind</span>
+                            <span class="veto-tag" style="background: var(--bg-card); border: 1px solid var(--border-color);">Decider (Map 3)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-predict" class="tab-content" style="display: none;">
+                    <h4 style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;">Fan Predictions</h4>
+                    <div style="background: var(--bg-element); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px;">
+                        <p style="font-size: 13px; font-weight: 700; margin-bottom: 12px;">Who takes this match?</p>
+                        <button class="btn" style="width:100%; margin-bottom:8px; justify-content: space-between;" onclick="alert('Voted Player 1!')">
+                            <span>Player 1</span> <span style="color: var(--accent-cyan); font-weight: 800;">62%</span>
+                        </button>
+                        <button class="btn" style="width:100%; justify-content: space-between;" onclick="alert('Voted Player 4!')">
+                            <span>Player 4</span> <span style="color: var(--live-red); font-weight: 800;">38%</span>
+                        </button>
                     </div>
                 </div>
             </div>
 
         </div>
 
+        <div class="stats-section">
+            <div class="section-title">
+                <span>📈 Real-Time Match Analytics & Head-to-Head Stats</span>
+                <span style="font-size: 11px; font-weight: 600; color: var(--text-muted);">Quarterfinal #2 Stats</span>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="label">P1 Avg Combat Rating</div>
+                    <div class="value" style="color: var(--accent-cyan);">284.5</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">P4 Avg Combat Rating</div>
+                    <div class="value" style="color: var(--live-red);">221.8</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Peak Concurrent Viewers</div>
+                    <div class="value">14,280</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Map 1 Round Score</div>
+                    <div class="value" style="color: var(--green);">13 - 9</div>
+                </div>
+            </div>
+
+            <div class="h2h-container">
+                <div class="h2h-row">
+                    <span style="color: var(--accent-cyan);">Player 1 (62% Win Rate)</span>
+                    <span style="color: var(--text-muted);">Head-to-Head Historical Advantage</span>
+                    <span style="color: var(--live-red);">Player 4 (38% Win Rate)</span>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-p1"></div>
+                    <div class="bar-p4"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="info-grid">
-            
             <div class="info-card">
-                <div class="card-header">💰 Prize Pool ($1,000 Total)</div>
+                <div style="font-size: 13px; font-weight: 800; color: var(--accent-cyan); margin-bottom: 16px; text-transform: uppercase;">💰 Prize Breakdown ($1,000)</div>
                 <table class="prize-table">
-                    <tr>
-                        <td class="place">🥇 1st Place</td>
-                        <td class="amount">$500.00</td>
-                    </tr>
-                    <tr>
-                        <td class="place">🥈 2nd Place</td>
-                        <td class="amount">$300.00</td>
-                    </tr>
-                    <tr>
-                        <td class="place">🥉 3rd Place</td>
-                        <td class="amount">$150.00</td>
-                    </tr>
-                    <tr>
-                        <td class="place">🎖️ 4th Place</td>
-                        <td class="amount">$50.00</td>
-                    </tr>
+                    <tr><td class="place">🥇 Champion</td><td class="amount">$500.00</td></tr>
+                    <tr><td class="place">🥈 Runner-Up</td><td class="amount">$300.00</td></tr>
+                    <tr><td class="place">🥉 3rd Place</td><td class="amount">$150.00</td></tr>
+                    <tr><td class="place">🎖️ 4th Place</td><td class="amount">$50.00</td></tr>
                 </table>
             </div>
 
             <div class="info-card">
-                <div class="card-header">⏰ Today's Schedule</div>
+                <div style="font-size: 13px; font-weight: 800; color: var(--accent-cyan); margin-bottom: 16px; text-transform: uppercase;">⏰ Tournament Schedule</div>
                 <div class="timeline">
-                    <div class="timeline-item">
-                        <span>WB Round 1 (Matches W1-W4)</span>
-                        <strong>Completed</strong>
-                    </div>
-                    <div class="timeline-item active">
-                        <span>WB Quarterfinals</span>
-                        <strong style="color: var(--accent-primary);">In Progress 🔴</strong>
-                    </div>
-                    <div class="timeline-item">
-                        <span>LB Round 1 & 2</span>
-                        <span>05:30 PM</span>
-                    </div>
-                    <div class="timeline-item">
-                        <span>Grand Final (BO5)</span>
-                        <span>08:00 PM</span>
-                    </div>
+                    <div class="timeline-item"><span>WB Round 1</span><strong style="color: var(--green);">Finished</strong></div>
+                    <div class="timeline-item active"><span>WB Quarterfinals</span><strong style="color: var(--accent-cyan);">Live Now 🔴</strong></div>
+                    <div class="timeline-item"><span>LB Round 1 & 2</span><span>05:30 PM</span></div>
+                    <div class="timeline-item"><span>Grand Finals</span><span>08:00 PM</span></div>
                 </div>
-            </div>
-
-        </div>
-
-        <div class="sponsor-section">
-            <div class="sponsor-title">Official Tournament Partners</div>
-            <div class="sponsor-grid">
-                <div class="sponsor-card">⚡ HYPERX</div>
-                <div class="sponsor-card">🎮 DISCORD</div>
-                <div class="sponsor-card">🏆 FROSTVEIL STUDIOS</div>
-                <div class="sponsor-card">🥤 MONSTER ENERGY</div>
             </div>
         </div>
 
     </div>
 
-    <script>
-        function switchTab(tab) {
-            const chatTab = document.getElementById('tab-chat');
-            const statusTab = document.getElementById('tab-status');
-            const buttons = document.querySelectorAll('.tab-btn');
+    <div id="modal-bracket" class="modal-overlay">
+        <div class="modal-card">
+            <button class="close-btn" onclick="closeModal('bracket')">✕</button>
+            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 16px;">📊 Live Bracket Overview</h3>
+            <div style="background: var(--bg-element); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; text-align: center;">
+                <p style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Quarterfinal #1: Player 3 defeated Player 5 (2 - 1)</p>
+                <p style="font-size: 14px; font-weight: 700; color: var(--accent-cyan);">Quarterfinal #2: Player 1 vs Player 4 (In Progress)</p>
+                <a href="index.html" class="btn btn-primary" style="margin-top: 16px; text-decoration: none;">Open Full Interactive Bracket ↗</a>
+            </div>
+        </div>
+    </div>
 
-            if (tab === 'chat') {
-                chatTab.style.display = 'block';
-                statusTab.style.display = 'none';
-                buttons[0].classList.add('active');
-                buttons[1].classList.remove('active');
-            } else {
-                chatTab.style.display = 'none';
-                statusTab.style.display = 'block';
-                buttons[0].classList.remove('active');
-                buttons[1].classList.add('active');
-            }
+    <div id="modal-report" class="modal-overlay">
+        <div class="modal-card" style="max-width: 480px;">
+            <button class="close-btn" onclick="closeModal('report')">✕</button>
+            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">📸 Submit Match Score</h3>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">Submit final match scores and screenshot proof for admin verification.</p>
+            
+            <form onsubmit="event.preventDefault(); alert('Score submitted for verification!'); closeModal('report');">
+                <div class="form-group">
+                    <label>Select Match</label>
+                    <select required>
+                        <option value="">-- Choose Match --</option>
+                        <option>WB QF #2: Player 1 vs Player 4</option>
+                        <option>LB R1 #1: Player 8 vs Player 11</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Your Score - Opponent Score</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" placeholder="2" min="0" required>
+                        <input type="number" placeholder="1" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Upload Screenshot Proof</label>
+                    <input type="file" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px;">Submit Match Result</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName, btnEl) {
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabName}`).style.display = 'block';
+            btnEl.classList.add('active');
+        }
+
+        function openModal(modalName) {
+            document.getElementById(`modal-${modalName}`).style.display = 'flex';
+        }
+
+        function closeModal(modalName) {
+            document.getElementById(`modal-${modalName}`).style.display = 'none';
         }
     </script>
 </body>
 </html>
-
