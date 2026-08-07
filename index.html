@@ -930,21 +930,21 @@
                 <tbody>
                     <tr>
                         <td><span class="rank-badge rank-1">1</span></td>
-                        <td><strong>Auroraedge_w</strong></td>
+                        <td><strong>FrostByte_99</strong></td>
                         <td>eFootball Pro League</td>
                         <td>1,840 PTS</td>
                         <td style="color: var(--accent-cyan);">Grandmaster</td>
                     </tr>
                     <tr>
                         <td><span class="rank-badge rank-2">2</span></td>
-                        <td><strong>mr.momo</strong></td>
+                        <td><strong>ShadowBuilder</strong></td>
                         <td>Minecraft Survival</td>
                         <td>1,620 PTS</td>
                         <td style="color: var(--text-muted);">Master</td>
                     </tr>
                     <tr>
                         <td><span class="rank-badge rank-3">3</span></td>
-                        <td><strong>skater100cp</strong></td>
+                        <td><strong>Vortex_Rbx</strong></td>
                         <td>Roblox Minigames</td>
                         <td>1,450 PTS</td>
                         <td style="color: var(--text-muted);">Diamond</td>
@@ -1098,7 +1098,6 @@
             &copy; 2026 Community of Frostveil. All rights reserved.
         </div>
     </footer>
-
     <script>
         // Toggle Navigation Menu
         function toggleMenu() {
@@ -1208,8 +1207,7 @@
 
         // Modals Logic
         function openTrailerModal() {
-            document.getElementById('trailerFrame').src =
-    "https://www.youtube.com/embed/ZCM4ZONooq8?si=7WIwxAlZSLlkiufP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>";
+            document.getElementById('trailerFrame').src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
             document.getElementById('trailerModal').style.display = 'flex';
         }
 
@@ -1399,7 +1397,111 @@
 
 
 
-  
+
+        // CONFIGURATION: Live Discord Webhook URL Connected
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1535278886412226661/SmdAa_fMVndHM1WLZUZ4xwiAikVy3f8J7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7";
+const STAFF_WEBHOOK_URL = WEBHOOK_URL;
+const CONTACT_WEBHOOK_URL = WEBHOOK_URL;
+
+// 1. Live Staff Application Handler
+async function submitStaffApp(e) {
+    e.preventDefault();
+
+    const discord = document.getElementById('staffDiscord').value.trim();
+    const age = document.getElementById('staffAge').value.trim();
+    const pos = document.getElementById('staffPosition').value;
+    const exp = document.getElementById('staffExperience').value.trim();
+    const btn = document.getElementById('staffSubmitBtn');
+
+    btn.disabled = true;
+    btn.innerText = "Submitting...";
+
+    const payload = {
+        username: "Frostveil Staff Bot",
+        avatar_url: "https://i.imgur.com/8N4kM2B.png",
+        embeds: [{
+            title: "🛡️ New Staff Application Submitted",
+            color: 39423,
+            fields: [
+                { name: "👤 Applicant Tag", value: `\`${discord}\``, inline: true },
+                { name: "🎂 Age", value: age, inline: true },
+                { name: "🎯 Position Requested", value: pos, inline: true },
+                { name: "📝 Experience & Reason", value: exp }
+            ],
+            footer: { text: "Frostveil Website Application System" },
+            timestamp: new Date().toISOString()
+        }]
+    };
+
+    try {
+        const response = await fetch(STAFF_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+            showToast("Application submitted successfully!", "fa-check-circle");
+            closeStaffModal();
+            document.getElementById('staffForm').reset();
+        } else {
+            throw new Error("Webhook rejected the request.");
+        }
+    } catch (err) {
+        showToast("Failed to submit application.", "fa-exclamation-circle");
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Submit Application";
+    }
+}
+
+// 2. Live Contact Form Handler
+async function sendDiscordWebhook(e) {
+    e.preventDefault();
+
+    const user = document.getElementById('username').value.trim();
+    const topic = document.getElementById('topic').value;
+    const msg = document.getElementById('message').value.trim();
+    const btn = document.getElementById('submitBtn');
+
+    btn.disabled = true;
+    btn.innerText = "Sending...";
+
+    const payload = {
+        username: "Frostveil Contact Bot",
+        embeds: [{
+            title: `📩 New Contact Inquiry: ${topic}`,
+            color: 2563819,
+            fields: [
+                { name: "👤 From User", value: `\`${user}\``, inline: true },
+                { name: "📌 Topic", value: topic, inline: true },
+                { name: "💬 Message", value: msg }
+            ],
+            footer: { text: "Frostveil Website Contact Form" },
+            timestamp: new Date().toISOString()
+        }]
+    };
+
+    try {
+        const response = await fetch(CONTACT_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+            showToast("Message sent to community staff!", "fa-paper-plane");
+            document.getElementById('contactForm').reset();
+        } else {
+            throw new Error("Webhook error");
+        }
+    } catch (err) {
+        showToast("Failed to send message.", "fa-exclamation-circle");
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Send Message";
+    }
+}
     </script>
 </body>
 </html>
