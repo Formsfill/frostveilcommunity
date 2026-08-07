@@ -1,1 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Broadcast - Esports Championship</title>
+    <style>
+        :root {
+            /* Crisp White / Paper Modern Theme */
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --border-color: #e2e8f0;
+            --border-accent: #cbd5e1;
+            
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            
+            --accent-primary: #2563eb;
+            --accent-glow: rgba(37, 99, 235, 0.08);
+            
+            --live-red: #e11d48;
+            --live-bg: #ffe4e6;
+            
+            --gold: #b45309;
+            --gold-bg: #fef3c7;
+            --gold-border: #f59e0b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Top Navigation Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 16px 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .brand-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-title h1 {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .badge-live {
+            background: var(--live-bg);
+            color: var(--live-red);
+            border: 1px solid #fecdd3;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-live::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--live-red);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 9px 16px;
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .btn:hover { border-color: var(--accent-primary); background: var(--bg-card-hover); }
+        .btn-primary { background: var(--accent-primary); color: #ffffff; border: none; font-weight: 700; }
+        .btn-primary:hover { opacity: 0.92; background: var(--accent-primary); }
+
+        /* Main Broadcast Grid */
+        .broadcast-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 1024px) {
+            .broadcast-layout { grid-template-columns: 1fr; }
+        }
+
+        /* Stream Player Box */
+        .stream-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            background: #0f172a;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: 0;
+        }
+
+        .stream-meta {
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .match-matchup {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .player-tag {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .vs-pill {
+            font-size: 11px;
+            font-weight: 800;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
+            border-radius: 8px;
+            color: var(--text-muted);
+        }
+
+        /* Sidebar: Live Info & Chat Switcher */
+        .sidebar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            height: 100%;
+            min-height: 500px;
+        }
+
+        .tab-header {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-main);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--bg-card);
+            color: var(--accent-primary);
+            border-bottom: 2px solid var(--accent-primary);
+        }
+
+        .tab-content {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-frame {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            min-height: 400px;
+        }
+
+        /* Dashboard Info Grid below Stream */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--accent-primary);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Prize Pool Table */
+        .prize-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .prize-table tr { border-bottom: 1px solid var(--border-color); }
+        .prize-table tr:last-child { border-bottom: none; }
+        .prize-table td { padding: 10px 0; font-size: 13px; font-weight: 600; }
+        .prize-table .place { font-weight: 800; }
+        .prize-table .amount { text-align: right; color: var(--gold); font-weight: 800; }
+
+        /* Schedule Timeline */
+        .timeline { display: flex; flex-direction: column; gap: 12px; }
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-main);
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 12px;
+        }
+        .timeline-item.active {
+            border-color: var(--accent-primary);
+            background: var(--accent-glow);
+        }
+
+        /* Sponsors Section */
+        .sponsor-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .sponsor-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .sponsor-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .sponsor-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .sponsor-card:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <div class="brand-title">
+                <h1>🏆 Winter Esports Invitational</h1>
+                <span class="badge-live">LIVE BROADCAST</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="btn">📊 View Bracket</a>
+                <a href="index.html?admin=frostveil" class="btn btn-primary">⚡ Admin Control</a>
+            </div>
+        </header>
+
+        <div class="broadcast-layout">
+            
+            <div class="stream-card">
+                <div class="video-wrapper">
+                    <iframe 
+                        src="https://player.twitch.tv/?channel=esl_csgo&parent=localhost&autoplay=false" 
+                        allowfullscreen="true">
+                    </iframe>
+                </div>
+                <div class="stream-meta">
+                    <div class="match-matchup">
+                        <span class="player-tag">Player 1</span>
+                        <span class="vs-pill">VS</span>
+                        <span class="player-tag">Player 4</span>
+                    </div>
+                    <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);">
+                        Round: <span style="color: var(--accent-primary);">Winners Quarterfinal #2</span> (BO3)
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-card">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab('chat')">💬 Live Chat</button>
+                    <button class="tab-btn" onclick="switchTab('status')">📌 Match Info</button>
+                </div>
+                
+                <div id="tab-chat" class="tab-content" style="padding:0; height: 100%;">
+                    <iframe 
+                        class="chat-frame"
+                        src="https://www.twitch.tv/embed/esl_csgo/chat?parent=localhost">
+                    </iframe>
+                </div>
+
+                <div id="tab-status" class="tab-content" style="display: none;">
+                    <h4 style="font-size: 13px; font-weight: 800; margin-bottom: 12px;">Current Match Details</h4>
+                    <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+                        Winner advances to Winners Semifinals. Loser drops to Losers Round 2.
+                    </p>
+                    <div style="background: var(--bg-main); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px;">
+                        <div style="margin-bottom: 6px;"><strong>Map 1:</strong> Haven (Player 1 Won)</div>
+                        <div style="margin-bottom: 6px;"><strong>Map 2:</strong> Ascent (In Progress)</div>
+                        <div><strong>Map 3:</strong> Bind (Decider)</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="info-grid">
+            
+            <div class="info-card">
+                <div class="card-header">💰 Prize Pool ($1,000 Total)</div>
+                <table class="prize-table">
+                    <tr>
+                        <td class="place">🥇 1st Place</td>
+                        <td class="amount">$500.00</td>
+                    </tr>
+                    <tr>
+                        <td class="place">🥈 2nd Place</td>
+                        <td class="amount">$300.00</td>
+                    </tr>
+                    <tr>
+                        <td class="place">🥉 3rd Place</td>
+                        <td class="amount">$150.00</td>
+                    </tr>
+                    <tr>
+                        <td class="place">🎖️ 4th Place</td>
+                        <td class="amount">$50.00</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header">⏰ Today's Schedule</div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span>WB Round 1 (Matches W1-W4)</span>
+                        <strong>Completed</strong>
+                    </div>
+                    <div class="timeline-item active">
+                        <span>WB Quarterfinals</span>
+                        <strong style="color: var(--accent-primary);">In Progress 🔴</strong>
+                    </div>
+                    <div class="timeline-item">
+                        <span>LB Round 1 & 2</span>
+                        <span>05:30 PM</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span>Grand Final (BO5)</span>
+                        <span>08:00 PM</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="sponsor-section">
+            <div class="sponsor-title">Official Tournament Partners</div>
+            <div class="sponsor-grid">
+                <div class="sponsor-card">⚡ HYPERX</div>
+                <div class="sponsor-card">🎮 DISCORD</div>
+                <div class="sponsor-card">🏆 FROSTVEIL STUDIOS</div>
+                <div class="sponsor-card">🥤 MONSTER ENERGY</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            const chatTab = document.getElementById('tab-chat');
+            const statusTab = document.getElementById('tab-status');
+            const buttons = document.querySelectorAll('.tab-btn');
+
+            if (tab === 'chat') {
+                chatTab.style.display = 'block';
+                statusTab.style.display = 'none';
+                buttons[0].classList.add('active');
+                buttons[1].classList.remove('active');
+            } else {
+                chatTab.style.display = 'none';
+                statusTab.style.display = 'block';
+                buttons[0].classList.remove('active');
+                buttons[1].classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
 
