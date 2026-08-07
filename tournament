@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live 12-Player Tournament Bracket</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --winner-bg: #15803d;
+            --winner-border: #22c55e;
+            --gold: #eab308;
+            --btn-bg: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+            color: var(--accent);
+        }
+
+        .status-bar {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.admin { background-color: #22c55e; color: #0f172a; }
+        .badge.viewer { background-color: #334155; color: var(--text-muted); }
+
+        p.subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        /* Admin Controls & Setup Panel */
+        .setup-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 1000px;
+            margin: 0 auto 40px auto;
+            display: none;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .panel-header h2 {
+            font-size: 18px;
+            color: var(--accent);
+        }
+
+        .format-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .format-selector select {
+            background: #0f172a;
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+            padding: 6px 10px;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #0f172a;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--card-border);
+        }
+
+        .input-group label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: bold;
+            width: 50px;
+        }
+
+        .input-group input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 14px;
+            width: 100%;
+            outline: none;
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background: var(--btn-bg);
+            color: var(--text-main);
+            font-weight: bold;
+            font-size: 13px;
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover { background: #475569; }
+        .btn-primary { background: var(--accent); color: #0f172a; border: none; }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-danger { background: #ef4444; color: #ffffff; border: none; }
+        .btn-danger:hover { opacity: 0.9; }
+
+        /* Bracket View */
+        .bracket-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .column-header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 20px;
+        }
+
+        /* Match Cards */
+        .match-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 15px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .match-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .slot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+            padding: 8px 10px;
+            margin: 4px 0;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .slot.winner {
+            background: var(--winner-bg);
+            border-color: var(--winner-border);
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .slot.empty { color: var(--text-muted); font-style: italic; }
+        .slot.bye { opacity: 0.8; }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow: hidden;
+        }
+
+        .player-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .seed-tag {
+            font-size: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+
+        /* Score Tracker Controls */
+        .score-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .score-display {
+            font-weight: bold;
+            font-size: 14px;
+            min-width: 16px;
+            text-align: center;
+        }
+
+        .btn-score {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: none;
+            background: #334155;
+            color: white;
+            font-size: 12px;
+            line-height: 1;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.is-admin .btn-score { display: inline-flex; }
+        .btn-score:hover { background: var(--accent); color: #0f172a; }
+
+        .champion-box {
+            text-align: center;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border: 2px solid var(--gold);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .champion-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--gold);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🏆 12-Player Tournament</h1>
+    
+    <div class="status-bar">
+        <span id="modeBadge" class="badge">Checking permissions...</span>
+    </div>
+
+    <p class="subtitle" id="subtitleText">Loading tournament status...</p>
+
+    <div class="setup-panel" id="setupPanel">
+        <div class="panel-header">
+            <h2>⚡ Admin Dashboard</h2>
+            <div class="format-selector">
+                <label for="matchFormat">Match Format:</label>
+                <select id="matchFormat" onchange="changeFormat()">
+                    <option value="1">Best of 1 (Single Win)</option>
+                    <option value="3" selected>Best of 3 (First to 2 Wins)</option>
+                    <option value="5">Best of 5 (First to 3 Wins)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="player-grid" id="playerInputs"></div>
+
+        <div class="action-bar">
+            <button class="btn btn-primary" onclick="applyCustomNames()">Save Roster</button>
+            <button class="btn" onclick="exportJSON()">📥 Export JSON</button>
+            <button class="btn" onclick="document.getElementById('importFile').click()">📤 Import JSON</button>
+            <input type="file" id="importFile" style="display: none;" accept=".json" onchange="importJSON(event)">
+            <button class="btn btn-danger" onclick="confirmReset()">🔄 Reset Bracket</button>
+        </div>
+    </div>
+
+    <div class="bracket-container">
+        
+        <div class="column">
+            <div class="column-header">Phase 1: Round 1</div>
+            <div id="round1-matches"></div>
+        </div>
+
+        <div class="column">
+            <div class="column-header">Phase 2: Quarterfinals</div>
+            <div id="qf-matches"></div>
+        </div>
+
+        <div class="column">
+            <div class="column-header">Phase 3: Semifinals</div>
+            <div id="sf-matches"></div>
+        </div>
+
+        <div class="column">
+            <div class="column-header">Phase 4: Grand Final</div>
+            <div id="final-matches"></div>
+            
+            <div class="champion-box">
+                <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Tournament Champion</div>
+                <div class="champion-name" id="championText">🏆 Pending...</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'frostveil_tournament_state';
+        const urlParams = new URLSearchParams(window.location.search);
+        const isAdmin = urlParams.get('admin') === 'frostveil';
+
+        let targetWins = 2; // Default Best-of-3 (First to 2)
+
+        let players = Array.from({ length: 12 }, (_, i) => `Player ${i + 1}`);
+
+        let state = {
+            format: 3,
+            r1: [
+                { id: 'M1', p1: 7, p2: 8, p1Score: 0, p2Score: 0, winner: null },
+                { id: 'M2', p1: 4, p2: 11, p1Score: 0, p2Score: 0, winner: null },
+                { id: 'M3', p1: 6, p2: 9, p1Score: 0, p2Score: 0, winner: null },
+                { id: 'M4', p1: 5, p2: 10, p1Score: 0, p2Score: 0, winner: null }
+            ],
+            qf: [
+                { id: 'QF1', p1Name: null, p2Name: null, p1Score: 0, p2Score: 0, winner: null, byeSeed: 1 },
+                { id: 'QF2', p1Name: null, p2Name: null, p1Score: 0, p2Score: 0, winner: null, byeSeed: 4 },
+                { id: 'QF3', p1Name: null, p2Name: null, p1Score: 0, p2Score: 0, winner: null, byeSeed: 2 },
+                { id: 'QF4', p1Name: null, p2Name: null, p1Score: 0, p2Score: 0, winner: null, byeSeed: 3 }
+            ],
+            sf: [
+                { id: 'SF1', p1Name: null, p2Name: null, p1Score: 0, p2Score: 0, winner: null },
+                { id: 'SF2', p1Name: null, p2Name: null, p1Score: 0, p2Score: 0, winner: null }
+            ],
+            final: { id: 'FINAL', p1Name: null, p2Name: null, p1Score: 0, p2Score: 0, winner: null }
+        };
+
+        // --- Permissions & UI Setup ---
+        if (isAdmin) {
+            document.body.classList.add('is-admin');
+            document.getElementById('setupPanel').style.display = 'block';
+            document.getElementById('modeBadge').className = 'badge admin';
+            document.getElementById('modeBadge').innerText = '⚡ Admin Mode Active';
+            document.getElementById('subtitleText').innerText = 'Use score controls (+/-) to record game wins and advance players live.';
+        } else {
+            document.getElementById('modeBadge').className = 'badge viewer';
+            document.getElementById('modeBadge').innerText = '👁️ View-Only Mode';
+            document.getElementById('subtitleText').innerText = 'Live bracket overview. Append ?admin=frostveil to URL to manage tournament.';
+        }
+
+        // --- LocalStorage Logic ---
+        function saveData() {
+            const payload = { players, state };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        }
+
+        function loadData() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    if (parsed.players) players = parsed.players;
+                    if (parsed.state) state = parsed.state;
+                    if (state.format) {
+                        document.getElementById('matchFormat').value = state.format;
+                        targetWins = Math.ceil(state.format / 2);
+                    }
+                } catch (e) {
+                    console.error("Failed to parse LocalStorage", e);
+                }
+            }
+        }
+
+        function changeFormat() {
+            if (!isAdmin) return;
+            const val = parseInt(document.getElementById('matchFormat').value);
+            state.format = val;
+            targetWins = Math.ceil(val / 2);
+            saveData();
+            render();
+        }
+
+        function initInputs() {
+            const container = document.getElementById('playerInputs');
+            container.innerHTML = '';
+            players.forEach((p, i) => {
+                container.innerHTML += `
+                    <div class="input-group">
+                        <label>Seed ${i + 1}:</label>
+                        <input type="text" id="input-p${i}" value="${p}">
+                    </div>
+                `;
+            });
+        }
+
+        function applyCustomNames() {
+            if (!isAdmin) return;
+            for (let i = 0; i < 12; i++) {
+                const val = document.getElementById(`input-p${i}`).value.trim();
+                players[i] = val || `Player ${i + 1}`;
+            }
+            saveData();
+            updateProgression();
+            render();
+        }
+
+        function confirmReset() {
+            if (!isAdmin) return;
+            if (confirm("Are you sure you want to reset all scores and bracket progress?")) {
+                resetBracket();
+            }
+        }
+
+        function resetBracket() {
+            state.r1.forEach(m => { m.p1Score = 0; m.p2Score = 0; m.winner = null; });
+            state.qf.forEach(m => { m.p1Name = null; m.p2Name = null; m.p1Score = 0; m.p2Score = 0; m.winner = null; });
+            state.sf.forEach(m => { m.p1Name = null; m.p2Name = null; m.p1Score = 0; m.p2Score = 0; m.winner = null; });
+            state.final = { id: 'FINAL', p1Name: null, p2Name: null, p1Score: 0, p2Score: 0, winner: null };
+            saveData();
+            updateProgression();
+            render();
+        }
+
+        // --- Score & Progression Controls ---
+        function updateScore(stage, matchIdx, playerSlot, delta) {
+            if (!isAdmin) return;
+
+            let match;
+            if (stage === 'r1') match = state.r1[matchIdx];
+            else if (stage === 'qf') match = state.qf[matchIdx];
+            else if (stage === 'sf') match = state.sf[matchIdx];
+            else if (stage === 'final') match = state.final;
+
+            if (stage !== 'r1' && (!match.p1Name || !match.p2Name)) return;
+
+            if (playerSlot === 1) {
+                match.p1Score = Math.max(0, match.p1Score + delta);
+            } else {
+                match.p2Score = Math.max(0, match.p2Score + delta);
+            }
+
+            // Check Win Condition
+            if (match.p1Score >= targetWins) {
+                match.winner = (stage === 'r1') ? match.p1 : match.p1Name;
+            } else if (match.p2Score >= targetWins) {
+                match.winner = (stage === 'r1') ? match.p2 : match.p2Name;
+            } else {
+                match.winner = null;
+            }
+
+            updateProgression();
+            saveData();
+            render();
+        }
+
+        function updateProgression() {
+            // R1 Winners -> QF Slots
+            state.qf[0].p1Name = players[0];
+            state.qf[0].p2Name = state.r1[0].winner !== null ? players[state.r1[0].winner] : null;
+
+            state.qf[1].p1Name = players[3];
+            state.qf[1].p2Name = state.r1[1].winner !== null ? players[state.r1[1].winner] : null;
+
+            state.qf[2].p1Name = players[1];
+            state.qf[2].p2Name = state.r1[2].winner !== null ? players[state.r1[2].winner] : null;
+
+            state.qf[3].p1Name = players[2];
+            state.qf[3].p2Name = state.r1[3].winner !== null ? players[state.r1[3].winner] : null;
+
+            // QF Winners -> SF Slots
+            state.sf[0].p1Name = state.qf[0].winner;
+            state.sf[0].p2Name = state.qf[1].winner;
+
+            state.sf[1].p1Name = state.qf[2].winner;
+            state.sf[1].p2Name = state.qf[3].winner;
+
+            // SF Winners -> Final Slots
+            state.final.p1Name = state.sf[0].winner;
+            state.final.p2Name = state.sf[1].winner;
+        }
+
+        // --- Export & Import JSON ---
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ players, state }, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `tournament_bracket_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+        }
+
+        function importJSON(event) {
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.players && imported.state) {
+                        players = imported.players;
+                        state = imported.state;
+                        saveData();
+                        initInputs();
+                        render();
+                        alert("Tournament data loaded successfully!");
+                    }
+                } catch (err) {
+                    alert("Invalid JSON file!");
+                }
+            };
+            fileReader.readAsText(event.target.files[0]);
+        }
+
+        // --- Render UI ---
+        function render() {
+            // Render Round 1
+            document.getElementById('round1-matches').innerHTML = state.r1.map((m, idx) => `
+                <div class="match-card">
+                    <div class="match-title">Match ${idx + 1}</div>
+                    <div class="slot ${m.winner === m.p1 ? 'winner' : ''}">
+                        <div class="player-info">
+                            <span class="player-name">${players[m.p1]}</span>
+                            <span class="seed-tag">Seed ${m.p1 + 1}</span>
+                        </div>
+                        <div class="score-control">
+                            <button class="btn-score" onclick="updateScore('r1', ${idx}, 1, -1)">-</button>
+                            <span class="score-display">${m.p1Score}</span>
+                            <button class="btn-score" onclick="updateScore('r1', ${idx}, 1, 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="slot ${m.winner === m.p2 ? 'winner' : ''}">
+                        <div class="player-info">
+                            <span class="player-name">${players[m.p2]}</span>
+                            <span class="seed-tag">Seed ${m.p2 + 1}</span>
+                        </div>
+                        <div class="score-control">
+                            <button class="btn-score" onclick="updateScore('r1', ${idx}, 2, -1)">-</button>
+                            <span class="score-display">${m.p2Score}</span>
+                            <button class="btn-score" onclick="updateScore('r1', ${idx}, 2, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Quarterfinals
+            document.getElementById('qf-matches').innerHTML = state.qf.map((m, idx) => `
+                <div class="match-card">
+                    <div class="match-title">QF ${idx + 1}</div>
+                    <div class="slot ${m.winner === m.p1Name && m.p1Name ? 'winner' : ''} bye">
+                        <div class="player-info">
+                            <span class="player-name">${m.p1Name}</span>
+                            <span class="seed-tag">Seed ${m.byeSeed} BYE</span>
+                        </div>
+                        <div class="score-control">
+                            <button class="btn-score" onclick="updateScore('qf', ${idx}, 1, -1)">-</button>
+                            <span class="score-display">${m.p1Score}</span>
+                            <button class="btn-score" onclick="updateScore('qf', ${idx}, 1, 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="slot ${!m.p2Name ? 'empty' : ''} ${m.winner === m.p2Name && m.p2Name ? 'winner' : ''}">
+                        <div class="player-info">
+                            <span class="player-name">${m.p2Name || 'Winner M' + (idx + 1)}</span>
+                        </div>
+                        <div class="score-control">
+                            <button class="btn-score" onclick="updateScore('qf', ${idx}, 2, -1)">-</button>
+                            <span class="score-display">${m.p2Score}</span>
+                            <button class="btn-score" onclick="updateScore('qf', ${idx}, 2, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Semifinals
+            document.getElementById('sf-matches').innerHTML = state.sf.map((m, idx) => `
+                <div class="match-card">
+                    <div class="match-title">Semifinal ${idx + 1}</div>
+                    <div class="slot ${!m.p1Name ? 'empty' : ''} ${m.winner === m.p1Name && m.p1Name ? 'winner' : ''}">
+                        <div class="player-info">
+                            <span class="player-name">${m.p1Name || 'Winner QF' + (idx * 2 + 1)}</span>
+                        </div>
+                        <div class="score-control">
+                            <button class="btn-score" onclick="updateScore('sf', ${idx}, 1, -1)">-</button>
+                            <span class="score-display">${m.p1Score}</span>
+                            <button class="btn-score" onclick="updateScore('sf', ${idx}, 1, 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="slot ${!m.p2Name ? 'empty' : ''} ${m.winner === m.p2Name && m.p2Name ? 'winner' : ''}">
+                        <div class="player-info">
+                            <span class="player-name">${m.p2Name || 'Winner QF' + (idx * 2 + 2)}</span>
+                        </div>
+                        <div class="score-control">
+                            <button class="btn-score" onclick="updateScore('sf', ${idx}, 2, -1)">-</button>
+                            <span class="score-display">${m.p2Score}</span>
+                            <button class="btn-score" onclick="updateScore('sf', ${idx}, 2, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Grand Final
+            const f = state.final;
+            document.getElementById('final-matches').innerHTML = `
+                <div class="match-card">
+                    <div class="match-title">Grand Final</div>
+                    <div class="slot ${!f.p1Name ? 'empty' : ''} ${f.winner === f.p1Name && f.p1Name ? 'winner' : ''}">
+                        <div class="player-info">
+                            <span class="player-name">${f.p1Name || 'Winner SF1'}</span>
+                        </div>
+                        <div class="score-control">
+                            <button class="btn-score" onclick="updateScore('final', 0, 1, -1)">-</button>
+                            <span class="score-display">${f.p1Score}</span>
+                            <button class="btn-score" onclick="updateScore('final', 0, 1, 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="slot ${!f.p2Name ? 'empty' : ''} ${f.winner === f.p2Name && f.p2Name ? 'winner' : ''}">
+                        <div class="player-info">
+                            <span class="player-name">${f.p2Name || 'Winner SF2'}</span>
+                        </div>
+                        <div class="score-control">
+                            <button class="btn-score" onclick="updateScore('final', 0, 2, -1)">-</button>
+                            <span class="score-display">${f.p2Score}</span>
+                            <button class="btn-score" onclick="updateScore('final', 0, 2, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Champion display
+            document.getElementById('championText').innerText = f.winner ? `🏆 ${f.winner}` : '🏆 Pending...';
+        }
+
+        // Init App
+        loadData();
+        if (isAdmin) initInputs();
+        updateProgression();
+        render();
+    </script>
+</body>
+</html>
