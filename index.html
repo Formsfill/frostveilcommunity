@@ -316,56 +316,6 @@
             border: 1px solid var(--accent-green);
         }
 
-        /* VIP Cards */
-        .card-popular {
-            border: 2px solid var(--accent-cyan) !important;
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -12px;
-            right: 50%;
-            transform: translateX(50%);
-            background: var(--accent-cyan);
-            color: var(--bg-dark);
-            font-weight: bold;
-            font-size: 0.75rem;
-            padding: 0.2rem 0.8rem;
-            border-radius: 12px;
-            text-transform: uppercase;
-        }
-
-        .price-tag {
-            font-family: var(--font-heading);
-            font-size: 2.5rem;
-            color: #fff;
-            margin: 1rem 0;
-        }
-
-        .price-tag span {
-            font-size: 1rem;
-            color: var(--text-muted);
-        }
-
-        .feature-list {
-            list-style: none;
-            text-align: left;
-            margin: 1.5rem 0;
-        }
-
-        .feature-list li {
-            padding: 0.5rem 0;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .feature-list li i {
-            font-size: 1rem;
-            color: var(--accent-green);
-            margin-right: 0.5rem;
-        }
-
         /* Tournament Featured Section */
         .tournament-hero-card {
             background: linear-gradient(135deg, rgba(21, 28, 43, 0.95), rgba(6, 182, 212, 0.15));
@@ -392,30 +342,6 @@
             font-family: var(--font-heading);
             font-size: 1.1rem;
             font-weight: bold;
-        }
-
-        /* Leaderboard */
-        .leaderboard-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--bg-card);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .leaderboard-table th, .leaderboard-table td {
-            padding: 1rem 1.5rem;
-            text-align: left;
-        }
-
-        .leaderboard-table th {
-            background: rgba(6, 182, 212, 0.1);
-            color: var(--accent-cyan);
-            font-family: var(--font-heading);
-        }
-
-        .leaderboard-table tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         /* Modals */
@@ -501,15 +427,6 @@
             align-items: center;
             gap: 0.8rem;
             min-width: 280px;
-        }
-
-        /* Game Card Image Styling */
-        .game-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-bottom: 1rem;
         }
 
         /* Footer */
@@ -647,7 +564,7 @@
         </div>
     </section>
 
-    <div class="modal-overlay" id="trailerModal" style="display: none;">
+    <div class="modal-overlay" id="trailerModal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeTrailerModal()">&times;</span>
             <h3 style="margin-bottom: 1rem;"><i class="fas fa-play-circle"></i> Community Trailer</h3>
