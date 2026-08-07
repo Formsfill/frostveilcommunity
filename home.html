@@ -39,6 +39,15 @@
         body.theme-green { --accent-primary: #00ff66; --accent-glow: rgba(0, 255, 102, 0.25); }
         body.theme-purple { --accent-primary: #9d00ff; --accent-glow: rgba(157, 0, 255, 0.25); }
         body.theme-gold { --accent-primary: #ffe600; --accent-glow: rgba(255, 230, 0, 0.25); }
+        
+        /* Pure Black OLED Midnight Mode */
+        body.theme-oled {
+            --bg-body: #000000;
+            --bg-card: #050505;
+            --bg-card-hover: #0f0f0f;
+            --bg-element: #080808;
+            --border-color: #1a1a1a;
+        }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -77,6 +86,8 @@
             margin-bottom: 16px;
             font-size: 13px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .theme-swatches { display: flex; align-items: center; gap: 10px; }
@@ -90,6 +101,7 @@
         .swatch-green { background: #00ff66; color: #00ff66; }
         .swatch-purple { background: #9d00ff; color: #9d00ff; }
         .swatch-gold { background: #ffe600; color: #ffe600; }
+        .swatch-oled { background: #000000; color: #fff; border: 1px solid var(--accent-primary); }
 
         /* Top Bracket Ticker */
         .bracket-ticker {
@@ -498,7 +510,6 @@
         .marker-cyan { background: var(--accent-primary); box-shadow: 0 0 10px var(--accent-primary); }
         .marker-purple { background: var(--purple); box-shadow: 0 0 10px var(--purple); }
 
-        /* Timeline Marker Tooltip */
         .marker-dot .marker-tooltip {
             visibility: hidden;
             opacity: 0;
@@ -780,6 +791,7 @@
                 <div class="swatch swatch-green" onclick="setTheme('theme-green')" title="Acid Green Accent"></div>
                 <div class="swatch swatch-purple" onclick="setTheme('theme-purple')" title="Electric Purple Accent"></div>
                 <div class="swatch swatch-gold" onclick="setTheme('theme-gold')" title="Gold Champion Accent"></div>
+                <div class="swatch swatch-oled" onclick="setTheme('theme-oled')" title="Pure OLED Midnight Mode"></div>
             </div>
             <div>
                 <button class="btn" onclick="toggleCompactMode()">📺 Toggle Compact Mode</button>
@@ -923,7 +935,6 @@
                                     <div class="tooltip-desc">🥷 Ninja Defuse</div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -988,6 +999,56 @@
                 </div>
             </div>
 
+        </div>
+
+        <div class="content-section optional-widget">
+            <div class="section-title">
+                <span>💰 Live Team Economy & Buy-Phase</span>
+                <span style="font-size: 10px; color: var(--gold); font-family: 'Orbitron';">Round 14 Strategy</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div style="background: var(--bg-element); border: 1px solid var(--border-color); padding: 14px; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-family: 'Orbitron'; font-size: 13px; font-weight: 800;">PLAYER 1 (TEAM A)</span>
+                        <span style="font-size: 11px; font-weight: 800; color: var(--green); background: rgba(0,255,102,0.1); padding: 2px 8px; border-radius: 4px;">FULL BUY</span>
+                    </div>
+                    <div style="font-family: 'Orbitron'; font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 4px;">$4,850 avg</div>
+                    <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">Armor: Heavy • Utility: Full</div>
+                </div>
+
+                <div style="background: var(--bg-element); border: 1px solid var(--border-color); padding: 14px; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-family: 'Orbitron'; font-size: 13px; font-weight: 800;">PLAYER 4 (TEAM B)</span>
+                        <span style="font-size: 11px; font-weight: 800; color: var(--live-red); background: var(--live-bg); padding: 2px 8px; border-radius: 4px;">ECO ROUND</span>
+                    </div>
+                    <div style="font-family: 'Orbitron'; font-size: 16px; font-weight: 900; color: var(--live-red); margin-bottom: 4px;">$1,400 avg</div>
+                    <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">Armor: None • Pistols Only</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section optional-widget" id="mvpVotingCard">
+            <div class="section-title">
+                <span>🏆 Post-Match MVP Fan Poll</span>
+                <span style="font-size: 10px; color: var(--accent-primary); font-family: 'Orbitron';">Voting Open</span>
+            </div>
+            
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px; font-weight: 600;">Cast your vote for the ultimate player of this series:</p>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;" id="mvpList">
+                <button class="trivia-opt" onclick="castMvpVote(this, 'Player 1')">⭐ Player 1 (41% - 1,420 votes)</button>
+                <button class="trivia-opt" onclick="castMvpVote(this, 'Player 4')">⭐ Player 4 (35% - 1,210 votes)</button>
+                <button class="trivia-opt" onclick="castMvpVote(this, 'Player 2')">⭐ Player 2 (24% - 830 votes)</button>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 18px; margin-bottom: 24px;" class="optional-widget">
+            <div>
+                <strong style="font-family: 'Orbitron'; font-size: 13px; font-weight: 800;">🔔 Match Start Alerts</strong>
+                <p style="font-size: 12px; color: var(--text-muted); font-weight: 600; margin-top: 2px;">Get a browser push notification 5 mins before matches go live.</p>
+            </div>
+            <button class="pill-btn" id="notifBtn" onclick="togglePushNotifications(this)">Enable Alerts</button>
         </div>
 
         <div class="content-section optional-widget">
@@ -1115,6 +1176,36 @@
             
             const xpPercentage = Math.min((currentXP / maxXP) * 100, 100);
             document.getElementById('xpBarFill').style.width = `${xpPercentage}%`;
+        }
+
+        /* MVP Voting Logic */
+        function castMvpVote(btnEl, playerName) {
+            document.querySelectorAll('#mvpList .trivia-opt').forEach(btn => {
+                btn.style.borderColor = 'var(--border-color)';
+                btn.style.color = 'var(--text-main)';
+                btn.disabled = true;
+            });
+            btnEl.style.borderColor = 'var(--green)';
+            btnEl.style.color = 'var(--green)';
+            alert(`✅ Successfully voted for ${playerName} as MVP!`);
+        }
+
+        /* Browser Notifications Logic */
+        function togglePushNotifications(btnEl) {
+            if (!("Notification" in window)) {
+                alert("This browser does not support desktop notifications.");
+                return;
+            }
+
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    btnEl.classList.add('active');
+                    btnEl.innerText = 'Alerts Active ✅';
+                    new Notification("Esports Hub Alert", { body: "You will now receive match alerts!" });
+                } else {
+                    alert("Notification permission denied.");
+                }
+            });
         }
 
         /* Tab Switcher */
