@@ -838,9 +838,13 @@
             <p>Welcome to the ultimate gaming hub. Forge alliances, conquer leaderboards, and enter official esports tournaments.</p>
             <div class="hero-btns">
                 <a href="https://discord.gg/ZUfZb4UYt3" target="_blank" class="btn btn-primary"><i class="fab fa-discord"></i> Join Discord</a>
+<button type="button" class="btn btn-outline" data-bs-toggle="modal" data-bs-target="#trailerModal">
+    <i class="fas fa-play"></i> Community Trailer
+</button>
+                
 <button class="btn btn-outline" onclick="openTrailerModal()">
-                    <i class="fas fa-play"></i> Community Trailer
-                </button>
+    <i class="fas fa-play"></i> Community Trailer
+</button>
             </div>
         </div>
     </section>
@@ -1750,22 +1754,23 @@
 
 
 
-// Trailer Modal Functions
-        function openTrailerModal() {
-            const modal = document.getElementById('trailerModal');
-            const iframe = document.getElementById('trailerIframe');
-            iframe.src = "https://www.youtube.com/embed/ZCM4ZONooq8?si=xEL56lTu-UxBkKZC";
-            modal.style.display = 'flex';
-        }
 
-        function closeTrailerModal() {
-            const modal = document.getElementById('trailerModal');
-            const iframe = document.getElementById('trailerIframe');
-            iframe.src = ""; // Stop video playback when closed
-            modal.style.display = 'none';
-        }
 
     </script>
- 
+    <div class="modal fade" id="trailerModal" tabindex="-1" aria-labelledby="trailerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="trailerModalLabel">Community Trailer</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="ratio ratio-16x9">
+          <iframe src="https://www.youtube.com/embed/ZCM4ZONooq8?si=xEL56lTu-UxBkKZC" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
