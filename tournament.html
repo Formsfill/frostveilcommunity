@@ -50,7 +50,7 @@
         }
 
         [data-theme="obs"] {
-            --bg-color: #00ff00; /* Chroma Key Green */
+            --bg-color: #00ff00;
             --card-bg: #0f172a;
             --card-border: #38bdf8;
             --text-main: #ffffff;
@@ -139,18 +139,20 @@
             flex-wrap: wrap;
         }
 
-        select {
+        select, input[type="url"] {
             background: #0f172a;
             color: var(--text-main);
             border: 1px solid var(--card-border);
             padding: 6px 10px;
             border-radius: 6px;
             outline: none;
+            font-size: 12px;
         }
 
+        /* Drag and Drop Player Grid */
         .player-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 10px;
             margin-bottom: 15px;
         }
@@ -159,14 +161,41 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            background: rgba(0,0,0,0.2);
-            padding: 6px 10px;
+            background: rgba(0,0,0,0.25);
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--card-border);
+            cursor: grab;
+            user-select: none;
+        }
+
+        .input-group:active { cursor: grabbing; border-color: var(--accent); }
+
+        .drag-handle {
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: grab;
+        }
+
+        .input-group label { font-size: 11px; color: var(--text-muted); min-width: 45px; }
+        .input-group input { background: transparent; border: none; color: var(--text-main); font-size: 13px; width: 100%; outline: none; }
+
+        .reorder-btns { display: flex; gap: 2px; }
+        .btn-mini { background: var(--btn-bg); border: none; color: white; padding: 2px 5px; border-radius: 3px; font-size: 10px; cursor: pointer; }
+
+        .webhook-group {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: rgba(0,0,0,0.15);
+            padding: 10px;
             border-radius: 6px;
             border: 1px solid var(--card-border);
         }
 
-        .input-group label { font-size: 11px; color: var(--text-muted); width: 45px; }
-        .input-group input { background: transparent; border: none; color: var(--text-main); font-size: 13px; width: 100%; outline: none; }
+        .webhook-group label { font-size: 12px; font-weight: bold; color: var(--accent); min-width: 120px; }
+        .webhook-group input { flex: 1; }
 
         .action-bar {
             display: flex;
@@ -354,6 +383,65 @@
 
         .champion-name { font-size: 22px; font-weight: bold; color: var(--gold); margin-top: 5px; }
 
+        /* Slide-out Activity Feed Drawer */
+        .drawer-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: #0f172a;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            z-index: 900;
+        }
+
+        .activity-drawer {
+            position: fixed;
+            top: 0; right: -350px;
+            width: 350px; height: 100vh;
+            background: var(--card-bg);
+            border-left: 1px solid var(--card-border);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+            transition: right 0.3s ease-in-out;
+            z-index: 950;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .activity-drawer.open { right: 0; }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 10px;
+        }
+
+        .feed-list {
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feed-item {
+            background: rgba(0,0,0,0.2);
+            border-left: 3px solid var(--accent);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .feed-time { font-size: 10px; color: var(--text-muted); font-family: monospace; }
+
         /* Modal Styles */
         .modal-overlay {
             position: fixed;
@@ -407,13 +495,9 @@
         /* OBS Stream Overlay View */
         body.overlay-mode {
             background: transparent !important;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            height: 100vh;
-            overflow: hidden;
+            padding: 0; margin: 0;
+            display: flex; justify-content: center; align-items: flex-end;
+            height: 100vh; overflow: hidden;
         }
 
         .overlay-banner {
@@ -423,10 +507,8 @@
             padding: 15px 30px;
             border-radius: 12px 12px 0 0;
             box-shadow: 0 -5px 20px rgba(0,0,0,0.6);
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            color: white;
+            width: 100%; max-width: 800px;
+            margin: 0 auto; color: white;
             font-family: 'Segoe UI', sans-serif;
         }
 
@@ -434,37 +516,26 @@
         body.overlay-mode header,
         body.overlay-mode .setup-panel,
         body.overlay-mode .bracket-wrapper,
+        body.overlay-mode .drawer-toggle,
+        body.overlay-mode .activity-drawer,
         body.overlay-mode .modal-overlay { display: none !important; }
 
         .overlay-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
         }
 
         .overlay-player {
-            font-size: 20px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 15px;
         }
 
         .overlay-score {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--accent);
-            background: rgba(0,0,0,0.4);
-            padding: 2px 15px;
-            border-radius: 6px;
+            font-size: 28px; font-weight: 900; color: var(--accent);
+            background: rgba(0,0,0,0.4); padding: 2px 15px; border-radius: 6px;
         }
 
         .overlay-match-info {
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            text-align: center; font-size: 12px; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 1px;
         }
     </style>
 </head>
@@ -472,8 +543,7 @@
 
     <div class="overlay-banner" id="obsOverlay">
         <div class="overlay-match-info" id="obsMatchTitle">LIVE MATCH</div>
-        <div class="overlay-content" id="obsMatchContent">
-            </div>
+        <div class="overlay-content" id="obsMatchContent"></div>
     </div>
 
     <header>
@@ -516,7 +586,15 @@
             </div>
         </div>
 
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+            💡 <strong>Seeding Setup:</strong> Drag cards or use ↑ ↓ buttons to change seed order.
+        </p>
         <div class="player-grid" id="playerInputs"></div>
+
+        <div class="webhook-group">
+            <label>💬 Discord Webhook:</label>
+            <input type="url" id="discordWebhookInput" placeholder="https://discord.com/api/webhooks/..." onchange="saveWebhook()">
+        </div>
 
         <div class="action-bar">
             <button class="btn btn-primary" onclick="applyCustomNames()">Save Roster</button>
@@ -584,6 +662,18 @@
 
     </div>
 
+    <button class="drawer-toggle" onclick="toggleDrawer()">📜 Activity Feed</button>
+
+    <div class="activity-drawer" id="activityDrawer">
+        <div class="drawer-header">
+            <h3>📜 Match History & Log</h3>
+            <button class="modal-close" style="position: static;" onclick="toggleDrawer()">✖</button>
+        </div>
+        <div class="feed-list" id="feedList">
+            <div style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 20px;">No match logs yet.</div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="statsModal">
         <div class="modal-card">
             <button class="modal-close" onclick="closeModal()">✖</button>
@@ -601,16 +691,13 @@
         let players = Array.from({ length: 12 }, (_, i) => `Player ${i + 1}`);
         let matchTimers = {};
         let soundEnabled = true;
+        let dragIndex = null;
 
-        // Web Audio API Synthesizer
+        // Web Audio Synthesizer
         let audioCtx = null;
         function getAudioContext() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
             return audioCtx;
         }
 
@@ -631,14 +718,13 @@
             } catch (e) {}
         }
 
-        function soundScoreUpdate() { playSound(587.33, 0.15, 'triangle'); } // D5
+        function soundScoreUpdate() { playSound(587.33, 0.15, 'triangle'); }
         function soundMatchWin() {
-            playSound(523.25, 0.1, 'square'); // C5
-            setTimeout(() => playSound(659.25, 0.2, 'square'), 100); // E5
+            playSound(523.25, 0.1, 'square');
+            setTimeout(() => playSound(659.25, 0.2, 'square'), 100);
         }
         function soundFanfare() {
-            const notes = [523.25, 659.25, 783.99, 1046.50];
-            notes.forEach((freq, idx) => {
+            [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
                 setTimeout(() => playSound(freq, 0.25, 'triangle'), idx * 120);
             });
         }
@@ -647,6 +733,8 @@
             format: 3,
             theme: 'slate',
             sound: true,
+            discordWebhook: '',
+            logs: [],
             wb: {
                 r1: [
                     { id: 'W1', p1: 7, p2: 8, p1S: 0, p2S: 0, w: null },
@@ -686,18 +774,14 @@
             document.getElementById('globalClock').innerText = new Date().toLocaleTimeString();
         }, 1000);
 
-        // Check Overlay Mode
-        if (isOverlayMode) {
-            document.body.classList.add('overlay-mode');
-        }
+        if (isOverlayMode) document.body.classList.add('overlay-mode');
 
-        // Admin & Theme Setup
         if (isAdmin) {
             document.body.classList.add('is-admin');
             document.getElementById('setupPanel').style.display = 'block';
             document.getElementById('modeBadge').className = 'badge admin';
             document.getElementById('modeBadge').innerText = '⚡ Admin Mode Active';
-            document.getElementById('subtitleText').innerText = 'Manage player scores, live timers, and tournament progression.';
+            document.getElementById('subtitleText').innerText = 'Manage player scores, live timers, drag-and-drop seeds, and Discord webhooks.';
         } else if (!isOverlayMode) {
             document.getElementById('modeBadge').className = 'badge viewer';
             document.getElementById('modeBadge').innerText = '👁️ View-Only Mode';
@@ -714,6 +798,11 @@
         function toggleSound() {
             soundEnabled = document.getElementById('soundSelect').value === 'true';
             state.sound = soundEnabled;
+            saveData();
+        }
+
+        function saveWebhook() {
+            state.discordWebhook = document.getElementById('discordWebhookInput').value.trim();
             saveData();
         }
 
@@ -779,6 +868,9 @@
                         soundEnabled = state.sound;
                         document.getElementById('soundSelect').value = state.sound ? 'true' : 'false';
                     }
+                    if (state.discordWebhook) {
+                        document.getElementById('discordWebhookInput').value = state.discordWebhook;
+                    }
                     if (state.format) {
                         document.getElementById('matchFormat').value = state.format;
                         targetWins = Math.ceil(state.format / 2);
@@ -787,23 +879,54 @@
             }
         }
 
+        // Drag & Drop Seeding
         function initInputs() {
             const container = document.getElementById('playerInputs');
             container.innerHTML = players.map((p, i) => `
-                <div class="input-group">
+                <div class="input-group" draggable="true" ondragstart="handleDragStart(event, ${i})" ondragover="handleDragOver(event)" ondrop="handleDrop(event, ${i})">
+                    <span class="drag-handle">☰</span>
                     <label>Seed ${i + 1}:</label>
-                    <input type="text" id="input-p${i}" value="${p}">
+                    <input type="text" id="input-p${i}" value="${p}" onchange="updatePlayerName(${i}, this.value)">
+                    <div class="reorder-btns">
+                        <button class="btn-mini" onclick="moveSeed(${i}, -1)">▲</button>
+                        <button class="btn-mini" onclick="moveSeed(${i}, 1)">▼</button>
+                    </div>
                 </div>
             `).join('');
+        }
+
+        function handleDragStart(e, index) { dragIndex = index; }
+        function handleDragOver(e) { e.preventDefault(); }
+        function handleDrop(e, targetIndex) {
+            e.preventDefault();
+            if (dragIndex === null || dragIndex === targetIndex) return;
+            const movedItem = players.splice(dragIndex, 1)[0];
+            players.splice(targetIndex, 0, movedItem);
+            dragIndex = null;
+            applyCustomNames();
+        }
+
+        function moveSeed(index, delta) {
+            const newIndex = index + delta;
+            if (newIndex < 0 || newIndex >= players.length) return;
+            const temp = players[index];
+            players[index] = players[newIndex];
+            players[newIndex] = temp;
+            applyCustomNames();
+        }
+
+        function updatePlayerName(i, val) {
+            players[i] = val.trim() || `Player ${i + 1}`;
         }
 
         function applyCustomNames() {
             if (!isAdmin) return;
             for (let i = 0; i < 12; i++) {
-                const val = document.getElementById(`input-p${i}`).value.trim();
-                players[i] = val || `Player ${i + 1}`;
+                const el = document.getElementById(`input-p${i}`);
+                if (el) players[i] = el.value.trim() || `Player ${i + 1}`;
             }
             saveData();
+            initInputs();
             updateProgression();
             render();
         }
@@ -814,6 +937,54 @@
                 localStorage.removeItem(STORAGE_KEY);
                 location.reload();
             }
+        }
+
+        // Activity Feed Drawer Toggle
+        function toggleDrawer() {
+            document.getElementById('activityDrawer').classList.toggle('open');
+        }
+
+        function addLog(message) {
+            const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const logEntry = { time: timestamp, text: message };
+            if (!state.logs) state.logs = [];
+            state.logs.unshift(logEntry);
+            saveData();
+            renderLogs();
+            sendDiscordNotification(message);
+        }
+
+        function renderLogs() {
+            const list = document.getElementById('feedList');
+            if (!state.logs || state.logs.length === 0) {
+                list.innerHTML = `<div style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 20px;">No match logs yet.</div>`;
+                return;
+            }
+            list.innerHTML = state.logs.map(log => `
+                <div class="feed-item">
+                    <div class="feed-time">${log.time}</div>
+                    <div>${log.text}</div>
+                </div>
+            `).join('');
+        }
+
+        // Discord Webhook integration
+        function sendDiscordNotification(text) {
+            if (!state.discordWebhook) return;
+            try {
+                fetch(state.discordWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: "🏆 Tournament Update",
+                            description: text,
+                            color: 3716088,
+                            timestamp: new Date().toISOString()
+                        }]
+                    })
+                }).catch(err => console.error("Discord Webhook Error:", err));
+            } catch (e) {}
         }
 
         // Score Progression Engine
@@ -838,6 +1009,12 @@
             else m.w = null;
 
             if (m.w && m.w !== oldWinner) {
+                const loser = m.w === p1Val ? p2Val : p1Val;
+                const matchTitle = getMatchTitle(path);
+                const logText = `**${m.w}** defeated **${loser}** (${m.p1S}–${m.p2S}) in *${matchTitle}*!`;
+                
+                addLog(logText);
+
                 if (path === 'gf') soundFanfare();
                 else soundMatchWin();
             }
@@ -845,6 +1022,19 @@
             updateProgression();
             saveData();
             render();
+        }
+
+        function getMatchTitle(path) {
+            if (path === 'gf') return 'Grand Final';
+            if (path.startsWith('wb.r1')) return `WB Round 1 (Match W${parseInt(path.split('.')[2]) + 1})`;
+            if (path.startsWith('wb.qf')) return `WB Quarterfinal ${parseInt(path.split('.')[2]) + 1}`;
+            if (path.startsWith('wb.sf')) return `WB Semifinal ${parseInt(path.split('.')[2]) + 1}`;
+            if (path === 'wb.final') return 'WB Final';
+            if (path.startsWith('lb.r1')) return `LB Round 1 (Match L${parseInt(path.split('.')[2]) + 1})`;
+            if (path.startsWith('lb.r2')) return `LB Round 2 (Match L${parseInt(path.split('.')[2]) + 3})`;
+            if (path === 'lb.sf') return 'LB Semifinal';
+            if (path === 'lb.final') return 'LB Final';
+            return 'Match';
         }
 
         function getMatchByPath(path) {
@@ -863,7 +1053,6 @@
             const wb = state.wb;
             const lb = state.lb;
 
-            // WB R1 -> WB QF & LB R1
             wb.qf[0].p1Name = players[0];
             wb.qf[0].p2Name = wb.r1[0].w;
 
@@ -882,7 +1071,6 @@
             lb.r1[1].p1Name = getLoser(wb.r1[2], players[wb.r1[2].p1], players[wb.r1[2].p2]);
             lb.r1[1].p2Name = getLoser(wb.r1[3], players[wb.r1[3].p1], players[wb.r1[3].p2]);
 
-            // WB QF -> WB SF & LB R2
             wb.sf[0].p1Name = wb.qf[0].w;
             wb.sf[0].p2Name = wb.qf[1].w;
 
@@ -895,24 +1083,20 @@
             lb.r2[1].p1Name = lb.r1[1].w;
             lb.r2[1].p2Name = getLoser(wb.qf[1], wb.qf[1].p1Name, wb.qf[1].p2Name);
 
-            // LB SF
             lb.sf.p1Name = lb.r2[0].w;
             lb.sf.p2Name = lb.r2[1].w;
 
-            // WB Final
             wb.final.p1Name = wb.sf[0].w;
             wb.final.p2Name = wb.sf[1].w;
 
-            // LB Final
             lb.final.p1Name = lb.sf.w;
             lb.final.p2Name = getLoser(wb.final, wb.final.p1Name, wb.final.p2Name);
 
-            // Grand Final
             state.gf.p1Name = wb.final.w;
             state.gf.p2Name = lb.final.w;
         }
 
-        // Stats & Head-to-Head Calculator
+        // Stats Calculator
         function calculateStats() {
             let stats = {};
             players.forEach(p => { stats[p] = { won: 0, lost: 0, matchesWon: 0, matchesPlayed: 0 }; });
@@ -935,7 +1119,6 @@
                 }
             }
 
-            // Iterate over all matches
             state.wb.r1.forEach(m => processMatch(m, players[m.p1], players[m.p2]));
             state.wb.qf.forEach(m => processMatch(m, m.p1Name, m.p2Name));
             state.wb.sf.forEach(m => processMatch(m, m.p1Name, m.p2Name));
@@ -1046,7 +1229,7 @@
                 try {
                     const parsed = JSON.parse(evt.target.result);
                     players = parsed.players; state = parsed.state;
-                    saveData(); initInputs(); render();
+                    saveData(); initInputs(); render(); renderLogs();
                 } catch(err) { alert("Invalid File!"); }
             };
             fr.readAsText(e.target.files[0]);
@@ -1086,12 +1269,10 @@
         }
 
         function renderOverlay() {
-            // Find active match (Grand Final or first unfinished match)
             let activeMatch = state.gf;
             let title = "GRAND FINAL";
 
             if (!activeMatch.p1Name || !activeMatch.p2Name) {
-                // Find active match in WB/LB
                 activeMatch = state.wb.final; title = "WINNERS FINAL";
             }
 
@@ -1115,7 +1296,7 @@
                 return;
             }
 
-            // Render WB
+            // WB Render
             document.getElementById('wb-r1').innerHTML = state.wb.r1.map((m, i) => 
                 renderCard(`Match W${i+1}`, m, `wb.r1.${i}`, players[m.p1], players[m.p2], `S${m.p1+1}`, `S${m.p2+1}`)
             ).join('');
@@ -1130,7 +1311,7 @@
 
             document.getElementById('wb-final').innerHTML = renderCard(`WB Final`, state.wb.final, `wb.final`, state.wb.final.p1Name, state.wb.final.p2Name);
 
-            // Render LB
+            // LB Render
             document.getElementById('lb-r1').innerHTML = state.lb.r1.map((m, i) => 
                 renderCard(`LB Match L${i+1}`, m, `lb.r1.${i}`, m.p1Name, m.p2Name)
             ).join('');
@@ -1142,10 +1323,10 @@
             document.getElementById('lb-sf').innerHTML = renderCard(`LB Semifinal`, state.lb.sf, `lb.sf`, state.lb.sf.p1Name, state.lb.sf.p2Name);
             document.getElementById('lb-final').innerHTML = renderCard(`LB Final`, state.lb.final, `lb.final`, state.lb.final.p1Name, state.lb.final.p2Name);
 
-            // Render GF
+            // GF Render
             document.getElementById('grand-final').innerHTML = renderCard(`Grand Final`, state.gf, `gf`, state.gf.p1Name, state.gf.p2Name);
 
-            // Champion
+            // Champion Text
             document.getElementById('championText').innerText = state.gf.w ? `🏆 ${state.gf.w}` : '🏆 Pending...';
         }
 
@@ -1154,6 +1335,7 @@
         if (isAdmin) initInputs();
         updateProgression();
         render();
+        renderLogs();
     </script>
 </body>
 </html>
