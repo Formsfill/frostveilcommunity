@@ -813,6 +813,43 @@
         </div>
     </section>
 
+<section id="tournaments">
+    <h2 class="section-title">Live eFootball Tournament</h2>
+    
+    <div class="card efootball-card">
+        <span class="status-badge"><i class="fas fa-signal"></i> LIVE REGISTRATION</span>
+        <i class="fas fa-futbol card-icon" style="color: var(--accent-cyan); font-size: 3rem; margin-bottom: 1rem;"></i>
+        <h3>Frostveil Cup: eFootball 2026</h3>
+        <p>Compete against top players in our official eFootball tournament bracket.</p>
+        
+        <div class="tournament-details-box">
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-hashtag"></i> Tournament ID:</span>
+                <span class="detail-val">#EFB-2026-FROST</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-gamepad"></i> Format:</span>
+                <span class="detail-val">1v1 Knockout Match</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-link"></i> Discord Match Room:</span>
+                <span class="detail-val">
+                    <a href="https://discord.gg/frostveil" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">
+                        discord.gg/frostveil
+                    </a>
+                </span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-trophy"></i> Prize Pool:</span>
+                <span class="detail-val">VIP Rank + Exclusive Roles</span>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="openEfootballModal()">Register For eFootball</button>
+    </div>
+</section>
+
+    
     <section id="games">
         <h2 class="section-title">Supported Games</h2>
         <div class="grid-3">
@@ -1502,6 +1539,110 @@ async function sendDiscordWebhook(e) {
         btn.innerText = "Send Message";
     }
 }
+
+
+
+
+        // Webhook Target URL
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1535278886412226661/SmdAa_fMVndHM1WLZUZ4xwiAikVy3f8J7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7";
+
+// Modal Controls
+function openEfootballModal() { 
+    document.getElementById('efootballModal').style.display = 'flex'; 
+}
+
+function closeEfootballModal() { 
+    document.getElementById('efootballModal').style.display = 'none'; 
+}
+
+// Live eFootball Tournament Registration Submission Handler
+async function submitEFootballReg(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('efootballName').value.trim();
+    const efootballId = document.getElementById('efootballId').value.trim();
+    const platform = document.getElementById('efootballPlatform').value;
+    const discordTag = document.getElementById('efootballDiscord').value.trim();
+    const btn = document.getElementById('efootballSubmitBtn');
+
+    btn.disabled = true;
+    btn.innerText = "Registering...";
+
+    // Discord Rich Embed Message Payload
+    const payload = {
+        username: "Frostveil eFootball Bot",
+        avatar_url: "https://i.imgur.com/8N4kM2B.png",
+        embeds: [{
+            title: "⚽ New eFootball Tournament Registration!",
+            color: 43775, // Cyan accent
+            fields: [
+                { name: "🏆 Tournament ID", value: "`#EFB-2026-FROST`", inline: true },
+                { name: "🎮 In-Game Name", value: `\`${name}\``, inline: true },
+                { name: "🆔 eFootball User ID", value: `\`${efootballId}\``, inline: true },
+                { name: "📱 Platform", value: platform, inline: true },
+                { name: "👤 Discord Contact", value: `\`${discordTag}\``, inline: true }
+            ],
+            footer: { text: "Frostveil eFootball Esports Management" },
+            timestamp: new Date().toISOString()
+        }]
+    };
+
+    try {
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+            showToast("Registered for eFootball Tournament!", "fa-trophy");
+            closeEfootballModal();
+            document.getElementById('efootballForm').reset();
+        } else {
+            throw new Error("Webhook Submission Error");
+        }
+    } catch (err) {
+        showToast("Failed to register. Please try again.", "fa-exclamation-circle");
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Register For Tournament";
+    }
+}
     </script>
+
+
+
+
+    <div class="modal-overlay" id="efootballModal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeEfootballModal()">&times;</span>
+        <h2 style="color: var(--accent-cyan); margin-bottom: 0.5rem;"><i class="fas fa-futbol"></i> eFootball Registration</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Tournament ID: <strong>#EFB-2026-FROST</strong></p>
+        
+        <form id="efootballForm" onsubmit="submitEFootballReg(event)">
+            <div class="form-group">
+                <label for="efootballName">In-Game Name (eFootball)</label>
+                <input type="text" id="efootballName" class="form-control" placeholder="e.g. GoalKing99" required>
+            </div>
+            <div class="form-group">
+                <label for="efootballId">eFootball User ID</label>
+                <input type="text" id="efootballId" class="form-control" placeholder="e.g. 123-456-789" required>
+            </div>
+            <div class="form-group">
+                <label for="efootballPlatform">Platform</label>
+                <select id="efootballPlatform" class="form-control" required>
+                    <option value="Mobile (Android/iOS)">Mobile (Android/iOS)</option>
+                    <option value="Console (PlayStation / Xbox)">Console (PlayStation / Xbox)</option>
+                    <option value="PC (Steam)">PC (Steam)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="efootballDiscord">Discord Tag / Contact</label>
+                <input type="text" id="efootballDiscord" class="form-control" placeholder="e.g. Player#1234" required>
+            </div>
+            <button type="submit" id="efootballSubmitBtn" class="btn btn-primary" style="width: 100%;">Register For Tournament</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>
