@@ -838,7 +838,9 @@
             <p>Welcome to the ultimate gaming hub. Forge alliances, conquer leaderboards, and enter official esports tournaments.</p>
             <div class="hero-btns">
                 <a href="https://discord.gg/ZUfZb4UYt3" target="_blank" class="btn btn-primary"><i class="fab fa-discord"></i> Join Discord</a>
-<button class="btn btn-outline" onclick="openTrailerModal()"><i class="fas fa-play"></i> Community Trailer</button>
+<button class="btn btn-outline" onclick="openTrailerModal('https://www.youtube.com/embed/ZCM4ZONooq8?si=xEL56lTu-UxBkKZC')">
+    <i class="fas fa-play"></i> Community Trailer
+</button>
             </div>
         </div>
     </section>
@@ -1745,6 +1747,16 @@
                 document.getElementById('secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
             }
         }, 1000);
+
+
+
+
+        function openTrailerModal() {
+    // Change this URL to your new YouTube embed link
+    let trailerUrl = "https://www.youtube.com/embed/ZCM4ZONooq8?si=xEL56lTu-UxBkKZC";
+    
+    // Your modal opening and iframe source assignment logic here
+}
     </script>
 </body>
 </html>
