@@ -17,7 +17,8 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             
-            --accent-cyan: #06b6d4;
+            /* Dynamic Accent Color Default: Cyan */
+            --accent-primary: #06b6d4;
             --accent-indigo: #6366f1;
             --accent-glow: rgba(6, 182, 212, 0.15);
             
@@ -27,7 +28,13 @@
             
             --green: #10b981;
             --gold: #f59e0b;
+            --purple: #a855f7;
         }
+
+        /* Preset Color Themes */
+        body.theme-green { --accent-primary: #10b981; --accent-glow: rgba(16, 185, 129, 0.15); }
+        body.theme-purple { --accent-primary: #a855f7; --accent-glow: rgba(168, 85, 247, 0.15); }
+        body.theme-gold { --accent-primary: #f59e0b; --accent-glow: rgba(245, 158, 11, 0.15); }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
 
@@ -36,12 +43,42 @@
             color: var(--text-main);
             padding: 24px;
             min-height: 100vh;
+            transition: background-color 0.3s ease;
         }
 
         .container {
             max-width: 1480px;
             margin: 0 auto;
         }
+
+        /* Compact Mode Hiding */
+        body.compact-mode .optional-widget {
+            display: none !important;
+        }
+
+        /* Theme Customizer & Controls Bar */
+        .theme-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px 16px;
+            margin-bottom: 16px;
+            font-size: 12px;
+        }
+
+        .theme-swatches { display: flex; align-items: center; gap: 8px; }
+        .swatch {
+            width: 18px; height: 18px; border-radius: 50%; cursor: pointer;
+            border: 2px solid transparent; transition: transform 0.2s;
+        }
+        .swatch:hover { transform: scale(1.2); }
+        .swatch-cyan { background: #06b6d4; }
+        .swatch-green { background: #10b981; }
+        .swatch-purple { background: #a855f7; }
+        .swatch-gold { background: #f59e0b; }
 
         /* Top Bracket Ticker */
         .bracket-ticker {
@@ -62,7 +99,7 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--accent-cyan);
+            color: var(--accent-primary);
             padding-right: 12px;
             border-right: 1px solid var(--border-color);
         }
@@ -149,8 +186,8 @@
             gap: 6px;
         }
 
-        .btn:hover { border-color: var(--accent-cyan); background: var(--bg-card-hover); color: var(--accent-cyan); }
-        .btn-primary { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo)); color: #ffffff; border: none; font-weight: 700; }
+        .btn:hover { border-color: var(--accent-primary); background: var(--bg-card-hover); color: var(--accent-primary); }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-indigo)); color: #ffffff; border: none; font-weight: 700; }
         .btn-primary:hover { opacity: 0.9; }
 
         /* Broadcast Main Layout */
@@ -172,6 +209,32 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
+
+        /* 1. Multi-POV & Audio Controls Bar */
+        .stream-controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-element);
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .pov-group, .audio-group { display: flex; align-items: center; gap: 6px; }
+        .ctrl-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-right: 4px; }
+        .pill-btn {
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .pill-btn.active { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); }
 
         .video-wrapper {
             position: relative;
@@ -203,9 +266,9 @@
             width: 40px; height: 40px;
             border-radius: 50%;
             background: var(--accent-glow);
-            border: 2px solid var(--accent-cyan);
+            border: 2px solid var(--accent-primary);
             display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 14px; color: var(--accent-cyan);
+            font-weight: 800; font-size: 14px; color: var(--accent-primary);
         }
         .player-name { font-size: 16px; font-weight: 800; }
         .vs-pill {
@@ -215,30 +278,6 @@
             padding: 4px 10px; border-radius: 8px;
             color: var(--text-muted);
         }
-
-        /* 1. Play-By-Play Live Commentary Feed */
-        .pbp-container {
-            padding: 16px 24px;
-            background: var(--bg-element);
-            border-top: 1px solid var(--border-color);
-            max-height: 140px;
-            overflow-y: auto;
-        }
-
-        .pbp-title {
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            color: var(--accent-cyan);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .pbp-feed { display: flex; flex-direction: column; gap: 6px; }
-        .pbp-item { font-size: 12px; color: var(--text-muted); display: flex; gap: 10px; }
-        .pbp-time { color: var(--accent-cyan); font-weight: 700; min-width: 45px; }
 
         /* Sidebar Tabs & Modules */
         .sidebar-card {
@@ -272,31 +311,37 @@
 
         .tab-btn.active {
             background: var(--bg-card);
-            color: var(--accent-cyan);
-            border-bottom: 2px solid var(--accent-cyan);
+            color: var(--accent-primary);
+            border-bottom: 2px solid var(--accent-primary);
         }
 
         .tab-content { padding: 20px; flex: 1; overflow-y: auto; }
         .chat-frame { width: 100%; height: 100%; border: 0; min-height: 440px; }
 
-        /* Map Veto */
-        .veto-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
-        .veto-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 14px;
+        /* 2. Trivia & Leaderboard Tab Styling */
+        .trivia-card {
             background: var(--bg-element);
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
+            padding: 14px;
+            margin-bottom: 14px;
         }
-        .veto-item.banned { opacity: 0.4; text-decoration: line-through; border-color: var(--live-border); background: var(--live-bg); }
-        .veto-item.picked { border-color: var(--accent-cyan); background: var(--accent-glow); color: var(--accent-cyan); }
-        .veto-tag { font-size: 10px; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; font-weight: 800; }
-        .veto-tag.ban { background: var(--live-bg); color: var(--live-red); border: 1px solid var(--live-border); }
-        .veto-tag.pick { background: var(--accent-glow); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+
+        .trivia-q { font-size: 13px; font-weight: 800; margin-bottom: 10px; }
+        .trivia-opt {
+            width: 100%; padding: 8px 12px; margin-bottom: 6px;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            color: var(--text-main); font-size: 12px; font-weight: 600;
+            border-radius: 8px; cursor: pointer; text-align: left;
+        }
+        .trivia-opt:hover { border-color: var(--accent-primary); }
+
+        .leaderboard-list { display: flex; flex-direction: column; gap: 8px; }
+        .leaderboard-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--bg-element); padding: 8px 12px; border-radius: 8px;
+            font-size: 12px; font-weight: 700;
+        }
 
         /* Section Container Styles */
         .content-section {
@@ -310,7 +355,7 @@
         .section-title {
             font-size: 14px;
             font-weight: 800;
-            color: var(--accent-cyan);
+            color: var(--accent-primary);
             margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 0.8px;
@@ -319,72 +364,39 @@
             align-items: center;
         }
 
-        /* 2. Embedded Interactive Bracket Tree */
-        .bracket-tree {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            overflow-x: auto;
-            padding-bottom: 10px;
+        /* 3. Match Reminders & Calendar Sync */
+        .schedule-grid { display: flex; flex-direction: column; gap: 10px; }
+        .schedule-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--bg-element); border: 1px solid var(--border-color);
+            padding: 14px 18px; border-radius: 10px; flex-wrap: wrap; gap: 10px;
         }
 
-        .bracket-round { display: flex; flex-direction: column; gap: 16px; justify-content: center; }
-        .round-title { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
-
-        .tree-match {
-            background: var(--bg-element);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 10px 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        /* 5. Team Merch Drawer (Slide-Over) */
+        .drawer-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(9, 13, 22, 0.7); backdrop-filter: blur(4px);
+            display: none; justify-content: flex-end; z-index: 1100;
         }
 
-        .tree-match.active { border-color: var(--accent-cyan); box-shadow: 0 0 15px var(--accent-glow); }
-
-        .tree-team {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-muted);
+        .drawer-content {
+            width: 380px; height: 100%; background: var(--bg-card);
+            border-left: 1px solid var(--border-color); padding: 24px;
+            overflow-y: auto; display: flex; flex-direction: column; gap: 16px;
         }
 
-        .tree-team.winner { color: var(--green); font-weight: 800; }
-        .tree-team.live { color: var(--accent-cyan); font-weight: 800; }
-
-        /* 3. Team & Player Lineup Roster Cards */
-        .roster-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
+        .merch-item {
+            background: var(--bg-element); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 14px; text-align: center;
         }
 
-        .roster-card {
-            background: var(--bg-element);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .roster-avatar {
-            width: 50px; height: 50px;
-            border-radius: 10px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+        .merch-img {
+            height: 120px; background: var(--bg-card); border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 20px; font-weight: 800; color: var(--accent-cyan);
+            font-size: 36px; margin-bottom: 10px;
         }
 
-        .roster-details h4 { font-size: 15px; font-weight: 800; }
-        .roster-details p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        .roster-stats { margin-top: 8px; display: flex; gap: 12px; font-size: 11px; font-weight: 700; }
-
-        /* 4. Sponsor & Partner Marquee */
+        /* Sponsor Marquee */
         .sponsor-marquee {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -399,47 +411,26 @@
         }
 
         .sponsor-logo {
-            font-size: 14px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            opacity: 0.6;
-            transition: all 0.2s;
+            font-size: 14px; font-weight: 900; letter-spacing: 1.5px;
+            color: var(--text-muted); text-transform: uppercase; opacity: 0.6;
         }
-
-        .sponsor-logo:hover { opacity: 1; color: var(--accent-cyan); }
 
         /* Modals */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(9, 13, 22, 0.8);
-            backdrop-filter: blur(6px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(9, 13, 22, 0.8); backdrop-filter: blur(6px);
+            display: none; align-items: center; justify-content: center; z-index: 1000;
         }
 
         .modal-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glow);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 750px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 28px;
-            position: relative;
+            background: var(--bg-card); border: 1px solid var(--border-glow);
+            border-radius: 20px; width: 90%; max-width: 480px; padding: 28px; position: relative;
         }
 
         .close-btn {
-            position: absolute;
-            top: 20px; right: 20px;
-            border: none; background: var(--bg-element);
-            width: 32px; height: 32px; border-radius: 50%;
-            cursor: pointer; font-weight: 800; color: var(--text-muted);
+            position: absolute; top: 20px; right: 20px; border: none;
+            background: var(--bg-element); width: 32px; height: 32px;
+            border-radius: 50%; cursor: pointer; font-weight: 800; color: var(--text-muted);
         }
 
         .form-group { margin-bottom: 16px; }
@@ -454,7 +445,20 @@
 
     <div class="container">
         
-        <div class="bracket-ticker">
+        <div class="theme-bar">
+            <div class="theme-swatches">
+                <span class="ctrl-label">🎨 Accent Theme:</span>
+                <div class="swatch swatch-cyan" onclick="setTheme('')" title="Cyan Accent"></div>
+                <div class="swatch swatch-green" onclick="setTheme('theme-green')" title="Acid Green"></div>
+                <div class="swatch swatch-purple" onclick="setTheme('theme-purple')" title="Electric Purple"></div>
+                <div class="swatch swatch-gold" onclick="setTheme('theme-gold')" title="Gold Champion"></div>
+            </div>
+            <div>
+                <button class="btn" onclick="toggleCompactMode()">📺 Toggle Compact Mode</button>
+            </div>
+        </div>
+
+        <div class="bracket-ticker optional-widget">
             <span class="ticker-label">⚡ Live Matches:</span>
             <div class="ticker-item live">🔴 WB QF #2: Player 1 vs Player 4 (1 - 0)</div>
             <div class="ticker-item">Up Next: WB QF #3: Player 2 vs Player 7</div>
@@ -467,6 +471,7 @@
                 <span class="badge-live">LIVE BROADCAST</span>
             </div>
             <div class="nav-links">
+                <button class="btn" onclick="openDrawer('merch')">🛍️ Official Shop</button>
                 <button class="btn" onclick="openModal('report')">📸 Submit Score</button>
                 <a href="index.html?admin=frostveil" class="btn btn-primary">⚡ Admin Control</a>
             </div>
@@ -475,6 +480,22 @@
         <div class="broadcast-layout">
             
             <div class="stream-card">
+                
+                <div class="stream-controls-bar">
+                    <div class="pov-group">
+                        <span class="ctrl-label">📹 Camera:</span>
+                        <button class="pill-btn active" onclick="switchPOV(this, 'Main Broadcast')">Main POV</button>
+                        <button class="pill-btn" onclick="switchPOV(this, 'Player Cam')">Player Cam</button>
+                        <button class="pill-btn" onclick="switchPOV(this, 'Tactics View')">Tactics / Map</button>
+                    </div>
+                    <div class="audio-group">
+                        <span class="ctrl-label">🔊 Audio:</span>
+                        <button class="pill-btn active" onclick="setAudio(this, 'English')">ENG</button>
+                        <button class="pill-btn" onclick="setAudio(this, 'Spanish')">ESP</button>
+                        <button class="pill-btn" onclick="setAudio(this, 'Team Comms')">🎙️ Team Comms</button>
+                    </div>
+                </div>
+
                 <div class="video-wrapper">
                     <iframe 
                         id="streamFrame" 
@@ -500,16 +521,7 @@
                         </div>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);">
-                        Stage: <span style="color: var(--accent-cyan);">Winners Quarterfinals</span> (BO3)
-                    </div>
-                </div>
-
-                <div class="pbp-container">
-                    <div class="pbp-title">⚡ Live Play-By-Play Commentary</div>
-                    <div class="pbp-feed">
-                        <div class="pbp-item"><span class="pbp-time">14:22</span><span><strong>Player 1</strong> clutched 1v2 on Ascent B-site with a 3k spray!</span></div>
-                        <div class="pbp-item"><span class="pbp-time">14:10</span><span><strong>Player 4</strong> successfully planted the spike on B-site.</span></div>
-                        <div class="pbp-item"><span class="pbp-time">13:45</span><span>First Blood: <strong>Player 1</strong> eliminates Player 4 at Mid Doors.</span></div>
+                        Stage: <span style="color: var(--accent-primary);">Winners Quarterfinals</span> (BO3)
                     </div>
                 </div>
             </div>
@@ -517,129 +529,79 @@
             <div class="sidebar-card">
                 <div class="tab-header">
                     <button class="tab-btn active" onclick="switchTab('chat', this)">💬 Chat</button>
-                    <button class="tab-btn" onclick="switchTab('veto', this)">🗺️ Map Veto</button>
-                    <button class="tab-btn" onclick="switchTab('predict', this)">🎯 Predictions</button>
+                    <button class="tab-btn" onclick="switchTab('trivia', this)">🧠 Trivia & Points</button>
+                    <button class="tab-btn" onclick="switchTab('veto', this)">🗺️ Veto</button>
                 </div>
                 
                 <div id="tab-chat" class="tab-content" style="padding:0; height: 100%;">
                     <iframe class="chat-frame" src="https://www.twitch.tv/embed/esl_csgo/chat?parent=localhost"></iframe>
                 </div>
 
+                <div id="tab-trivia" class="tab-content" style="display: none;">
+                    <h4 style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;">Timeout Live Trivia</h4>
+                    
+                    <div class="trivia-card">
+                        <div class="trivia-q">What is Player 1's headshot accuracy on Ascent?</div>
+                        <button class="trivia-opt" onclick="answerTrivia(false, this)">A) 48%</button>
+                        <button class="trivia-opt" onclick="answerTrivia(true, this)">B) 64% (Correct)</button>
+                        <button class="trivia-opt" onclick="answerTrivia(false, this)">C) 52%</button>
+                    </div>
+
+                    <h4 style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;">Top Fan Leaderboard</h4>
+                    <div class="leaderboard-list">
+                        <div class="leaderboard-item"><span>🥇 CyberSamurai</span><span style="color: var(--gold);">1,250 pts</span></div>
+                        <div class="leaderboard-item"><span>🥈 PixelNinja</span><span style="color: var(--gold);">980 pts</span></div>
+                        <div class="leaderboard-item"><span>🥉 FrostByte</span><span style="color: var(--gold);">840 pts</span></div>
+                    </div>
+                </div>
+
                 <div id="tab-veto" class="tab-content" style="display: none;">
                     <h4 style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">Map Ban & Pick Order</h4>
-                    <div class="veto-grid">
-                        <div class="veto-item banned">
-                            <span>1. Haven</span>
-                            <span class="veto-tag ban">P1 Banned</span>
+                    <div class="veto-grid" style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+                        <div class="veto-item" style="padding: 10px; background: var(--bg-element); border-radius: 8px; font-size: 12px; font-weight:700;">
+                            <span>1. Ascent (Picked by P1)</span>
                         </div>
-                        <div class="veto-item banned">
-                            <span>2. Split</span>
-                            <span class="veto-tag ban">P4 Banned</span>
+                        <div class="veto-item" style="padding: 10px; background: var(--bg-element); border-radius: 8px; font-size: 12px; font-weight:700;">
+                            <span>2. Icebox (Picked by P4)</span>
                         </div>
-                        <div class="veto-item picked">
-                            <span>3. Ascent</span>
-                            <span class="veto-tag pick">P1 Picked (Map 1)</span>
-                        </div>
-                        <div class="veto-item picked">
-                            <span>4. Icebox</span>
-                            <span class="veto-tag pick">P4 Picked (Map 2)</span>
-                        </div>
-                        <div class="veto-item">
-                            <span>5. Bind</span>
-                            <span class="veto-tag" style="background: var(--bg-card); border: 1px solid var(--border-color);">Decider (Map 3)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="tab-predict" class="tab-content" style="display: none;">
-                    <h4 style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;">Fan Predictions</h4>
-                    <div style="background: var(--bg-element); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px;">
-                        <p style="font-size: 13px; font-weight: 700; margin-bottom: 12px;">Who takes this match?</p>
-                        <button class="btn" style="width:100%; margin-bottom:8px; justify-content: space-between;" onclick="alert('Voted Player 1!')">
-                            <span>Player 1</span> <span style="color: var(--accent-cyan); font-weight: 800;">62%</span>
-                        </button>
-                        <button class="btn" style="width:100%; justify-content: space-between;" onclick="alert('Voted Player 4!')">
-                            <span>Player 4</span> <span style="color: var(--live-red); font-weight: 800;">38%</span>
-                        </button>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <div class="content-section">
+        <div class="content-section optional-widget">
             <div class="section-title">
-                <span>🏆 Live Interactive Tournament Tree</span>
-                <span style="font-size: 11px; font-weight: 600; color: var(--text-muted);">Double Elimination Bracket</span>
+                <span>🔔 Upcoming Schedule & Calendar Sync</span>
+                <span style="font-size: 11px; font-weight: 600; color: var(--text-muted);">Local Timezone Auto-Detected</span>
             </div>
 
-            <div class="bracket-tree">
-                <div class="bracket-round">
-                    <div class="round-title">Quarterfinals</div>
-                    <div class="tree-match">
-                        <div class="tree-team winner"><span>Player 3</span><span>2</span></div>
-                        <div class="tree-team"><span>Player 5</span><span>1</span></div>
+            <div class="schedule-grid">
+                <div class="schedule-item">
+                    <div>
+                        <strong style="font-size: 14px;">Winners Semifinals: TBD vs TBD</strong>
+                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Today at 05:30 PM • Best of 3</p>
                     </div>
-                    <div class="tree-match active">
-                        <div class="tree-team live"><span>Player 1</span><span>1</span></div>
-                        <div class="tree-team live"><span>Player 4</span><span>0</span></div>
-                    </div>
-                </div>
-
-                <div class="bracket-round">
-                    <div class="round-title">Semifinals</div>
-                    <div class="tree-match">
-                        <div class="tree-team"><span>Player 3</span><span>-</span></div>
-                        <div class="tree-team"><span>TBD (P1/P4)</span><span>-</span></div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn" onclick="toggleReminder(this)">🔔 Remind Me</button>
+                        <button class="btn btn-primary" onclick="downloadICS('Semis', '17:30')">📅 Sync Calendar (.ics)</button>
                     </div>
                 </div>
 
-                <div class="bracket-round">
-                    <div class="round-title">Grand Finals</div>
-                    <div class="tree-match" style="border-color: var(--gold);">
-                        <div class="tree-team" style="color: var(--gold);"><span>TBD</span><span>-</span></div>
-                        <div class="tree-team" style="color: var(--gold);"><span>TBD</span><span>-</span></div>
+                <div class="schedule-item">
+                    <div>
+                        <strong style="font-size: 14px;">Grand Finals Championship Match</strong>
+                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Today at 08:00 PM • Best of 5</p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn" onclick="toggleReminder(this)">🔔 Remind Me</button>
+                        <button class="btn btn-primary" onclick="downloadICS('Grand Finals', '20:00')">📅 Sync Calendar (.ics)</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="content-section">
-            <div class="section-title">
-                <span>👥 Active Match Roster & Player Lineups</span>
-                <span style="font-size: 11px; font-weight: 600; color: var(--text-muted);">Quarterfinal Competitors</span>
-            </div>
-
-            <div class="roster-grid">
-                <div class="roster-card">
-                    <div class="roster-avatar">P1</div>
-                    <div class="roster-details">
-                        <h4>Player 1</h4>
-                        <p>Role: Entry Fragger • Team Alpha</p>
-                        <div class="roster-stats">
-                            <span>K/D: <strong style="color: var(--green);">1.42</strong></span>
-                            <span>Win Rate: <strong>68%</strong></span>
-                            <span>Form: 🔥 4W</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="roster-card">
-                    <div class="roster-avatar" style="color: var(--live-red); border-color: var(--live-red);">P4</div>
-                    <div class="roster-details">
-                        <h4>Player 4</h4>
-                        <p>Role: Main Sniper • Team Omega</p>
-                        <div class="roster-stats">
-                            <span>K/D: <strong style="color: var(--accent-cyan);">1.28</strong></span>
-                            <span>Win Rate: <strong>59%</strong></span>
-                            <span>Form: 2W</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="sponsor-marquee">
+        <div class="sponsor-marquee optional-widget">
             <span class="sponsor-logo">⚡ INTEL</span>
             <span class="sponsor-logo">🎮 LOGITECH G</span>
             <span class="sponsor-logo">🥤 RED BULL</span>
@@ -649,8 +611,32 @@
 
     </div>
 
+    <div id="drawer-merch" class="drawer-overlay" onclick="closeDrawer('merch')">
+        <div class="drawer-content" onclick="event.stopPropagation()">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="font-size: 18px; font-weight: 800;">🛍️ Tournament Merch</h3>
+                <button class="close-btn" style="position: static;" onclick="closeDrawer('merch')">✕</button>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted);">Official limited-edition event apparel & gear.</p>
+
+            <div class="merch-item">
+                <div class="merch-img">👕</div>
+                <h4 style="font-size: 14px; font-weight: 800;">Championship 2026 Jersey</h4>
+                <p style="font-size: 12px; color: var(--gold); font-weight: 800; margin: 4px 0 10px 0;">$59.99</p>
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="alert('Added Jersey to cart!')">Buy Jersey</button>
+            </div>
+
+            <div class="merch-item">
+                <div class="merch-img">🎧</div>
+                <h4 style="font-size: 14px; font-weight: 800;">Pro Wireless Gaming Headset</h4>
+                <p style="font-size: 12px; color: var(--gold); font-weight: 800; margin: 4px 0 10px 0;">$149.99</p>
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="alert('Added Headset to cart!')">Buy Headset</button>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-report" class="modal-overlay">
-        <div class="modal-card" style="max-width: 480px;">
+        <div class="modal-card">
             <button class="close-btn" onclick="closeModal('report')">✕</button>
             <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">📸 Submit Match Score</h3>
             <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">Submit final match scores and screenshot proof for admin verification.</p>
@@ -661,7 +647,6 @@
                     <select required>
                         <option value="">-- Choose Match --</option>
                         <option>WB QF #2: Player 1 vs Player 4</option>
-                        <option>LB R1 #1: Player 8 vs Player 11</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -671,16 +656,13 @@
                         <input type="number" placeholder="1" min="0" required>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Upload Screenshot Proof</label>
-                    <input type="file" accept="image/*" required>
-                </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px;">Submit Match Result</button>
             </form>
         </div>
     </div>
 
     <script>
+        /* Tab Switcher */
         function switchTab(tabName, btnEl) {
             document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -689,13 +671,69 @@
             btnEl.classList.add('active');
         }
 
-        function openModal(modalName) {
-            document.getElementById(`modal-${modalName}`).style.display = 'flex';
+        /* 1. Multi-POV & Audio Switcher Logic */
+        function switchPOV(btnEl, povName) {
+            btnEl.parentElement.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+            btnEl.classList.add('active');
+            alert(`Switched video feed to: ${povName}`);
         }
 
-        function closeModal(modalName) {
-            document.getElementById(`modal-${modalName}`).style.display = 'none';
+        function setAudio(btnEl, lang) {
+            btnEl.parentElement.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+            btnEl.classList.add('active');
+            alert(`Audio channel switched to: ${lang}`);
         }
+
+        /* 2. Trivia Interactive Logic */
+        function answerTrivia(isCorrect, btnEl) {
+            if (isCorrect) {
+                btnEl.style.borderColor = 'var(--green)';
+                btnEl.style.color = 'var(--green)';
+                alert('🎉 Correct! You earned +50 Fan Points!');
+            } else {
+                btnEl.style.borderColor = 'var(--live-red)';
+                btnEl.style.color = 'var(--live-red)';
+                alert('❌ Incorrect answer. Try the next round!');
+            }
+        }
+
+        /* 3. Calendar Sync & Reminder Logic */
+        function toggleReminder(btnEl) {
+            if (btnEl.innerText.includes('Remind Me')) {
+                btnEl.innerText = '✅ Reminder Set';
+                btnEl.style.borderColor = 'var(--green)';
+                btnEl.style.color = 'var(--green)';
+            } else {
+                btnEl.innerText = '🔔 Remind Me';
+                btnEl.style.borderColor = 'var(--border-color)';
+                btnEl.style.color = 'var(--text-main)';
+            }
+        }
+
+        function downloadICS(eventName, time) {
+            const icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Esports Championship - " + eventName + "\nDESCRIPTION:Live Championship Stream\nEND:VEVENT\nEND:VCALENDAR";
+            const blob = new Blob([icsContent], { type: 'text/calendar' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `${eventName.replace(/\s+/g, '_')}.ics`;
+            link.click();
+        }
+
+        /* 4. Theme & Compact Mode Logic */
+        function setTheme(themeClass) {
+            document.body.className = themeClass;
+        }
+
+        function toggleCompactMode() {
+            document.body.classList.toggle('compact-mode');
+        }
+
+        /* 5. Drawers & Modals Logic */
+        function openDrawer(id) { document.getElementById(`drawer-${id}`).style.display = 'flex'; }
+        function closeDrawer(id) { document.getElementById(`drawer-${id}`).style.display = 'none'; }
+        
+        function openModal(modalName) { document.getElementById(`modal-${modalName}`).style.display = 'flex'; }
+        function closeModal(modalName) { document.getElementById(`modal-${modalName}`).style.display = 'none'; }
     </script>
 </body>
 </html>
