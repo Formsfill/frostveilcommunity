@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Frostveil Esports | eFootball 2026 Tournament</title>
+  <title>Frostveil Esports | Premier Gaming Community</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,13 +12,15 @@
     /* Global Reset & Theme Variables */
     :root {
       --bg-dark: #090d16;
-      --card-bg: #111827;
+      --bg-card: #111827;
+      --bg-alt: #0d1322;
       --accent-cyan: #06b6d4;
       --accent-blue: #2563eb;
+      --accent-purple: #8b5cf6;
       --accent-gold: #eab308;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --border-color: #334155;
+      --border-color: #1e293b;
     }
 
     * {
@@ -34,36 +36,141 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
+      overflow-x: hidden;
     }
 
-    /* Tournament Card Section */
-    .container {
-      width: 100%;
+    /* --- Navigation Header --- */
+    header {
+      background: rgba(17, 24, 39, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 2000;
+      padding: 1rem 2rem;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--accent-cyan);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-cyan);
+    }
+
+    .nav-btn {
+      padding: 0.6rem 1.2rem;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* --- Hero Section --- */
+    .hero {
+      padding: 5rem 1.5rem;
+      text-align: center;
+      background: radial-gradient(circle at center, #1e293b 0%, var(--bg-dark) 70%);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .hero-content {
       max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      color: var(--accent-cyan);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    /* --- Section Layout Container --- */
+    .section-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+      width: 100%;
     }
 
     .section-title {
       font-family: 'Orbitron', sans-serif;
       font-size: 2rem;
-      text-align: center;
       color: var(--accent-cyan);
       text-transform: uppercase;
       letter-spacing: 2px;
       margin-bottom: 2rem;
-      text-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
     }
 
+    /* --- Featured Tournament Section --- */
     .tournament-card {
-      background: var(--card-bg);
+      background: var(--bg-card);
       border: 1px solid rgba(6, 182, 212, 0.3);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       border-radius: 16px;
       padding: 2.5rem;
       position: relative;
-      overflow: hidden;
+      margin-bottom: 4rem;
     }
 
     .status-badge {
@@ -85,7 +192,6 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 1.8rem;
       margin-bottom: 0.5rem;
-      color: #ffffff;
     }
 
     .tournament-card p {
@@ -96,7 +202,7 @@
 
     .details-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
       background: rgba(15, 23, 42, 0.6);
       padding: 1.25rem;
@@ -145,7 +251,100 @@
       box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
     }
 
-    /* Modal Overlay & Card Form */
+    /* --- Grid Layout for Other Esports Titles & Community --- */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .game-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .game-card:hover {
+      border-color: var(--accent-purple);
+      transform: translateY(-4px);
+    }
+
+    .game-icon {
+      font-size: 2.2rem;
+      color: var(--accent-purple);
+      margin-bottom: 1rem;
+    }
+
+    .game-card h4 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .game-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .badge-upcoming {
+      display: inline-block;
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--accent-purple);
+      border: 1px solid var(--accent-purple);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    /* --- Leaderboard Table Section --- */
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      margin-bottom: 4rem;
+    }
+
+    .leaderboard-table th,
+    .leaderboard-table td {
+      padding: 1rem 1.5rem;
+      text-align: left;
+    }
+
+    .leaderboard-table th {
+      background: #0f172a;
+      color: var(--text-muted);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    .leaderboard-table tr {
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .leaderboard-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .rank-num {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      color: var(--accent-gold);
+    }
+
+    /* --- Modal Overlay & Form --- */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -159,7 +358,7 @@
     }
 
     .modal-card {
-      background: var(--card-bg);
+      background: var(--bg-card);
       border: 1px solid rgba(6, 182, 212, 0.4);
       box-shadow: 0 0 40px rgba(6, 182, 212, 0.2);
       border-radius: 16px;
@@ -248,49 +447,183 @@
       box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
     }
 
-    @media (max-width: 520px) {
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-      .form-group.full-width {
-        grid-column: span 1;
-      }
+    /* --- Footer --- */
+    footer {
+      margin-top: auto;
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border-color);
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .social-links a {
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .social-links a:hover {
+      color: var(--accent-cyan);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero h1 { font-size: 2.2rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full-width { grid-column: span 1; }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h2 class="section-title">Live eFootball Tournament</h2>
-
-    <div class="tournament-card">
-      <span class="status-badge"><i class="fas fa-signal"></i> REGISTRATION OPEN</span>
-      <h3>Frostveil Cup: eFootball 2026</h3>
-      <p>Compete against top players in our official eFootball tournament bracket and earn your verified FUT card badge.</p>
-
-      <div class="details-grid">
-        <div class="detail-item">
-          <span class="detail-label"><i class="fas fa-hashtag"></i> Tournament ID</span>
-          <span class="detail-val">#EFB-2026-FROST</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label"><i class="fas fa-gamepad"></i> Format</span>
-          <span class="detail-val">1v1 Knockout</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label"><i class="fas fa-users"></i> Platform</span>
-          <span class="detail-val">Cross-Platform</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label"><i class="fas fa-trophy"></i> Prize Pool</span>
-          <span class="detail-val">VIP Rank + Roles</span>
-        </div>
-      </div>
-
-      <button class="btn-action" onclick="openEfootballModal()">
-        <i class="fas fa-futbol"></i> Register For Tournament
-      </button>
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <i class="fas fa-bolt"></i> FROSTVEIL
+      </a>
+      <ul class="nav-links">
+        <li><a href="#tournaments">Tournaments</a></li>
+        <li><a href="#games">Games</a></li>
+        <li><a href="#leaderboard">Leaderboard</a></li>
+      </ul>
+      <a href="https://discord.gg" target="_blank" class="nav-btn">
+        <i class="fab fa-discord"></i> Join Discord
+      </a>
     </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-tag">Official Community Hub</span>
+      <h1>Compete. Dominate. Get Verified.</h1>
+      <p>Join competitive esports brackets, track live rankings, and earn custom player cards for your favorite games.</p>
+    </div>
+  </section>
+
+  <div class="section-wrapper">
+
+    <section id="tournaments">
+      <h2 class="section-title"><i class="fas fa-trophy"></i> Active Tournament</h2>
+
+      <div class="tournament-card">
+        <span class="status-badge"><i class="fas fa-signal"></i> REGISTRATION OPEN</span>
+        <h3>Frostveil Cup: eFootball 2026</h3>
+        <p>Compete against top soccer esports players in our official eFootball tournament bracket and earn your verified FUT card pass.</p>
+
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-hashtag"></i> Tournament ID</span>
+            <span class="detail-val">#EFB-2026-FROST</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-gamepad"></i> Format</span>
+            <span class="detail-val">1v1 Knockout</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-users"></i> Platform</span>
+            <span class="detail-val">Cross-Platform</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-award"></i> Prize Pool</span>
+            <span class="detail-val">VIP Rank + Roles</span>
+          </div>
+        </div>
+
+        <button class="btn-action" onclick="openEfootballModal()">
+          <i class="fas fa-futbol"></i> Register For Tournament
+        </button>
+      </div>
+    </section>
+
+    <section id="games">
+      <h2 class="section-title"><i class="fas fa-gamepad"></i> Upcoming Arenas</h2>
+      <div class="grid-3">
+        
+        <div class="game-card">
+          <div>
+            <span class="badge-upcoming">COMING SOON</span>
+            <i class="fas fa-crosshairs game-icon"></i>
+            <h4>Valorant 5v5 Cup</h4>
+            <p>Tactical shooter tournament with custom HUD stats and team brackets.</p>
+          </div>
+          <button class="btn-action" style="background: var(--border-color); cursor: not-allowed;" disabled>Stage 2 Draft</button>
+        </div>
+
+        <div class="game-card">
+          <div>
+            <span class="badge-upcoming">OPENING NEXT WEEK</span>
+            <i class="fas fa-headset game-icon"></i>
+            <h4>BGMI Squad Series</h4>
+            <p>Battle royale battleground with custom survival point calculations.</p>
+          </div>
+          <button class="btn-action" style="background: var(--border-color); cursor: not-allowed;" disabled>Pre-Registration</button>
+        </div>
+
+        <div class="game-card">
+          <div>
+            <span class="badge-upcoming">COMMUNITY VOTE</span>
+            <i class="fas fa-car-burst game-icon"></i>
+            <h4>Rocket League 2v2</h4>
+            <p>High-octane car soccer championship for ranked competitive teams.</p>
+          </div>
+          <button class="btn-action" style="background: var(--border-color); cursor: not-allowed;" disabled>Voting Open</button>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="leaderboard">
+      <h2 class="section-title"><i class="fas fa-crown"></i> Frostveil Leaderboard</h2>
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Player Name</th>
+            <th>Game</th>
+            <th>OVR Rating</th>
+            <th>Wins</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rank-num">#1</td>
+            <td><strong>GoalKing99</strong></td>
+            <td>eFootball</td>
+            <td>98 OVR</td>
+            <td>24 Wins</td>
+          </tr>
+          <tr>
+            <td class="rank-num" style="color: #cbd5e1;">#2</td>
+            <td><strong>ShadowSniper</strong></td>
+            <td>Valorant</td>
+            <td>95 OVR</td>
+            <td>21 Wins</td>
+          </tr>
+          <tr>
+            <td class="rank-num" style="color: #b45309;">#3</td>
+            <td><strong>ApexStriker</strong></td>
+            <td>eFootball</td>
+            <td>93 OVR</td>
+            <td>18 Wins</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
   </div>
 
   <div class="modal-overlay" id="efootballModal">
@@ -343,6 +676,21 @@
     </div>
   </div>
 
+  <footer>
+    <div class="footer-content">
+      <a href="#" class="logo">
+        <i class="fas fa-bolt"></i> FROSTVEIL ESPORTS
+      </a>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-discord"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 Frostveil Esports. All rights reserved.</p>
+    </div>
+  </footer>
+
   <script>
     // Discord Webhook Endpoint
     const WEBHOOK_URL = "https://discord.com/api/webhooks/1535278886412226661/SmdAa_fMVndHM1WLZUZ4xwiAikVy3f8J7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7";
@@ -356,7 +704,7 @@
       document.getElementById('efootballModal').style.display = 'none';
     }
 
-    // 1. Dynamic Pure JS FIFA FUT Card Image Generator
+    // 1. Dynamic FIFA FUT Card Image Generator
     function generateFIFAStyleCard(name, id, rating, platform) {
       return new Promise((resolve) => {
         const canvas = document.createElement('canvas');
@@ -364,20 +712,19 @@
         canvas.height = 560;
         const ctx = canvas.getContext('2d');
 
-        // Clear canvas
         ctx.clearRect(0, 0, 400, 560);
 
         // Draw FIFA Gold Shield Outer Shape
         ctx.beginPath();
-        ctx.moveTo(200, 20);      // Top Center
-        ctx.lineTo(360, 50);     // Top Right
-        ctx.lineTo(360, 380);    // Bottom Right Side
-        ctx.lineTo(200, 540);    // Bottom Shield Tip
-        ctx.lineTo(40, 380);     // Bottom Left Side
-        ctx.lineTo(40, 50);      // Top Left
+        ctx.moveTo(200, 20);
+        ctx.lineTo(360, 50);
+        ctx.lineTo(360, 380);
+        ctx.lineTo(200, 540);
+        ctx.lineTo(40, 380);
+        ctx.lineTo(40, 50);
         ctx.closePath();
 
-        // Metallic Gold Shield Background
+        // Metallic Gold Gradient
         const goldGrad = ctx.createLinearGradient(40, 20, 360, 540);
         goldGrad.addColorStop(0, '#fef08a');
         goldGrad.addColorStop(0.3, '#eab308');
@@ -403,12 +750,9 @@
         ctx.fillStyle = innerGrad;
         ctx.fill();
 
-        // Gold Inner Outline
         ctx.lineWidth = 4;
         ctx.strokeStyle = '#fef08a';
         ctx.stroke();
-
-        // --- DRAW CARD CONTENT ---
 
         // Overall Rating (OVR)
         ctx.fillStyle = '#fef08a';
@@ -416,7 +760,7 @@
         ctx.textAlign = 'left';
         ctx.fillText(rating, 75, 125);
 
-        // Player Position Badge
+        // Position Badge
         ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 22px Orbitron, sans-serif';
         ctx.fillText('FW', 78, 155);
@@ -455,12 +799,12 @@
         ctx.font = 'bold 28px Orbitron, sans-serif';
         ctx.fillText(name.toUpperCase(), 200, 280);
 
-        // eFootball User ID
+        // eFootball ID
         ctx.fillStyle = '#fef08a';
         ctx.font = '16px Rajdhani, sans-serif';
         ctx.fillText(`ID: ${id}`, 200, 310);
 
-        // FUT Stats Container Box
+        // FUT Stats Container
         ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
         ctx.roundRect(70, 330, 260, 110, 12);
         ctx.fill();
@@ -472,12 +816,10 @@
         ctx.font = 'bold 16px Rajdhani, sans-serif';
         ctx.textAlign = 'left';
 
-        // Left Column
         ctx.fillText('91 PAC', 90, 362);
         ctx.fillText('88 SHO', 90, 392);
         ctx.fillText('85 PAS', 90, 422);
 
-        // Right Column
         ctx.fillText('93 DRI', 220, 362);
         ctx.fillText('55 DEF', 220, 392);
         ctx.fillText('82 PHY', 220, 422);
@@ -492,12 +834,11 @@
         ctx.font = '12px Rajdhani, sans-serif';
         ctx.fillText('OFFICIAL EFOOTBALL TOURNAMENT PASS', 200, 498);
 
-        // Export Canvas to File Blob
         canvas.toBlob((blob) => resolve(blob), 'image/png');
       });
     }
 
-    // 2. Submit Handler with Attachment to Discord Webhook
+    // 2. Submit Handler to Post Image & Embed to Webhook
     async function submitEFootballReg(e) {
       e.preventDefault();
 
@@ -512,10 +853,7 @@
       btn.innerText = "Generating FIFA Card...";
 
       try {
-        // Step A: Generate FUT Card Image Blob
         const cardBlob = await generateFIFAStyleCard(name, id, rating, platform);
-
-        // Step B: Build Multipart Payload
         const formData = new FormData();
         const fileName = `${name.replace(/\s+/g, '_')}_fut_pass.png`;
         formData.append('file', cardBlob, fileName);
@@ -524,7 +862,7 @@
           username: "Frostveil eFootball Bot",
           embeds: [{
             title: "⚽ New eFootball Tournament Registration!",
-            color: 15451144, // Gold Color Accent
+            color: 15451144,
             fields: [
               { name: "🏆 Tournament ID", value: "`#EFB-2026-FROST`", inline: true },
               { name: "🎮 Player Name", value: `\`${name}\``, inline: true },
@@ -541,7 +879,6 @@
 
         formData.append('payload_json', JSON.stringify(payload));
 
-        // Step C: Post Payload to Discord
         const response = await fetch(WEBHOOK_URL, {
           method: 'POST',
           body: formData
