@@ -404,6 +404,16 @@
             text-transform: uppercase;
         }
 
+        /* Challonge Bracket Wrapper */
+        .bracket-container {
+            background: var(--bg-card);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 3rem;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+        }
+
         /* Interactive Event Calendar Styles */
         .calendar-container {
             background: var(--bg-card);
@@ -978,14 +988,11 @@
 
             <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Community Video</h3>
             <div class="video-container">
-    
+                <iframe id="combinedVideoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
     </div>
 
-<iframe id="combinedVideoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-    
     <section id="status">
         <h2 class="section-title">Live Server Status</h2>
         <div class="grid-3">
@@ -1092,7 +1099,7 @@
     </section>
 
     <section id="news">
-        <h2 class="section-title">News & Events</h2>
+        <h2 class="section-title">News & Tournament Brackets</h2>
         
         <div class="countdown-card">
             <h3 style="color: var(--accent-cyan);">Upcoming Event: Frostveil eFootball Clash</h3>
@@ -1105,7 +1112,21 @@
             </div>
         </div>
 
-        <div class="grid-3">
+        <div class="bracket-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h3 style="color: var(--accent-cyan); font-size: 1.3rem;"><i class="fas fa-sitemap"></i> Live Challonge Bracket</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Follow live tournament match progression and standings.</p>
+                </div>
+                <a href="https://challonge.com/l3dstxqr" target="_blank" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1rem;"><i class="fas fa-external-link-alt"></i> Open Full Page</a>
+            </div>
+            
+            <div style="width: 100%; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);">
+                <iframe src="https://challonge.com/l3dstxqr/module" width="100%" height="500" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>
+            </div>
+        </div>
+
+        <div class="grid-3" style="margin-top: 3rem;">
             <div class="card" style="text-align: left;">
                 <span style="color: var(--accent-cyan); font-weight: bold;">[UPDATE]</span>
                 <h3 style="margin-top: 0.5rem;">Minecraft Server Wipe & Update</h3>
@@ -1330,7 +1351,6 @@
                     <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 600;">In-Game / Discord Name</label>
                     <input type="text" id="tourneyName" class="form-control" placeholder="e.g. FrostByte_99" required>
                 </div>
-                <iframe src="https://challonge.com/l3dstxqr/module" width="100%" height="500" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>
                 <div class="form-group">
                     <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 600;">Select Tournament</label>
                     <select id="tourneyGame" class="form-control" required>
@@ -1391,13 +1411,13 @@
             <a href="https://discord.gg/ZUfZb4UYt3" target="_blank" aria-label="Discord"><i class="fab fa-discord"></i></a>
             <a href="https://www.youtube.com/@Skater100CP" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.tiktok.com/@community.of.frostveil" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
             <a href="https://www.instagram.com/communityoffrostveil/?hl=en" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
         </div>
 
         <div class="visitor-counter">
-    <i class="fas fa-users"></i> Total Visitors: <span class="visitor-digits" id="visitorCounter">Loading...</span>
-</div>
+            <i class="fas fa-users"></i> Total Visitors: <span class="visitor-digits" id="visitorCounter">Loading...</span>
+        </div>
 
         <div style="margin-top: 2rem; font-size: 0.9rem; color: var(--text-muted);">
             &copy; 2026 Community of Frostveil. All rights reserved.
@@ -1415,13 +1435,8 @@
                 }, 500);
             }
 
-            // Load saved visitor counter
-            let visits = localStorage.getItem('frostveil_visits');
-            if (!visits) {
-                visits = 48291;
-                localStorage.setItem('frostveil_visits', visits);
-            }
-            document.getElementById('visitorCounter').innerText = String(visits).padStart(6, '0');
+            // Initialize Live Global Visitor Counter
+            initLiveVisitorCounter();
 
             // Load saved custom countdown target if present
             const savedCountdown = localStorage.getItem('frostveil_countdown');
@@ -1442,17 +1457,54 @@
             }
         });
 
+        // Live Global Counter Logic via CountAPI
+        async function initLiveVisitorCounter() {
+            const namespace = "frostveil-community-hub-2026";
+            const key = "visits";
+            const counterElement = document.getElementById('visitorCounter');
+
+            try {
+                let response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
+                
+                if (!response.ok) {
+                    await fetch(`https://api.countapi.xyz/create?namespace=${namespace}&key=${key}&value=48291`);
+                    response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
+                }
+
+                const data = await response.json();
+                
+                if (data && data.value !== undefined) {
+                    counterElement.innerText = String(data.value).padStart(6, '0');
+                } else {
+                    throw new Error("Invalid response");
+                }
+            } catch (error) {
+                // Fallback to localStorage if third-party count API is blocked
+                let localVisits = localStorage.getItem('frostveil_fallback_visits');
+                if (!localVisits) {
+                    localVisits = 48291;
+                } else {
+                    localVisits = parseInt(localVisits) + 1;
+                }
+                localStorage.setItem('frostveil_fallback_visits', localVisits);
+                counterElement.innerText = String(localVisits).padStart(6, '0');
+            }
+        }
+
         function closeAdminPanel() {
             document.getElementById('adminPanelModal').style.display = 'none';
         }
 
         // Admin Actions
-        function updateVisitorCount() {
+        async function updateVisitorCount() {
             const newVal = document.getElementById('adminVisitorInput').value;
             if (newVal) {
-                localStorage.setItem('frostveil_visits', newVal);
+                try {
+                    await fetch(`https://api.countapi.xyz/set/frostveil-community-hub-2026/visits?value=${newVal}`);
+                } catch(e) {}
+                localStorage.setItem('frostveil_fallback_visits', newVal);
                 document.getElementById('visitorCounter').innerText = String(newVal).padStart(6, '0');
-                showToast("Visitor counter updated successfully!", "fa-check");
+                showToast("Visitor counter updated globally!", "fa-check");
             }
         }
 
@@ -1893,53 +1945,6 @@
                 document.getElementById('secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
             }
         }, 1000);
-
-
-
-
-
-
-        async function initLiveVisitorCounter() {
-    const namespace = "frostveil-community-hub-2026"; // Unique namespace for your site
-    const key = "visits";
-    const counterElement = document.getElementById('visitorCounter');
-
-    try {
-        // First, hit the API to increment the count by 1 for this visit
-        let response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
-        
-        // If the namespace doesn't exist yet, create it automatically
-        if (!response.ok) {
-            await fetch(`https://api.countapi.xyz/create?namespace=${namespace}&key=${key}&value=48291`);
-            response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
-        }
-
-        const data = await response.json();
-        
-        if (data && data.value !== undefined) {
-            // Format the number to always show padded digits (e.g., 048292)
-            counterElement.innerText = String(data.value).padStart(6, '0');
-        } else {
-            throw new Error("Invalid counter response");
-        }
-    } catch (error) {
-        // Fallback to localStorage if the public API fails or is blocked by an ad-blocker
-        let localVisits = localStorage.getItem('frostveil_fallback_visits');
-        if (!localVisits) {
-            localVisits = 48291;
-        } else {
-            localVisits = parseInt(localVisits) + 1;
-        }
-        localStorage.setItem('frostveil_fallback_visits', localVisits);
-        counterElement.innerText = String(localVisits).padStart(6, '0');
-    }
-}
-
-// Run the live counter function when the page loads
-window.addEventListener('DOMContentLoaded', () => {
-    initLiveVisitorCounter();
-});
-
     </script>
 </body>
 </html>
