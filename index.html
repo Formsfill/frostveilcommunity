@@ -1512,12 +1512,11 @@
 
 
                 // Modals Logic (Fixed with correct video ID placeholders)
+                // Modals Logic (Fixed with your specific YouTube video ID)
         function openCombinedModal() {
-            // Replace YOUR_TRAILER_ID with your actual trailer YouTube ID (e.g., dQw4w9WgXcQ)
-            document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/YOUR_TRAILER_ID?autoplay=1&enablejsapi=1";
-            
-            // Replace YOUR_VIDEO_ID with your actual community video YouTube ID
-            document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1&enablejsapi=1";
+            // Both frames will now play your video using ID: ZCM4ZONooq8
+            document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/ZCM4ZONooq8?autoplay=1&enablejsapi=1";
+            document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ZCM4ZONooq8?autoplay=1&enablejsapi=1";
             
             document.getElementById('combinedModal').style.display = 'flex';
         }
