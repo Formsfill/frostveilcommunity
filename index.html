@@ -777,6 +777,10 @@
             <div class="hero-btns">
                 <a href="https://discord.gg/ZUfZb4UYt3" target="_blank" class="btn btn-primary"><i class="fab fa-discord"></i> Join Discord</a>
                 <button class="btn btn-outline" onclick="openTrailerModal()"><i class="fas fa-play"></i> Community Trailer</button>
+
+<button class="btn btn-outline" onclick="openTrailerModal()"><i class="fas fa-play"></i> Community Video</button>
+
+
             </div>
         </div>
     </section>
@@ -1505,6 +1509,14 @@
                 document.getElementById('secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
             }
         }, 1000);
+
+
+
+
+            function openTrailerModal() {
+    document.getElementById('trailerFrame').src = "https://www.youtube.com/embed/ZCM4ZONooq8?si=eKnNdWY-NurMdbEn?autoplay=1";
+    document.getElementById('trailerModal').style.display = 'flex';
+}
     </script>
 </body>
 </html>
