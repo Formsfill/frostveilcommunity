@@ -788,9 +788,14 @@
     <div class="modal-content">
         <span class="modal-close" onclick="closeVideoModal()">&times;</span>
         <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Community Video</h3>
-        <div class="video-container">
-            <iframe id="videoFrame" src="" allowfullscreen></iframe>
-        </div>
+    <div class="video-container" style="margin-bottom: 1.5rem;">
+    <iframe id="combinedTrailerFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+<div class="video-container">
+    <iframe id="combinedVideoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
     </div>
 </div>
 
@@ -1552,8 +1557,8 @@
 
 
             function openCombinedModal() {
-    document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/TRAILER_VIDEO_ID_HERE?autoplay=1";
-    document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ANOTHER_VIDEO_ID_HERE?autoplay=1";
+    document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/TRAILER_VIDEO_ID_HERE?autoplay=1&enablejsapi=1";
+    document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ANOTHER_VIDEO_ID_HERE?autoplay=1&enablejsapi=1";
     document.getElementById('combinedModal').style.display = 'flex';
 }
 
