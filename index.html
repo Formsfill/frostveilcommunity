@@ -394,6 +394,30 @@
             font-weight: bold;
         }
 
+        /* Leaderboard */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .leaderboard-table th, .leaderboard-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+        }
+
+        .leaderboard-table th {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--accent-cyan);
+            font-family: var(--font-heading);
+        }
+
+        .leaderboard-table tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
         /* Modals */
         .modal-overlay {
             display: none;
@@ -623,106 +647,7 @@
         </div>
     </section>
 
-    <section id="status">
-        <h2 class="section-title">Live Server Status</h2>
-        <div class="grid-3">
-            <div class="card">
-                <span class="status-badge" id="mc-status-badge"><i class="fas fa-circle"></i> CHECKING...</span>
-                <i class="fas fa-cube card-icon" style="color: var(--accent-cyan); display: block;"></i>
-                <h3>Minecraft Server</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">mc.frostveil.com</p>
-                <div style="margin-top: 1rem; font-family: var(--font-heading); font-size: 1.2rem;">
-                    Players: <span id="mc-player-count" style="color: var(--accent-cyan);">-- / --</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <span class="status-badge" id="discord-status-badge"><i class="fas fa-circle"></i> ONLINE</span>
-                <i class="fab fa-discord card-icon" style="color: var(--accent-blue); display: block;"></i>
-                <h3>Discord Server</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Voice & Text Hub</p>
-                <div style="margin-top: 0.5rem; font-family: var(--font-heading); font-size: 1.2rem;">
-                    Active Members: <span id="discord-member-count" style="color: var(--accent-cyan);">-- Online</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <span class="status-badge"><i class="fas fa-circle"></i> OPEN</span>
-                <i class="fas fa-gamepad card-icon" style="color: var(--accent-cyan); display: block;"></i>
-                <h3>Custom Lobbies</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Roblox & eFootball</p>
-                <div style="margin-top: 1rem; font-family: var(--font-heading); font-size: 1.2rem;">
-                    Status: <span style="color: var(--accent-green);">Hosting Active</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="games">
-        <h2 class="section-title">Supported Games</h2>
-        <div class="grid-3">
-            <div class="card game-card">
-                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Roblox">
-                <h3>Roblox</h3>
-                <p>Join our official Frostveil Roblox groups, participate in custom game nights, and build with us.</p>
-                <a href="https://www.roblox.com" target="_blank" class="btn btn-outline" style="width: 100%; margin-top: 1rem;"><i class="fas fa-external-link-alt"></i> Play Game</a>
-            </div>
-
-            <div class="card game-card">
-                <img src="https://images.unsplash.com/photo-1511886929837-354d827aae26?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="eFootball">
-                <h3>eFootball 2026</h3>
-                <p>Compete in the Frostveil Pro League. Show off your tactical genius and take your team to the top.</p>
-            </div>
-
-            <div class="card game-card">
-                <img src="https://images.unsplash.com/photo-1607513746994-51f730a44832?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Minecraft">
-                <h3>Minecraft</h3>
-                <p>Survival, Creative, and Minigames. Connect to `mc.frostveil.com` and start your adventure today.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="vip">
-        <h2 class="section-title">Community VIP Tiers</h2>
-        <div class="grid-3">
-            <div class="card">
-                <h3>Member</h3>
-                <div class="price-tag">$0 <span>/ forever</span></div>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Standard Discord Role</li>
-                    <li><i class="fas fa-check"></i> Access to Public Game Servers</li>
-                    <li><i class="fas fa-check"></i> Tournament Participation</li>
-                </ul>
-                <a href="https://discord.gg/ZUfZb4UYt3" target="_blank" class="btn btn-outline" style="width: 100%;">Join Free</a>
-            </div>
-
-            <div class="card card-popular">
-                <div class="popular-badge">Most Popular</div>
-                <h3>VIP Supporter</h3>
-                <div class="price-tag">$5 <span>/ month</span></div>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Exclusive VIP Discord Role</li>
-                    <li><i class="fas fa-check"></i> Reserved Slot (Priority Queue)</li>
-                    <li><i class="fas fa-check"></i> Custom In-game Chat Tag</li>
-                    <li><i class="fas fa-check"></i> VIP Only Voice Channels</li>
-                </ul>
-                <button class="btn btn-primary" style="width: 100%;" onclick="showToast('Support portal opening soon!', 'fa-shopping-cart')">Get VIP Tier</button>
-            </div>
-
-            <div class="card">
-                <h3>Frost Legend</h3>
-                <div class="price-tag">$15 <span>/ month</span></div>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> All VIP Supporter Perks</li>
-                    <li><i class="fas fa-check"></i> Custom Legend Role Badge</li>
-                    <li><i class="fas fa-check"></i> Direct Admin Access Support</li>
-                </ul>
-                <button class="btn btn-outline" style="width: 100%;" onclick="showToast('Support portal opening soon!', 'fa-shopping-cart')">Go Legend</button>
-            </div>
-        </div>
-    </section>
-
-    <div class="modal-overlay" id="trailerModal">
+    <div class="modal-overlay" id="trailerModal" style="display: none;">
         <div class="modal-content">
             <span class="modal-close" onclick="closeTrailerModal()">&times;</span>
             <h3 style="margin-bottom: 1rem;"><i class="fas fa-play-circle"></i> Community Trailer</h3>
