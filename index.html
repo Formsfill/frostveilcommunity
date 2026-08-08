@@ -1508,6 +1508,26 @@
                 document.getElementById('secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
             }
         }, 1000);
+
+
+
+                // Modals Logic (Fixed with correct video ID placeholders)
+        function openCombinedModal() {
+            // Replace YOUR_TRAILER_ID with your actual trailer YouTube ID (e.g., dQw4w9WgXcQ)
+            document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/YOUR_TRAILER_ID?autoplay=1&enablejsapi=1";
+            
+            // Replace YOUR_VIDEO_ID with your actual community video YouTube ID
+            document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1&enablejsapi=1";
+            
+            document.getElementById('combinedModal').style.display = 'flex';
+        }
+
+        function closeCombinedModal() {
+            document.getElementById('combinedTrailerFrame').src = "";
+            document.getElementById('combinedVideoFrame').src = "";
+            document.getElementById('combinedModal').style.display = 'none';
+        }
+
     </script>
 </body>
 </html>
