@@ -1,720 +1,978 @@
-<!DOCTYPE html>
+give full working code <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community of Frostveil | Official Esports & Gaming Hub</title>
-    <meta name="description" content="The official website and central hub for the Community of Frostveil gaming community.">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* CSS Variables for Dynamic Gaming Themes */
-        :root {
-            --bg-dark: #0a0e17;
-            --bg-card: #151c2b;
-            --accent-blue: #2563eb;
-            --accent-cyan: #06b6d4;
-            --accent-green: #10b981;
-            --accent-gold: #eab308;
-            --text-light: #f8fafc;
-            --text-muted: #94a3b8;
-            --font-heading: 'Orbitron', sans-serif;
-            --font-body: 'Rajdhani', sans-serif;
-        }
-
-        /* Base Resets */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            font-family: var(--font-body);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3, h4 {
-            font-family: var(--font-heading);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--text-light);
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: var(--accent-cyan);
-        }
-
-        /* Top Announcement Bar */
-        .announcement-bar {
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
-            color: #fff;
-            padding: 0.6rem 1rem;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            position: relative;
-            z-index: 2002;
-        }
-
-        .announcement-bar .close-announcement {
-            cursor: pointer;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            transition: background 0.2s;
-        }
-
-        .announcement-bar .close-announcement:hover {
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        /* Neon Scroll Progress Bar */
-        .scroll-progress-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: transparent;
-            z-index: 2001;
-        }
-
-        .scroll-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
-            width: 0%;
-            box-shadow: 0 0 10px var(--accent-cyan);
-            transition: width 0.1s ease-out;
-        }
-
-        /* Navigation */
-        header {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 14, 23, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
-
-        .menu-btn {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--accent-cyan);
-        }
-
-        /* Theme Switcher */
-        .theme-switcher {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            background: var(--bg-card);
-            padding: 0.3rem 0.6rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .theme-dot {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .theme-dot:hover {
-            transform: scale(1.3);
-        }
-
-        .dot-cyan { background: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
-        .dot-red { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
-        .dot-green { background: #10b981; box-shadow: 0 0 6px #10b981; }
-        .dot-purple { background: #a855f7; box-shadow: 0 0 6px #a855f7; }
-
-        /* Buttons */
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            font-family: var(--font-heading);
-            font-weight: 700;
-            text-transform: uppercase;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            text-align: center;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, var(--accent-blue), var(--accent-cyan));
-            color: #fff;
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 0 25px rgba(6, 182, 212, 0.8);
-            transform: translateY(-2px);
-            color: #fff;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--accent-cyan);
-            color: var(--accent-cyan);
-        }
-
-        .btn-outline:hover {
-            background: var(--accent-cyan);
-            color: var(--bg-dark);
-        }
-
-        /* Sections */
-        section {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: var(--accent-cyan);
-            text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
-        }
-
-        /* Hero */
-        #hero {
-            height: 90vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background: radial-gradient(circle at center, #1a233a 0%, var(--bg-dark) 100%);
-            max-width: 100%;
-        }
-
-        .hero-content h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #fff, var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-content p {
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-btns {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Grid & Cards */
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 2rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-align: center;
-            position: relative;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            border-color: rgba(6, 182, 212, 0.3);
-        }
-
-        .card i.card-icon {
-            font-size: 3rem;
-            color: var(--accent-blue);
-            margin-bottom: 1rem;
-        }
-
-        .card h3 {
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        /* Badges */
-        .status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
-        }
-
-        /* VIP Cards */
-        .card-popular {
-            border: 2px solid var(--accent-cyan) !important;
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -12px;
-            right: 50%;
-            transform: translateX(50%);
-            background: var(--accent-cyan);
-            color: var(--bg-dark);
-            font-weight: bold;
-            font-size: 0.75rem;
-            padding: 0.2rem 0.8rem;
-            border-radius: 12px;
-            text-transform: uppercase;
-        }
-
-        .price-tag {
-            font-family: var(--font-heading);
-            font-size: 2.5rem;
-            color: #fff;
-            margin: 1rem 0;
-        }
-
-        .price-tag span {
-            font-size: 1rem;
-            color: var(--text-muted);
-        }
-
-        .feature-list {
-            list-style: none;
-            text-align: left;
-            margin: 1.5rem 0;
-        }
-
-        .feature-list li {
-            padding: 0.5rem 0;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .feature-list li i {
-            font-size: 1rem;
-            color: var(--accent-green);
-            margin-right: 0.5rem;
-        }
-
-        /* Tournament Featured Section */
-        .tournament-hero-card {
-            background: linear-gradient(135deg, rgba(21, 28, 43, 0.95), rgba(6, 182, 212, 0.15));
-            border: 2px solid var(--accent-cyan);
-            border-radius: 12px;
-            padding: 2.5rem;
-            margin-bottom: 3rem;
-            box-shadow: 0 0 25px rgba(6, 182, 212, 0.2);
-        }
-
-        .tourney-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            background: var(--bg-dark);
-            padding: 1.25rem;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            margin: 1.5rem 0;
-        }
-
-        .tourney-detail-val {
-            color: var(--accent-cyan);
-            font-family: var(--font-heading);
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-
-        /* Leaderboard */
-        .leaderboard-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--bg-card);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .leaderboard-table th, .leaderboard-table td {
-            padding: 1rem 1.5rem;
-            text-align: left;
-        }
-
-        .leaderboard-table th {
-            background: rgba(6, 182, 212, 0.1);
-            color: var(--accent-cyan);
-            font-family: var(--font-heading);
-        }
-
-        .leaderboard-table tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        /* Modals */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.88);
-            backdrop-filter: blur(8px);
-            z-index: 3000;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .modal-content {
-            background: var(--bg-card);
-            border: 1px solid var(--accent-cyan);
-            border-radius: 12px;
-            padding: 2rem;
-            max-width: 650px;
-            width: 100%;
-            position: relative;
-            box-shadow: 0 0 35px rgba(6, 182, 212, 0.3);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 2rem;
-            color: #fff;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .modal-close:hover {
-            color: var(--accent-cyan);
-        }
-
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 6px;
-            margin-top: 1rem;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        /* Toast Notifications */
-        #toast-container {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .toast {
-            background: var(--bg-card);
-            border-left: 4px solid var(--accent-cyan);
-            color: var(--text-light);
-            padding: 1rem 1.2rem;
-            border-radius: 6px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            min-width: 280px;
-        }
-
-        /* Game Card Image Styling */
-        .game-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--bg-card);
-            padding: 3rem 2rem;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .social-links a {
-            font-size: 1.5rem;
-            color: var(--text-muted);
-        }
-
-        .social-links a:hover {
-            color: var(--accent-cyan);
-        }
-
-        /* Responsive Breakpoints */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background: var(--bg-card);
-                padding: 2rem;
-                text-align: center;
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .menu-btn {
-                display: block;
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community of Frostveil | Official Esports & Gaming Hub</title>
+    <meta name="description" content="The official website and central hub for the Community of Frostveil gaming community.">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Variables for Dynamic Gaming Themes */
+        :root {
+            --bg-dark: #0a0e17;
+            --bg-card: #151c2b;
+            --accent-blue: #2563eb;
+            --accent-cyan: #06b6d4;
+            --accent-green: #10b981;
+            --accent-gold: #eab308;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --font-heading: 'Orbitron', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+        }
+
+        /* Base Resets */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Top Announcement Bar */
+        .announcement-bar {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            padding: 0.6rem 1rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 2002;
+        }
+
+        .announcement-bar .close-announcement {
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: background 0.2s;
+        }
+
+        .announcement-bar .close-announcement:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Neon Scroll Progress Bar */
+        .scroll-progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 2001;
+        }
+
+        .scroll-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            width: 0%;
+            box-shadow: 0 0 10px var(--accent-cyan);
+            transition: width 0.1s ease-out;
+        }
+
+        /* Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 23, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--accent-cyan);
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            background: var(--bg-card);
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .theme-dot:hover {
+            transform: scale(1.3);
+        }
+
+        .dot-cyan { background: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
+        .dot-red { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+        .dot-green { background: #10b981; box-shadow: 0 0 6px #10b981; }
+        .dot-purple { background: #a855f7; box-shadow: 0 0 6px #a855f7; }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.8);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+        }
+
+        /* Hero */
+        #hero {
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #1a233a 0%, var(--bg-dark) 100%);
+            max-width: 100%;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Grid & Cards */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .card i.card-icon {
+            font-size: 3rem;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+
+        /* VIP Cards */
+        .card-popular {
+            border: 2px solid var(--accent-cyan) !important;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            right: 50%;
+            transform: translateX(50%);
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            font-weight: bold;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .price-tag {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: #fff;
+            margin: 1rem 0;
+        }
+
+        .price-tag span {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .feature-list {
+            list-style: none;
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .feature-list li i {
+            font-size: 1rem;
+            color: var(--accent-green);
+            margin-right: 0.5rem;
+        }
+
+        /* Tournament Featured Section */
+        .tournament-hero-card {
+            background: linear-gradient(135deg, rgba(21, 28, 43, 0.95), rgba(6, 182, 212, 0.15));
+            border: 2px solid var(--accent-cyan);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.2);
+        }
+
+        .tourney-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            background: var(--bg-dark);
+            padding: 1.25rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin: 1.5rem 0;
+        }
+
+        .tourney-detail-val {
+            color: var(--accent-cyan);
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        /* Live Dynamic ID Badge */
+        .live-id-badge {
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        /* Timer Grid */
+        .countdown-card {
+            background: var(--bg-card);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+        }
+
+        .timer-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .timer-box {
+            background: var(--bg-dark);
+            padding: 1rem;
+            border-radius: 6px;
+            min-width: 80px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .timer-number {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            color: var(--accent-cyan);
+            display: block;
+        }
+
+        .timer-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Leaderboard */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .leaderboard-table th, .leaderboard-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+        }
+
+        .leaderboard-table th {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--accent-cyan);
+            font-family: var(--font-heading);
+        }
+
+        .leaderboard-table tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .rank-badge {
+            font-weight: bold;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+        }
+
+        .rank-1 { background: #eab308; color: #000; }
+        .rank-2 { background: #94a3b8; color: #000; }
+        .rank-3 { background: #b45309; color: #fff; }
+
+        /* FAQ Accordion */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.2rem;
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-light);
+            transition: background 0.2s;
+        }
+
+        .faq-question:hover {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 1.2rem;
+            color: var(--text-muted);
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 1rem 1.2rem;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+            color: var(--accent-cyan);
+        }
+
+        /* Form Controls */
+        .contact-form, .modal-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 6px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(8px);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 650px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 0 35px rgba(6, 182, 212, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-cyan);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Voice Modal Items */
+        .voice-channel-item {
+            background: var(--bg-dark);
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
+            margin-top: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            border-left: 4px solid var(--accent-cyan);
+            color: var(--text-light);
+            padding: 1rem 1.2rem;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            min-width: 280px;
+            animation: toastIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+
+        @keyframes toastIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes toastOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Back to Top Floating Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+            z-index: 2000;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        /* Game Card Image Styling */
+        .game-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .social-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--bg-card);
+                padding: 2rem;
+                text-align: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .timer-grid {
+                gap: 0.5rem;
+            }
+
+            .timer-box {
+                min-width: 60px;
+                padding: 0.5rem;
+            }
+
+            .timer-number {
+                font-size: 1.5rem;
+            }
+
+            .form-grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="announcement-bar" id="announcementBar">
-        <span>⚡ <strong>TOURNAMENT REGISTRATION OPEN:</strong> Frostveil eFootball Championship is live!</span>
-        <span class="close-announcement" onclick="closeAnnouncement()"><i class="fas fa-times"></i></span>
-    </div>
+    <div class="announcement-bar" id="announcementBar">
+        <span>⚡ <strong>TOURNAMENT REGISTRATION OPEN:</strong> Frostveil eFootball Championship is live!</span>
+        <span class="close-announcement" onclick="closeAnnouncement()"><i class="fas fa-times"></i></span>
+    </div>
 
-    <div class="scroll-progress-container">
-        <div class="scroll-progress-bar" id="progressBar"></div>
-    </div>
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar" id="progressBar"></div>
+    </div>
 
-    <header>
-        <div class="nav-container">
-            <div class="logo"><i class="fas fa-bolt"></i> FROSTVEIL</div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#hero">Home</a></li>
-                <li><a href="#tournaments">Tournaments</a></li>
-                <li><a href="#status">Status</a></li>
-                <li><a href="#games">Games</a></li>
-                <li><a href="#vip">VIP Perks</a></li>
-                <li><a href="#leaderboard">Leaderboard</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li>
-                    <div class="theme-switcher">
-                        <div class="theme-dot dot-cyan" onclick="setTheme('cyan')" title="Ice Cyan"></div>
-                        <div class="theme-dot dot-red" onclick="setTheme('red')" title="Inferno Red"></div>
-                        <div class="theme-dot dot-green" onclick="setTheme('green')" title="Toxic Green"></div>
-                        <div class="theme-dot dot-purple" onclick="setTheme('purple')" title="Void Purple"></div>
-                    </div>
-                </li>
-            </ul>
-            <div class="menu-btn" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </div>
-        </div>
-    </header>
+    <header>
+        <div class="nav-container">
+            <div class="logo"><i class="fas fa-bolt"></i> FROSTVEIL</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#tournaments">Tournaments</a></li>
+                <li><a href="#status">Status</a></li>
+                <li><a href="#games">Games</a></li>
+                <li><a href="#vip">VIP Perks</a></li>
+                <li><a href="#leaderboard">Leaderboard</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li>
+                    <div class="theme-switcher">
+                        <div class="theme-dot dot-cyan" onclick="setTheme('cyan')" title="Ice Cyan"></div>
+                        <div class="theme-dot dot-red" onclick="setTheme('red')" title="Inferno Red"></div>
+                        <div class="theme-dot dot-green" onclick="setTheme('green')" title="Toxic Green"></div>
+                        <div class="theme-dot dot-purple" onclick="setTheme('purple')" title="Void Purple"></div>
+                    </div>
+                </li>
+            </ul>
+            <div class="menu-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
 
-    <section id="hero">
-        <div class="hero-content">
-            <h1>Community of Frostveil</h1>
-            <p>Welcome to the ultimate gaming hub. Forge alliances, conquer leaderboards, and enter official esports tournaments.</p>
-            <div class="hero-btns">
-                <a href="https://discord.gg/ZUfZb4UYt3" target="_blank" class="btn btn-primary"><i class="fab fa-discord"></i> Join Discord</a>
-                <button class="btn btn-outline" onclick="openTrailerModal()">
-                    <i class="fas fa-play"></i> Community Trailer
-                </button>
-            </div>
-        </div>
-    </section>
+    <section id="hero">
+        <div class="hero-content">
+            <h1>Community of Frostveil</h1>
+            <p>Welcome to the ultimate gaming hub. Forge alliances, conquer leaderboards, and enter official esports tournaments.</p>
+            <div class="hero-btns">
+                <a href="https://discord.gg/ZUfZb4UYt3" target="_blank" class="btn btn-primary"><i class="fab fa-discord"></i> Join Discord</a>
+<button type="button" class="btn btn-outline" data-bs-toggle="modal" data-bs-target="#trailerModal">
+    <i class="fas fa-play"></i> Community Trailer
+</button>
+                
+<button class="btn btn-outline" onclick="openTrailerModal()">
+    <i class="fas fa-play"></i> Community Trailer
+</button>
+            </div>
+        </div>
+    </section>
 
-    <section id="tournaments">
-        <h2 class="section-title"><i class="fas fa-trophy"></i> Active Esports Tournament</h2>
-        <div class="tournament-hero-card">
-            <span class="status-badge"><i class="fas fa-signal"></i> REGISTRATION LIVE</span>
-            <h3 style="font-size: 2rem; color: #fff; margin-bottom: 0.5rem;">Frostveil Championship 2026</h3>
-            <p style="color: var(--text-muted);">Register your entry to dynamically generate your verified Tournament Pass ticket and submit your squad entry to Discord.</p>
+    <section id="tournaments">
+        <h2 class="section-title"><i class="fas fa-trophy"></i> Active Esports Tournament</h2>
 
-            <div class="tourney-grid">
-                <div>
-                    <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Live Registration ID</span>
-                    <div class="tourney-detail-val" id="cardTourneyIdDisplay">#EFB-2026-FROST-LIVE</div>
-                </div>
-                <div>
-                    <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Game Title</span>
-                    <div class="tourney-detail-val">eFootball 2026</div>
-                </div>
-                <div>
-                    <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Format</span>
-                    <div class="tourney-detail-val">1v1 Knockout Bracket</div>
-                </div>
-                <div>
-                    <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Prize Pool</span>
-                    <div class="tourney-detail-val">VIP Rank + Roles</div>
-                </div>
-            </div>
+        <div class="tournament-hero-card">
+            <span class="status-badge"><i class="fas fa-signal"></i> REGISTRATION LIVE</span>
+            <h3 style="font-size: 2rem; color: #fff; margin-bottom: 0.5rem;">Frostveil Championship 2026</h3>
+            <p style="color: var(--text-muted);">Register your entry to dynamically generate your verified Tournament Pass ticket and submit your squad entry to Discord.</p>
 
-            <button class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;" onclick="showToast('Tournament registration form active', 'fa-ticket-alt')">
-                <i class="fas fa-ticket-alt"></i> Register For Tournament & Generate Ticket
-            </button>
-        </div>
-    </section>
+            <div class="tourney-grid">
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Live Registration ID</span>
+                    <div class="tourney-detail-val" id="cardTourneyIdDisplay">#EFB-2026-FROST-LIVE</div>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Game Title</span>
+                    <div class="tourney-detail-val">eFootball 2026</div>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Format</span>
+                    <div class="tourney-detail-val">1v1 Knockout Bracket</div>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Prize Pool</span>
+                    <div class="tourney-detail-val">VIP Rank + Roles</div>
+                </div>
+            </div>
 
-    <div class="modal-overlay" id="trailerModal" style="display: none;">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeTrailerModal()">&times;</span>
-            <h3 style="margin-bottom: 1rem;"><i class="fas fa-play-circle"></i> Community Trailer</h3>
-            <div class="video-container">
-                <iframe id="trailerIframe" src="" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
+            <button class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;" onclick="openTournamentModal()">
+                <i class="fas fa-ticket-alt"></i> Register For Tournament & Generate Ticket
+            </button>
+        </div>
+    </section>
 
-    <footer>
-        <p>&copy; 2026 Community of Frostveil. All rights reserved.</p>
-        <div class="social-links">
-            <a href="https://discord.gg/ZUfZb4UYt3" target="_blank"><i class="fab fa-discord"></i></a>
-            <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
-            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-        </div>
-    </footer>
+    <section id="status">
+        <h2 class="section-title">Live Server Status</h2>
+        <div class="grid-3">
+            <div class="card">
+                <span class="status-badge" id="mc-status-badge"><i class="fas fa-circle"></i> CHECKING...</span>
+                <i class="fas fa-cube card-icon" style="color: var(--accent-cyan); display: block;"></i>
+                <h3>Minecraft Server</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">mc.frostveil.com</p>
+                <div style="margin-top: 1rem; font-family: var(--font-heading); font-size: 1.2rem;">
+                    Players: <span id="mc-player-count" style="color: var(--accent-cyan);">-- / --</span>
+                </div>
+            </div>
 
-    <div id="toast-container"></div>
+            <div class="card">
+                <span class="status-badge" id="discord-status-badge"><i class="fas fa-circle"></i> ONLINE</span>
+                <i class="fab fa-discord card-icon" style="color: var(--accent-blue); display: block;"></i>
+                <h3>Discord Server</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Voice & Text Hub</p>
+                <div style="margin-top: 0.5rem; font-family: var(--font-heading); font-size: 1.2rem;">
+                    Active Members: <span id="discord-member-count" style="color: var(--accent-cyan);">-- Online</span>
+                </div>
+                <button onclick="openVoiceModal()" class="btn btn-outline" style="margin-top: 1rem; width: 100%; font-size: 0.85rem;">
+                    <i class="fas fa-headphones"></i> View Active Voice Hubs
+                </button>
+            </div>
 
-    <script>
-        // Scroll Progress Bar
-        window.addEventListener('scroll', () => {
-            const winScroll = document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('progressBar').style.width = scrolled + '%';
-        });
+            <div class="card">
+                <span class="status-badge"><i class="fas fa-circle"></i> OPEN</span>
+                <i class="fas fa-gamepad card-icon" style="color: var(--accent-cyan); display: block;"></i>
+                <h3>Custom Lobbies</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Roblox & eFootball</p>
+                <div style="margin-top: 1rem; font-family: var(--font-heading); font-size: 1.2rem;">
+                    Status: <span style="color: var(--accent-green);">Hosting Active</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // Toggle Mobile Menu
-        function toggleMenu() {
-            document.getElementById('navLinks').classList.toggle('active');
-        }
+    <section id="games">
+        <h2 class="section-title">Supported Games</h2>
+        <div class="grid-3">
+            <div class="card game-card">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Roblox">
+                <h3>Roblox</h3>
+                <p>Join our official Frostveil Roblox groups, participate in custom game nights, and build with us.</p>
+                <a href="https://www.roblox.com" target="_blank" class="btn btn-outline" style="width: 100%; margin-top: 1rem;"><i class="fas fa-external-link-alt"></i> Play Game</a>
+            </div>
 
-        // Announcement Bar Close
-        function closeAnnouncement() {
-            document.getElementById('announcementBar').style.display = 'none';
-        }
+            <div class="card game-card">
+                <img src="https://images.unsplash.com/photo-1511886929837-354d827aae26?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="eFootball">
+                <h3>eFootball 2026</h3>
+                <p>Compete in the Frostveil Pro League. Show off your tactical genius and take your team to the top.</p>
+                <button onclick="copyToClipboard('FV-LEAGUE-2026', this)" class="btn btn-outline" style="width: 100%; margin-top: 1rem;"><i class="fas fa-copy"></i> Copy League ID</button>
+            </div>
 
-        // Trailer Modal Functions
-        function openTrailerModal() {
-            const modal = document.getElementById('trailerModal');
-            const iframe = document.getElementById('trailerIframe');
-            iframe.src = "https://www.youtube.com/embed/ZCM4ZONooq8?si=xEL56lTu-UxBkKZC";
-            modal.style.display = 'flex';
-        }
+            <div class="card game-card">
+                <img src="https://images.unsplash.com/photo-1607513746994-51f730a44832?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Minecraft">
+                <h3>Minecraft</h3>
+                <p>Survival, Creative, and Minigames. Connect to `mc.frostveil.com` and start your adventure today.</p>
+                <button onclick="copyToClipboard('mc.frostveil.com', this)" class="btn btn-outline" style="width: 100%; margin-top: 1rem;"><i class="fas fa-copy"></i> Copy Server IP</button>
+            </div>
+        </div>
+    </section>
 
-        function closeTrailerModal() {
-            const modal = document.getElementById('trailerModal');
-            const iframe = document.getElementById('trailerIframe');
-            iframe.src = ""; // Stop video playback when closed
-            modal.style.display = 'none';
-        }
+    <section id="vip">
+        <h2 class="section-title">Community VIP Tiers</h2>
+        <div class="grid-3">
+            <div class="card">
+                <h3>Member</h3>
+                <div class="price-tag">$0 <span>/ forever</span></div>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Standard Discord Role</li>
+                    <li><i class="fas fa-check"></i> Access to Public Game Servers</li>
+                    <li><i class="fas fa-check"></i> Tournament Participation</li>
+                </ul>
+                <a href="https://discord.gg/ZUfZb4UYt3" target="_blank" class="btn btn-outline" style="width: 100%;">Join Free</a>
+            </div>
 
-        // Toast Notification System
-        function showToast(message, icon = 'fa-info-circle') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerHTML = `<i class="fas ${icon}" style="color: var(--accent-cyan); font-size: 1.2rem;"></i><span>${message}</span>`;
-            container.appendChild(toast);
+            <div class="card card-popular">
+                <div class="popular-badge">Most Popular</div>
+                <h3>VIP Supporter</h3>
+                <div class="price-tag">$5 <span>/ month</span></div>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Exclusive VIP Discord Role</li>
+                    <li><i class="fas fa-check"></i> Reserved Slot (Priority Queue)</li>
+                    <li><i class="fas fa-check"></i> Custom In-game Chat Tag</li>
+                    <li><i class="fas fa-check"></i> VIP Only Voice Channels</li>
+                </ul>
+                <button class="btn btn-primary" style="width: 100%;" onclick="showToast('Support portal opening soon!', 'fa-shopping-cart')">Get VIP Tier</button>
+            </div>
 
-            setTimeout(() => {
-                toast.style.animation = 'toastOut 0.3s forwards';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-    </script>
-</body>
-</html>
+            <div class="card">
+                <h3>Frost Legend</h3>
+                <div class
