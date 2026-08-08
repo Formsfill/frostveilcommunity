@@ -923,6 +923,50 @@
         </div>
     </section>
 
+    <div class="modal-overlay" id="adminPanelModal">
+        <div class="modal-content" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
+            <span class="modal-close" onclick="closeAdminPanel()">&times;</span>
+            <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;"><i class="fas fa-user-shield"></i> Frostveil Admin Dashboard</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Manage live community metrics, calendar listings, and FAQs instantly.</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div style="background: var(--bg-dark); padding: 1.2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+                    <h4 style="font-size: 1rem; margin-bottom: 0.5rem; color: #fff;"><i class="fas fa-users" style="color: var(--accent-cyan);"></i> Update Visitor Counter</h4>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="number" id="adminVisitorInput" class="form-control" placeholder="New visitor total">
+                        <button class="btn btn-primary" onclick="updateVisitorCount()">Set Count</button>
+                    </div>
+                </div>
+
+                <div style="background: var(--bg-dark); padding: 1.2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+                    <h4 style="font-size: 1rem; margin-bottom: 0.5rem; color: #fff;"><i class="fas fa-clock" style="color: var(--accent-cyan);"></i> Update Countdown Timer Date</h4>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="datetime-local" id="adminCountdownInput" class="form-control">
+                        <button class="btn btn-primary" onclick="updateCountdownTarget()">Update Timer</button>
+                    </div>
+                </div>
+
+                <div style="background: var(--bg-dark); padding: 1.2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+                    <h4 style="font-size: 1rem; margin-bottom: 0.5rem; color: #fff;"><i class="fas fa-calendar-plus" style="color: var(--accent-cyan);"></i> Add New Event to Calendar</h4>
+                    <input type="text" id="adminEventTitle" class="form-control" placeholder="Event Title (e.g. Community Game Night)" style="margin-bottom: 0.5rem;">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <input type="text" id="adminEventMonth" class="form-control" placeholder="Month (e.g. SEP)">
+                        <input type="number" id="adminEventDay" class="form-control" placeholder="Day (e.g. 05)">
+                    </div>
+                    <textarea id="adminEventDesc" class="form-control" placeholder="Event Description..." rows="2" style="margin-bottom: 0.5rem;"></textarea>
+                    <button class="btn btn-primary" onclick="addNewCalendarEvent()" style="width: 100%;">Add Event</button>
+                </div>
+
+                <div style="background: var(--bg-dark); padding: 1.2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+                    <h4 style="font-size: 1rem; margin-bottom: 0.5rem; color: #fff;"><i class="fas fa-question-circle" style="color: var(--accent-cyan);"></i> Add New FAQ Item</h4>
+                    <input type="text" id="adminFaqQ" class="form-control" placeholder="Question..." style="margin-bottom: 0.5rem;">
+                    <textarea id="adminFaqA" class="form-control" placeholder="Answer..." rows="2" style="margin-bottom: 0.5rem;"></textarea>
+                    <button class="btn btn-primary" onclick="addNewFAQItem()" style="width: 100%;">Add FAQ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="combinedModal">
         <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
             <span class="modal-close" onclick="closeCombinedModal()">&times;</span>
@@ -1090,7 +1134,7 @@
                 <button class="btn btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1rem;" onclick="showToast('Syncing with global events feed...', 'fa-sync')"><i class="fas fa-sync-alt"></i> Refresh Feed</button>
             </div>
 
-            <div class="event-list">
+            <div class="event-list" id="eventListContainer">
                 <div class="event-item">
                     <div class="event-date-box">
                         <span class="event-month">AUG</span>
@@ -1357,6 +1401,127 @@
     </footer>
 
     <script>
+        // Check URL Parameters on Load to Open Admin Panel (?admin=frostveil)
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'frostveil') {
+                setTimeout(() => {
+                    document.getElementById('adminPanelModal').style.display = 'flex';
+                    showToast("Admin access granted via URL key!", "fa-shield-alt");
+                }, 500);
+            }
+
+            // Load saved visitor counter
+            let visits = localStorage.getItem('frostveil_visits');
+            if (!visits) {
+                visits = 48291;
+                localStorage.setItem('frostveil_visits', visits);
+            }
+            document.getElementById('visitorCounter').innerText = String(visits).padStart(6, '0');
+
+            // Load saved custom countdown target if present
+            const savedCountdown = localStorage.getItem('frostveil_countdown');
+            if (savedCountdown) {
+                targetDate = parseInt(savedCountdown);
+            }
+
+            // Load saved calendar events if present
+            const savedEvents = localStorage.getItem('frostveil_events');
+            if (savedEvents) {
+                document.getElementById('eventListContainer').innerHTML = savedEvents;
+            }
+
+            // Load saved FAQs if present
+            const savedFaqs = localStorage.getItem('frostveil_faqs');
+            if (savedFaqs) {
+                document.getElementById('faqContainer').innerHTML = savedFaqs;
+            }
+        });
+
+        function closeAdminPanel() {
+            document.getElementById('adminPanelModal').style.display = 'none';
+        }
+
+        // Admin Actions
+        function updateVisitorCount() {
+            const newVal = document.getElementById('adminVisitorInput').value;
+            if (newVal) {
+                localStorage.setItem('frostveil_visits', newVal);
+                document.getElementById('visitorCounter').innerText = String(newVal).padStart(6, '0');
+                showToast("Visitor counter updated successfully!", "fa-check");
+            }
+        }
+
+        let targetDate = new Date().getTime() + (4 * 24 * 60 * 60 * 1000);
+        function updateCountdownTarget() {
+            const inputVal = document.getElementById('adminCountdownInput').value;
+            if (inputVal) {
+                const newTime = new Date(inputVal).getTime();
+                localStorage.setItem('frostveil_countdown', newTime);
+                targetDate = newTime;
+                showToast("Countdown target updated!", "fa-clock");
+            }
+        }
+
+        function addNewCalendarEvent() {
+            const title = document.getElementById('adminEventTitle').value;
+            const month = document.getElementById('adminEventMonth').value.toUpperCase();
+            const day = document.getElementById('adminEventDay').value;
+            const desc = document.getElementById('adminEventDesc').value;
+
+            if (title && month && day && desc) {
+                const container = document.getElementById('eventListContainer');
+                const newEvt = document.createElement('div');
+                newEvt.className = 'event-item';
+                newEvt.innerHTML = `
+                    <div class="event-date-box">
+                        <span class="event-month">${month}</span>
+                        <span class="event-day">${day}</span>
+                    </div>
+                    <div class="event-details">
+                        <h4>${title}</h4>
+                        <p>${desc}</p>
+                    </div>
+                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&details=${encodeURIComponent(desc)}" target="_blank" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fas fa-plus"></i> Add to Google Calendar</a>
+                `;
+                container.appendChild(newEvt);
+                localStorage.setItem('frostveil_events', container.innerHTML);
+                showToast("New event added to calendar!", "fa-calendar-plus");
+
+                document.getElementById('adminEventTitle').value = '';
+                document.getElementById('adminEventMonth').value = '';
+                document.getElementById('adminEventDay').value = '';
+                document.getElementById('adminEventDesc').value = '';
+            }
+        }
+
+        function addNewFAQItem() {
+            const q = document.getElementById('adminFaqQ').value;
+            const a = document.getElementById('adminFaqA').value;
+
+            if (q && a) {
+                const container = document.getElementById('faqContainer');
+                const newItem = document.createElement('div');
+                newItem.className = 'faq-item';
+                newItem.setAttribute('data-keywords', q.toLowerCase());
+                newItem.innerHTML = `
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        ${q}
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        ${a}
+                    </div>
+                `;
+                container.appendChild(newItem);
+                localStorage.setItem('frostveil_faqs', container.innerHTML);
+                showToast("New FAQ added to page!", "fa-question-circle");
+                
+                document.getElementById('adminFaqQ').value = '';
+                document.getElementById('adminFaqA').value = '';
+            }
+        }
+
         // Toggle Navigation Menu
         function toggleMenu() {
             const navLinks = document.getElementById('navLinks');
@@ -1571,18 +1736,6 @@
         }
         fetchMinecraftStatus();
 
-        // Visitor Counter Simulation (Increments slightly on load)
-        window.addEventListener('DOMContentLoaded', () => {
-            let visits = localStorage.getItem('frostveil_visits');
-            if (!visits) {
-                visits = 48291;
-            } else {
-                visits = parseInt(visits) + 1;
-            }
-            localStorage.setItem('frostveil_visits', visits);
-            document.getElementById('visitorCounter').innerText = String(visits).padStart(6, '0');
-        });
-
         // Enhanced Staff Application Submission Webhook
         async function submitStaffApp(e) {
             e.preventDefault();
@@ -1697,7 +1850,7 @@
                 avatar_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&h=100&fit=crop",
                 embeds: [{
                     title: `📩 Incoming Community Transmission`,
-                    description: `A new ticket or feedback submission has been logged on the main hub.`,
+                    description: `An inquiry or feedback submission has been logged.`,
                     color: 1085437,
                     fields: [
                         { name: "🏷️ Sender Tag", value: `\`${user}\``, inline: true },
@@ -1725,8 +1878,7 @@
             }
         }
 
-        // Event Countdown Timer
-        const targetDate = new Date().getTime() + (4 * 24 * 60 * 60 * 1000);
+        // Event Countdown Timer Loop
         setInterval(() => {
             const now = new Date().getTime();
             const diff = targetDate - now;
