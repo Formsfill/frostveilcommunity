@@ -132,7 +132,6 @@
             font-weight: 700;
             color: var(--accent-cyan);
             text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
-            cursor: pointer;
         }
 
         .nav-links {
@@ -405,7 +404,7 @@
             text-transform: uppercase;
         }
 
-        /* Leaderboard & Tables */
+        /* Leaderboard */
         .leaderboard-table {
             width: 100%;
             border-collapse: collapse;
@@ -633,9 +632,10 @@
             to { transform: translateX(100%); opacity: 0; }
         }
 
-        /* Floating Buttons (Back to Top & Mute Audio) */
-        .floating-btn {
+        /* Back to Top Floating Button */
+        .back-to-top {
             position: fixed;
+            bottom: 30px;
             left: 30px;
             width: 50px;
             height: 50px;
@@ -645,7 +645,7 @@
             color: var(--accent-cyan);
             font-size: 1.2rem;
             cursor: pointer;
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
@@ -653,20 +653,10 @@
             transition: transform 0.3s, background 0.3s;
         }
 
-        .floating-btn:hover {
+        .back-to-top:hover {
             transform: translateY(-5px);
             background: var(--accent-cyan);
             color: var(--bg-dark);
-        }
-
-        .back-to-top {
-            bottom: 30px;
-            display: none;
-        }
-
-        .audio-toggle {
-            bottom: 95px;
-            display: flex;
         }
 
         /* Game Card Image Styling */
@@ -676,11 +666,6 @@
             object-fit: cover;
             border-radius: 4px;
             margin-bottom: 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         /* Footer */
@@ -761,13 +746,12 @@
 
     <header>
         <div class="nav-container">
-            <div class="logo" onclick="triggerEasterEgg()">FROSTVEIL</div>
+            <div class="logo">FROSTVEIL</div>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#hero">Home</a></li>
                 <li><a href="#status">Status</a></li>
                 <li><a href="#games">Games</a></li>
                 <li><a href="#vip">VIP Perks</a></li>
-                <li><a href="#partners">Partners</a></li>
                 <li><a href="#leaderboard">Leaderboard</a></li>
                 <li><a href="#faq">FAQ</a></li>
                 <li><a href="#contact">Contact</a></li>
@@ -810,16 +794,6 @@
             <div class="video-container">
                 <iframe id="combinedVideoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="easterEggModal">
-        <div class="modal-content" style="text-align: center;">
-            <span class="modal-close" onclick="closeEasterEgg()">&times;</span>
-            <i class="fas fa-snowflake" style="font-size: 3rem; color: var(--accent-cyan); animation: spin 4s linear infinite;"></i>
-            <h3 style="color: var(--accent-cyan); margin-top: 1rem;">Frostveil Secret Easter Egg!</h3>
-            <p style="color: var(--text-muted); margin: 1rem 0;">You discovered the hidden frost crystal! Click the button below to claim your secret community bonus.</p>
-            <button class="btn btn-primary" onclick="claimEasterEgg()">Claim Reward</button>
         </div>
     </div>
 
@@ -928,48 +902,6 @@
         </div>
     </section>
 
-    <section id="vip-table" style="padding-top: 0;">
-        <h2 class="section-title">Tier Comparison Matrix</h2>
-        <div style="overflow-x: auto;">
-            <table class="leaderboard-table">
-                <thead>
-                    <tr>
-                        <th>Perk Features</th>
-                        <th>Member</th>
-                        <th>VIP Supporter</th>
-                        <th>Frost Legend</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Discord Role</strong></td>
-                        <td>Standard</td>
-                        <td style="color: var(--accent-cyan);">Exclusive</td>
-                        <td style="color: var(--accent-cyan);">Animated & Custom</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Server Priority Queue</strong></td>
-                        <td><i class="fas fa-times" style="color: #ef4444;"></i></td>
-                        <td><i class="fas fa-check" style="color: var(--accent-green);"></i></td>
-                        <td><i class="fas fa-check" style="color: var(--accent-green);"></i></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Custom Chat Tag</strong></td>
-                        <td><i class="fas fa-times" style="color: #ef4444;"></i></td>
-                        <td><i class="fas fa-check" style="color: var(--accent-green);"></i></td>
-                        <td><i class="fas fa-check" style="color: var(--accent-green);"></i></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Private Voice Channel</strong></td>
-                        <td><i class="fas fa-times" style="color: #ef4444;"></i></td>
-                        <td><i class="fas fa-times" style="color: #ef4444;"></i></td>
-                        <td><i class="fas fa-check" style="color: var(--accent-green);"></i></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
     <section id="news">
         <h2 class="section-title">News & Events</h2>
         
@@ -1001,30 +933,6 @@
                 <h3 style="margin-top: 0.5rem;">Staff Recruitment Open</h3>
                 <p>We are actively looking for new staff moderators for Roblox and Discord!</p>
                 <button class="btn btn-outline" style="margin-top: 1rem; width: 100%;" onclick="openStaffModal()">Apply for Staff</button>
-            </div>
-        </div>
-    </section>
-
-    <section id="partners">
-        <h2 class="section-title">Allied Communities</h2>
-        <div class="grid-3">
-            <div class="card" style="text-align: center;">
-                <i class="fas fa-shield-alt" style="font-size: 2.5rem; color: var(--accent-cyan); margin-bottom: 1rem;"></i>
-                <h3>Partner Server One</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">An elite tactical gaming community.</p>
-                <a href="#" target="_blank" class="btn btn-outline" style="width: 100%;">Visit Hub</a>
-            </div>
-            <div class="card" style="text-align: center;">
-                <i class="fas fa-meteor" style="font-size: 2.5rem; color: var(--accent-cyan); margin-bottom: 1rem;"></i>
-                <h3>Partner Server Two</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Survival builders and creative creators.</p>
-                <a href="#" target="_blank" class="btn btn-outline" style="width: 100%;">Visit Hub</a>
-            </div>
-            <div class="card" style="text-align: center;">
-                <i class="fas fa-dragon" style="font-size: 2.5rem; color: var(--accent-cyan); margin-bottom: 1rem;"></i>
-                <h3>Partner Server Three</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Competitive esports tournaments daily.</p>
-                <a href="#" target="_blank" class="btn btn-outline" style="width: 100%;">Visit Hub</a>
             </div>
         </div>
     </section>
@@ -1066,45 +974,6 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </section>
-
-    <section id="social-feed">
-        <h2 class="section-title">Community Feed</h2>
-        <div class="grid-3">
-            <div class="card" style="text-align: left;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
-                    <i class="fab fa-twitter" style="font-size: 1.5rem; color: var(--accent-cyan); margin: 0;"></i>
-                    <strong>@FrostveilHub</strong>
-                </div>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">Season 4 countdown has officially begun! Make sure your teams are registered for the weekend clash. ⚡❄️</p>
-                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">2 hours ago</div>
-            </div>
-            <div class="card" style="text-align: left;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
-                    <i class="fab fa-discord" style="font-size: 1.5rem; color: var(--accent-blue); margin: 0;"></i>
-                    <strong>Frostveil Announcements</strong>
-                </div>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">New custom minigames have been deployed to the Minecraft server lobby. Check them out now!</p>
-                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">Yesterday</div>
-            </div>
-            <div class="card" style="text-align: left;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
-                    <i class="fab fa-instagram" style="font-size: 1.5rem; color: #a855f7; margin: 0;"></i>
-                    <strong>@communityoffrostveil</strong>
-                </div>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">Check out these amazing build highlights shared by our community members this week! 📸✨</p>
-                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">3 days ago</div>
-            </div>
-        </div>
-    </section>
-
-    <section style="padding: 2rem 2rem; max-width: 1200px; margin: 0 auto;">
-        <div class="card" style="background: linear-gradient(135deg, var(--bg-card), rgba(6, 182, 212, 0.1)); border: 1px solid var(--accent-cyan); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem; padding: 2.5rem;">
-            <i class="fas fa-life-ring" style="font-size: 3rem; color: var(--accent-cyan);"></i>
-            <h3>Need Help or Want to Report a Player?</h3>
-            <p style="color: var(--text-muted); max-width: 600px;">Our staff team is available 24/7. Open a private support ticket or report incident directly via our official Discord server channels.</p>
-            <a href="https://discord.gg/ZUfZb4UYt3" target="_blank" class="btn btn-primary"><i class="fab fa-discord"></i> Open Discord Ticket</a>
         </div>
     </section>
 
@@ -1263,16 +1132,12 @@
 
     <div id="toast-container"></div>
 
-    <button class="floating-btn audio-toggle" id="audioToggleBtn" onclick="toggleAudioMute()" title="Toggle Sound Effects">
-        <i class="fas fa-volume-up" id="audioIcon"></i>
-    </button>
-
-    <button class="floating-btn back-to-top" id="backToTopBtn" onclick="scrollToTop()">
+    <button class="back-to-top" id="backToTopBtn" onclick="scrollToTop()">
         <i class="fas fa-arrow-up"></i>
     </button>
 
     <footer>
-        <div class="logo" style="margin-bottom: 1rem;" onclick="triggerEasterEgg()">FROSTVEIL</div>
+        <div class="logo" style="margin-bottom: 1rem;">FROSTVEIL</div>
         <p style="color: var(--text-muted);">The Ultimate Gaming Community Hub.</p>
         
         <div class="social-links">
@@ -1300,7 +1165,7 @@
             document.getElementById('announcementBar').style.display = 'none';
         }
 
-        // Color Theme Switcher with Persistence
+        // Color Theme Switcher
         const themes = {
             cyan: { cyan: '#06b6d4', blue: '#2563eb' },
             red: { cyan: '#ef4444', blue: '#dc2626' },
@@ -1311,25 +1176,14 @@
         function setTheme(themeKey) {
             document.documentElement.style.setProperty('--accent-cyan', themes[themeKey].cyan);
             document.documentElement.style.setProperty('--accent-blue', themes[themeKey].blue);
-            localStorage.setItem('frostveil_theme', themeKey);
             playClickSound();
             showToast(`Theme switched to ${themeKey.toUpperCase()}`, "fa-paint-brush");
         }
 
-        // Load saved theme on startup
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('frostveil_theme');
-            if (savedTheme && themes[savedTheme]) {
-                setTheme(savedTheme);
-            }
-        });
-
         // Audio Effects (Web Audio API Synth)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        let soundMuted = false;
-
+        
         function playSound(freq, duration) {
-            if (soundMuted) return;
             try {
                 if (audioCtx.state === 'suspended') audioCtx.resume();
                 const osc = audioCtx.createOscillator();
@@ -1352,19 +1206,6 @@
             elem.addEventListener('mouseenter', playHoverSound);
             elem.addEventListener('click', playClickSound);
         });
-
-        // Audio Mute Toggle Logic
-        function toggleAudioMute() {
-            soundMuted = !soundMuted;
-            const icon = document.getElementById('audioIcon');
-            if (soundMuted) {
-                icon.className = "fas fa-volume-mute";
-                showToast("Sound effects muted", "fa-volume-mute");
-            } else {
-                icon.className = "fas fa-volume-up";
-                showToast("Sound effects enabled", "fa-volume-up");
-            }
-        }
 
         // Toast Notification System
         function showToast(message, icon = "fa-info-circle") {
@@ -1419,10 +1260,11 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Modals Logic for Trailer & Video (Using your YouTube ID: ZCM4ZONooq8)
+        // Modals Logic
         function openCombinedModal() {
-            document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/ZCM4ZONooq8?autoplay=1&enablejsapi=1";
-            document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ZCM4ZONooq8?autoplay=1&enablejsapi=1";
+            // Replace TRAILER_VIDEO_ID_HERE and ANOTHER_VIDEO_ID_HERE with actual YouTube IDs
+            document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/TRAILER_VIDEO_ID_HERE?autoplay=1&enablejsapi=1";
+            document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ANOTHER_VIDEO_ID_HERE?autoplay=1&enablejsapi=1";
             document.getElementById('combinedModal').style.display = 'flex';
         }
 
@@ -1430,21 +1272,6 @@
             document.getElementById('combinedTrailerFrame').src = "";
             document.getElementById('combinedVideoFrame').src = "";
             document.getElementById('combinedModal').style.display = 'none';
-        }
-
-        // Easter Egg Logic
-        function triggerEasterEgg() {
-            document.getElementById('easterEggModal').style.display = 'flex';
-            playClickSound();
-        }
-
-        function closeEasterEgg() {
-            document.getElementById('easterEggModal').style.display = 'none';
-        }
-
-        function claimEasterEgg() {
-            showToast("Secret Easter Egg Claimed! +500 Frost XP", "fa-gift");
-            closeEasterEgg();
         }
 
         function openStaffModal() {
@@ -1669,8 +1496,8 @@
             }
         }
 
-        // Event Countdown Timer (Targeting a fixed future date)
-        const targetDate = new Date("September 1, 2026 20:00:00").getTime();
+        // Event Countdown Timer
+        const targetDate = new Date().getTime() + (4 * 24 * 60 * 60 * 1000);
         setInterval(() => {
             const now = new Date().getTime();
             const diff = targetDate - now;
@@ -1679,13 +1506,27 @@
                 document.getElementById('hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
                 document.getElementById('mins').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
                 document.getElementById('secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-            } else {
-                document.getElementById('days').innerText = "00";
-                document.getElementById('hours').innerText = "00";
-                document.getElementById('mins').innerText = "00";
-                document.getElementById('secs').innerText = "00";
             }
         }, 1000);
+
+
+
+                // Modals Logic (Fixed with correct video ID placeholders)
+                // Modals Logic (Fixed with your specific YouTube video ID)
+        function openCombinedModal() {
+            // Both frames will now play your video using ID: ZCM4ZONooq8
+            document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/ZCM4ZONooq8?autoplay=1&enablejsapi=1";
+            document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ZCM4ZONooq8?autoplay=1&enablejsapi=1";
+            
+            document.getElementById('combinedModal').style.display = 'flex';
+        }
+
+        function closeCombinedModal() {
+            document.getElementById('combinedTrailerFrame').src = "";
+            document.getElementById('combinedVideoFrame').src = "";
+            document.getElementById('combinedModal').style.display = 'none';
+        }
+
     </script>
 </body>
 </html>
