@@ -1301,12 +1301,6 @@
             const exp = document.getElementById('staffExperience').value;
             const btn = document.getElementById('staffSubmitBtn');
 
-            if (WEBHOOK_URL === "https://discord.com/api/webhooks/1535278886412226661/SmdAa_fMVndHM1WLZUZ4xwiAikVy3f8J7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7) {
-                showToast("Staff Application Sent!", "fa-paper-plane");
-                closeStaffModal();
-                return;
-            }
-
             btn.disabled = true;
             btn.innerText = "Submitting...";
 
@@ -1349,12 +1343,6 @@
             const user = document.getElementById('username').value;
             const topic = document.getElementById('topic').value;
             const msg = document.getElementById('message').value;
-
-            if (WEBHOOK_URL === "https://discord.com/api/webhooks/1535278886412226661/SmdAa_fMVndHM1WLZUZ4xwiAikVy3f8J7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7) {
-                showToast("Message Sent Successfully!", "fa-envelope");
-                document.getElementById('contactForm').reset();
-                return;
-            }
 
             try {
                 await fetch(WEBHOOK_URL, {
