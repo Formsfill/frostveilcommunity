@@ -545,6 +545,12 @@
             width: 100%;
             position: relative;
             box-shadow: 0 0 25px rgba(6, 182, 212, 0.3);
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .modal-close {
@@ -1024,28 +1030,35 @@
     <div class="modal-overlay" id="staffModal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeStaffModal()">&times;</span>
-            <h3 style="color: var(--accent-cyan); text-align: center;">Staff Application Form</h3>
-            <p style="color: var(--text-muted); text-align: center; margin-bottom: 1.5rem;">Join our moderation team and help manage Frostveil.</p>
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <i class="fas fa-shield-alt" style="font-size: 2.5rem; color: var(--accent-cyan); margin-bottom: 0.5rem; display: inline-block;"></i>
+                <h3 style="color: var(--accent-cyan);">Staff Recruitment Portal</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.3rem;">Join our elite moderation crew and help keep Frostveil safe and fun!</p>
+            </div>
             
             <form id="staffForm" onsubmit="submitStaffApp(event)">
                 <div class="form-group">
-                    <input type="text" id="staffDiscord" class="form-control" placeholder="Discord Username (e.g. User#1234)" required>
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 600;">Discord Tag</label>
+                    <input type="text" id="staffDiscord" class="form-control" placeholder="e.g. frost_player#0001" required>
                 </div>
                 <div class="form-group">
-                    <input type="number" id="staffAge" class="form-control" placeholder="Your Age" min="13" max="99" required>
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 600;">Your Age</label>
+                    <input type="number" id="staffAge" class="form-control" placeholder="Must be 13 or older" min="13" max="99" required>
                 </div>
                 <div class="form-group">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 600;">Desired Position</label>
                     <select id="staffPosition" class="form-control" required>
-                        <option value="" disabled selected>Position Desired</option>
-                        <option value="Discord Moderator">Discord Moderator</option>
-                        <option value="Minecraft Admin">Minecraft Admin</option>
-                        <option value="Roblox Event Host">Roblox Event Host</option>
+                        <option value="" disabled selected>Select a Role</option>
+                        <option value="Discord Moderator">🛡️ Discord Moderator</option>
+                        <option value="Minecraft Admin">⛏️ Minecraft Admin</option>
+                        <option value="Roblox Event Host">🎮 Roblox Event Host</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <textarea id="staffExperience" class="form-control" rows="3" placeholder="Why do you want to join and what experience do you have?" required></textarea>
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 600;">Experience & Motivation</label>
+                    <textarea id="staffExperience" class="form-control" rows="3" placeholder="Tell us about your past moderation experience and why you want to join us..." required></textarea>
                 </div>
-                <button type="submit" id="staffSubmitBtn" class="btn btn-primary" style="width: 100%;">Submit Application</button>
+                <button type="submit" id="staffSubmitBtn" class="btn btn-primary" style="width: 100%;"><i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Submit Application</button>
             </form>
         </div>
     </div>
@@ -1290,7 +1303,7 @@
         }
         fetchMinecraftStatus();
 
-        // Staff Application Submission Webhook
+        // Enhanced Staff Application Submission Webhook
         async function submitStaffApp(e) {
             e.preventDefault();
             const WEBHOOK_URL = "https://discord.com/api/webhooks/1535278886412226661/SmdAa_fMVndHM1WLZUZ4xwiAikVy3f8J7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7"; 
@@ -1302,18 +1315,24 @@
             const btn = document.getElementById('staffSubmitBtn');
 
             btn.disabled = true;
-            btn.innerText = "Submitting...";
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i> Transmitting Application...`;
 
             const payload = {
+                username: "Frostveil Recruitment Bot",
+                avatar_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&h=100&fit=crop",
                 embeds: [{
-                    title: `🛡️ New Staff Application: ${pos}`,
-                    color: 39423,
+                    title: `🛡️ New Staff Application Received`,
+                    description: `An aspiring candidate has submitted an application for the **${pos}** position. Review the details below carefully.`,
+                    color: 25935, // Neon cyan/blue color
                     fields: [
-                        { name: "Applicant", value: discord, inline: true },
-                        { name: "Age", value: age, inline: true },
-                        { name: "Position", value: pos, inline: true },
-                        { name: "Experience/Reason", value: exp }
+                        { name: "👤 Discord Tag", value: `\`${discord}\``, inline: true },
+                        { name: "🎂 Candidate Age", value: `\`${age} Years Old\``, inline: true },
+                        { name: "🎯 Desired Role", value: `\`${pos}\``, inline: false },
+                        { name: "💬 Experience & Motivation", value: `> ${exp.replace(/\n/g, '\n> ')}`, inline: false }
                     ],
+                    footer: {
+                        text: "Frostveil Community Management System • Automated Log"
+                    },
                     timestamp: new Date().toISOString()
                 }]
             };
@@ -1324,18 +1343,18 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                showToast("Application sent to management!", "fa-paper-plane");
+                showToast("Application successfully sent to management!", "fa-paper-plane");
                 closeStaffModal();
                 document.getElementById('staffForm').reset();
             } catch (err) {
-                showToast("Failed to submit application", "fa-exclamation-circle");
+                showToast("Failed to submit application. Try again later.", "fa-exclamation-circle");
             } finally {
                 btn.disabled = false;
-                btn.innerText = "Submit Application";
+                btn.innerHTML = `<i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Submit Application`;
             }
         }
 
-        // Contact Form Webhook Submission
+        // Enhanced Contact Form Webhook Submission
         async function sendDiscordWebhook(e) {
             e.preventDefault();
             const WEBHOOK_URL = "https://discord.com/api/webhooks/1535278886412226661/SmdAa_fMVndHM1WLZUZ4xwiAikVy3f8J7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7"; 
@@ -1343,28 +1362,43 @@
             const user = document.getElementById('username').value;
             const topic = document.getElementById('topic').value;
             const msg = document.getElementById('message').value;
+            const btn = document.getElementById('submitBtn');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i> Sending Message...`;
+
+            const payload = {
+                username: "Frostveil Support Dispatcher",
+                avatar_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&h=100&fit=crop",
+                embeds: [{
+                    title: `📩 Incoming Community Transmission`,
+                    description: `A new ticket or feedback submission has been logged on the main hub.`,
+                    color: 1085437,
+                    fields: [
+                        { name: "🏷️ Sender Tag", value: `\`${user}\``, inline: true },
+                        { name: "📂 Inquiry Topic", value: `\`${topic}\``, inline: true },
+                        { name: "📝 Message Content", value: `> ${msg.replace(/\n/g, '\n> ')}`, inline: false }
+                    ],
+                    footer: {
+                        text: "Frostveil Support Hub • Direct Feedback Log"
+                    },
+                    timestamp: new Date().toISOString()
+                }]
+            };
 
             try {
                 await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        embeds: [{
-                            title: `📩 New Contact Message: ${topic}`,
-                            color: 39423,
-                            fields: [
-                                { name: "User", value: user, inline: true },
-                                { name: "Topic", value: topic, inline: true },
-                                { name: "Message", value: msg }
-                            ],
-                            timestamp: new Date().toISOString()
-                        }]
-                    })
+                    body: JSON.stringify(payload)
                 });
-                showToast("Message Sent Successfully!", "fa-envelope");
+                showToast("Message sent successfully to staff channels!", "fa-envelope");
                 document.getElementById('contactForm').reset();
             } catch {
-                showToast("Failed to send message", "fa-exclamation-circle");
+                showToast("Failed to transmit message. Please try again.", "fa-exclamation-circle");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = "Send Message";
             }
         }
 
