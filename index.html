@@ -910,6 +910,7 @@
                 <span style="color: var(--accent-cyan); font-weight: bold;">[EVENT]</span>
                 <h3 style="margin-top: 0.5rem;">eFootball Weekend Clash</h3>
                 <p>Registration for the 1v1 Weekend Clash is now open. Top 3 players will receive exclusive roles.</p>
+                <button class="btn btn-outline" style="margin-top: 1rem; width: 100%;" onclick="openTournamentModal()">Register for Tournament</button>
             </div>
             <div class="card" style="text-align: left;">
                 <span style="color: var(--accent-cyan); font-weight: bold;">[STAFF]</span>
@@ -1020,7 +1021,6 @@
     <div class="modal-overlay" id="trailerModal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeTrailerModal()">&times;</span>
-            <h3 style="color: var(--accent-cyan);">Frostveil Community Trailer</h3>
             <div class="video-container">
                 <iframe id="trailerFrame" src="" allowfullscreen></iframe>
             </div>
@@ -1059,6 +1059,40 @@
                     <textarea id="staffExperience" class="form-control" rows="3" placeholder="Tell us about your past moderation experience and why you want to join us..." required></textarea>
                 </div>
                 <button type="submit" id="staffSubmitBtn" class="btn btn-primary" style="width: 100%;"><i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="tournamentModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeTournamentModal()">&times;</span>
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <i class="fas fa-trophy" style="font-size: 2.5rem; color: var(--accent-cyan); margin-bottom: 0.5rem; display: inline-block;"></i>
+                <h3 style="color: var(--accent-cyan);">Tournament Registration</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.3rem;">Secure your spot in the upcoming Frostveil esports clash!</p>
+            </div>
+            
+            <form id="tournamentForm" onsubmit="submitTournamentApp(event)">
+                <div class="form-group">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 600;">In-Game / Discord Name</label>
+                    <input type="text" id="tourneyName" class="form-control" placeholder="e.g. FrostByte_99" required>
+                </div>
+                <div class="form-group">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 600;">Select Tournament</label>
+                    <select id="tourneyGame" class="form-control" required>
+                        <option value="" disabled selected>Choose Game Title</option>
+                        <option value="eFootball 1v1 Clash">⚽ eFootball 1v1 Clash</option>
+                        <option value="Minecraft Survival PvP">⛏️ Minecraft Survival PvP</option>
+                        <option value="Roblox Championship">🎮 Roblox Championship</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 600;">In-Game ID / User Tag</label>
+                    <input type="text" id="tourneyId" class="form-control" placeholder="Your game ID or Konami ID" required>
+                </div>
+                <button type="submit" id="tourneySubmitBtn" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-check-circle" style="margin-right: 8px;"></i> Confirm Registration
+                </button>
             </form>
         </div>
     </div>
@@ -1238,6 +1272,14 @@
             document.getElementById('staffModal').style.display = 'none';
         }
 
+        function openTournamentModal() {
+            document.getElementById('tournamentModal').style.display = 'flex';
+        }
+
+        function closeTournamentModal() {
+            document.getElementById('tournamentModal').style.display = 'none';
+        }
+
         function openVoiceModal() {
             document.getElementById('voiceModal').style.display = 'flex';
         }
@@ -1306,7 +1348,7 @@
         // Enhanced Staff Application Submission Webhook
         async function submitStaffApp(e) {
             e.preventDefault();
-            const WEBHOOK_URL = "https://discord.com/api/webhooks/1535278886412226661/SmdAa_fMVndHM1WLZUZ4xwiAikVy3f8J7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7"; 
+            const WEBHOOK_URL = "https://discord.com/api/webhooks/1347648356981448835/yLqg431vB0R_B8a_w4JqLd9lS9S9l8W8vJ7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7"; 
 
             const discord = document.getElementById('staffDiscord').value;
             const age = document.getElementById('staffAge').value;
@@ -1323,7 +1365,7 @@
                 embeds: [{
                     title: `🛡️ New Staff Application Received`,
                     description: `An aspiring candidate has submitted an application for the **${pos}** position. Review the details below carefully.`,
-                    color: 25935, // Neon cyan/blue color
+                    color: 25935,
                     fields: [
                         { name: "👤 Discord Tag", value: `\`${discord}\``, inline: true },
                         { name: "🎂 Candidate Age", value: `\`${age} Years Old\``, inline: true },
@@ -1354,10 +1396,59 @@
             }
         }
 
+        // Tournament Registration Webhook Submission
+        async function submitTournamentApp(e) {
+            e.preventDefault();
+            const WEBHOOK_URL = "https://discord.com/api/webhooks/1347648356981448835/yLqg431vB0R_B8a_w4JqLd9lS9S9l8W8vJ7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7"; 
+
+            const name = document.getElementById('tourneyName').value;
+            const game = document.getElementById('tourneyGame').value;
+            const gameId = document.getElementById('tourneyId').value;
+            const btn = document.getElementById('tourneySubmitBtn');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i> Submitting Entry...`;
+
+            const payload = {
+                username: "Frostveil Tournaments Bot",
+                avatar_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&h=100&fit=crop",
+                embeds: [{
+                    title: `🏆 New Tournament Registration`,
+                    description: `A player has successfully signed up for an upcoming tournament bracket.`,
+                    color: 25935,
+                    fields: [
+                        { name: "👤 Player Tag", value: `\`${name}\``, inline: true },
+                        { name: "🎮 Tournament", value: `\`${game}\``, inline: true },
+                        { name: "🆔 Game ID / User Tag", value: `\`${gameId}\``, inline: false }
+                    ],
+                    footer: {
+                        text: "Frostveil Esports Management System"
+                    },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            try {
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                showToast("Successfully registered for the tournament!", "fa-trophy");
+                closeTournamentModal();
+                document.getElementById('tournamentForm').reset();
+            } catch (err) {
+                showToast("Registration transmission failed. Try again.", "fa-exclamation-circle");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 8px;"></i> Confirm Registration`;
+            }
+        }
+
         // Enhanced Contact Form Webhook Submission
         async function sendDiscordWebhook(e) {
             e.preventDefault();
-            const WEBHOOK_URL = "https://discord.com/api/webhooks/1535278886412226661/SmdAa_fMVndHM1WLZUZ4xwiAikVy3f8J7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7"; 
+            const WEBHOOK_URL = "https://discord.com/api/webhooks/1347648356981448835/yLqg431vB0R_B8a_w4JqLd9lS9S9l8W8vJ7aCzkI0-KWDLHSqSQVfB6Fo9pfkyFiIJTvY7"; 
 
             const user = document.getElementById('username').value;
             const topic = document.getElementById('topic').value;
