@@ -1392,8 +1392,8 @@
         </div>
 
         <div class="visitor-counter">
-            <i class="fas fa-users"></i> Total Visitors: <span class="visitor-digits" id="visitorCounter">048291</span>
-        </div>
+    <i class="fas fa-users"></i> Total Visitors: <span class="visitor-digits" id="visitorCounter">Loading...</span>
+</div>
 
         <div style="margin-top: 2rem; font-size: 0.9rem; color: var(--text-muted);">
             &copy; 2026 Community of Frostveil. All rights reserved.
@@ -1889,6 +1889,53 @@
                 document.getElementById('secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
             }
         }, 1000);
+
+
+
+
+
+
+        async function initLiveVisitorCounter() {
+    const namespace = "frostveil-community-hub-2026"; // Unique namespace for your site
+    const key = "visits";
+    const counterElement = document.getElementById('visitorCounter');
+
+    try {
+        // First, hit the API to increment the count by 1 for this visit
+        let response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
+        
+        // If the namespace doesn't exist yet, create it automatically
+        if (!response.ok) {
+            await fetch(`https://api.countapi.xyz/create?namespace=${namespace}&key=${key}&value=48291`);
+            response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
+        }
+
+        const data = await response.json();
+        
+        if (data && data.value !== undefined) {
+            // Format the number to always show padded digits (e.g., 048292)
+            counterElement.innerText = String(data.value).padStart(6, '0');
+        } else {
+            throw new Error("Invalid counter response");
+        }
+    } catch (error) {
+        // Fallback to localStorage if the public API fails or is blocked by an ad-blocker
+        let localVisits = localStorage.getItem('frostveil_fallback_visits');
+        if (!localVisits) {
+            localVisits = 48291;
+        } else {
+            localVisits = parseInt(localVisits) + 1;
+        }
+        localStorage.setItem('frostveil_fallback_visits', localVisits);
+        counterElement.innerText = String(localVisits).padStart(6, '0');
+    }
+}
+
+// Run the live counter function when the page loads
+window.addEventListener('DOMContentLoaded', () => {
+    initLiveVisitorCounter();
+});
+
     </script>
 </body>
 </html>
