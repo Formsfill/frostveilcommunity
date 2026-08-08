@@ -897,45 +897,6 @@
                         allowfullscreen>
                     </iframe>
                 </div>
-                <div class="content-section optional-widget">
-    <div class="section-title">
-        <span>🎬 Multi-Stream VOD Gallery</span>
-        <span style="font-size: 10px; color: var(--accent-primary); font-family: 'Orbitron';">Active Feeds (4)</span>
-    </div>
-    
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
-        
-        <div style="background: var(--bg-element); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--accent-primary)'" onmouseout="this.style.borderColor='var(--border-color)'" onclick="switchMainVideo('https://www.youtube.com/embed/ZCM4ZONooq8', 'Main Broadcast')">
-            <div style="position: relative; padding-bottom: 56.25%; background: #000;">
-                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 800; font-size: 11px; color: var(--accent-primary); text-shadow: 0 0 10px var(--accent-glow);">[ FEED 01: MAIN ]</div>
-            </div>
-            <div style="padding: 12px; font-size: 13px; font-weight: 700;">Main Stage Championship Broadcast</div>
-        </div>
-
-        <div style="background: var(--bg-element); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border-color)'" onclick="switchMainVideo('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Player 1 POV')">
-            <div style="position: relative; padding-bottom: 56.25%; background: #000;">
-                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 800; font-size: 11px; color: var(--gold); text-shadow: 0 0 10px rgba(255,230,0,0.3);">[ FEED 02: PLAYER 1 ]</div>
-            </div>
-            <div style="padding: 12px; font-size: 13px; font-weight: 700;">Player 1 Eye-Tracking Cam</div>
-        </div>
-
-        <div style="background: var(--bg-element); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--live-red)'" onmouseout="this.style.borderColor='var(--border-color)'" onclick="switchMainVideo('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Player 4 POV')">
-            <div style="position: relative; padding-bottom: 56.25%; background: #000;">
-                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 800; font-size: 11px; color: var(--live-red); text-shadow: 0 0 10px rgba(255,0,85,0.3);">[ FEED 03: PLAYER 4 ]</div>
-            </div>
-            <div style="padding: 12px; font-size: 13px; font-weight: 700;">Player 4 Tactical Facecam</div>
-        </div>
-
-        <div style="background: var(--bg-element); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='var(--border-color)'" onclick="switchMainVideo('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Tactical Radar Map')">
-            <div style="position: relative; padding-bottom: 56.25%; background: #000;">
-                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 800; font-size: 11px; color: var(--green); text-shadow: 0 0 10px rgba(0,255,102,0.3);">[ FEED 04: RADAR ]</div>
-            </div>
-            <div style="padding: 12px; font-size: 13px; font-weight: 700;">Overhead Tactical Minimap</div>
-        </div>
-
-    </div>
-</div>
-
 
                 <div class="replay-timeline-container">
                     <div class="timeline-header">
@@ -1003,15 +964,9 @@
                     <button class="tab-btn" onclick="switchTab('veto', this)">🗺️ Veto</button>
                 </div>
                 
-                <iframe 
-    class="chat-frame" 
-    src="https://discord.com/widget?id=1424718297781375056&theme=dark" 
-    width="100%" 
-    height="100%" 
-    allowtransparency="true" 
-    frameborder="0" 
-    sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
-</iframe>
+                <div id="tab-chat" class="tab-content" style="padding:0; height: 100%;">
+                    <iframe class="chat-frame" src="https://www.twitch.tv/embed/esl_csgo/chat?parent=localhost"></iframe>
+                </div>
 
                 <div id="tab-trivia" class="tab-content" style="display: none;">
                     <h4 style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;">Timeout Live Trivia</h4>
@@ -1188,15 +1143,6 @@
     </div>
 
     <script>
-        /* Multi-Stream VOD Video Switching Logic */
-        function switchMainVideo(videoUrl, feedName) {
-            const iframe = document.getElementById('streamFrame');
-            if (iframe) {
-                iframe.src = videoUrl + (videoUrl.includes('?') ? '&' : '?') + 'autoplay=1';
-                alert(`📺 Main stream updated to: ${feedName}`);
-            }
-        }
-
         /* Highlight Marker Jump Logic */
         function jumpToClip(timestamp, title) {
             alert(`▶️ Jumping to replay marker [${timestamp}] - ${title}`);
