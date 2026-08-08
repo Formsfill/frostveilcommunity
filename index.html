@@ -404,6 +404,85 @@
             text-transform: uppercase;
         }
 
+        /* Interactive Event Calendar Styles */
+        .calendar-container {
+            background: var(--bg-card);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 3rem;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .event-item {
+            background: var(--bg-dark);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .event-item:hover {
+            border-color: var(--accent-cyan);
+        }
+
+        .event-date-box {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .event-month {
+            font-size: 0.75rem;
+            font-family: var(--font-heading);
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+        }
+
+        .event-day {
+            font-size: 1.5rem;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .event-details {
+            flex-grow: 1;
+        }
+
+        .event-details h4 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 0.2rem;
+        }
+
+        .event-details p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
         /* Leaderboard */
         .leaderboard-table {
             width: 100%;
@@ -442,7 +521,7 @@
         .rank-2 { background: #94a3b8; color: #000; }
         .rank-3 { background: #b45309; color: #fff; }
 
-        /* FAQ Accordion */
+        /* FAQ Accordion & Search Filter */
         .faq-container {
             max-width: 800px;
             margin: 0 auto;
@@ -451,11 +530,43 @@
             gap: 1rem;
         }
 
+        .faq-search-box {
+            max-width: 800px;
+            margin: 0 auto 1.5rem auto;
+            position: relative;
+        }
+
+        .faq-search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 6px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+        }
+
+        .faq-search-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+        }
+
+        .faq-search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
         .faq-item {
             background: var(--bg-card);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 6px;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
 
         .faq-question {
@@ -668,7 +779,7 @@
             margin-bottom: 1rem;
         }
 
-        /* Footer */
+        /* Footer & Visitor Counter Badge */
         footer {
             background: var(--bg-card);
             padding: 3rem 2rem;
@@ -690,6 +801,31 @@
 
         .social-links a:hover {
             color: var(--accent-cyan);
+        }
+
+        .visitor-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--accent-cyan);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            color: #fff;
+            margin-top: 1.5rem;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+        }
+
+        .visitor-counter i {
+            color: var(--accent-cyan);
+        }
+
+        .visitor-digits {
+            color: var(--accent-cyan);
+            letter-spacing: 2px;
+            font-weight: bold;
         }
 
         /* Responsive Breakpoints */
@@ -730,6 +866,11 @@
             .timer-number {
                 font-size: 1.5rem;
             }
+
+            .event-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
@@ -752,6 +893,7 @@
                 <li><a href="#status">Status</a></li>
                 <li><a href="#games">Games</a></li>
                 <li><a href="#vip">VIP Perks</a></li>
+                <li><a href="#events">Events</a></li>
                 <li><a href="#leaderboard">Leaderboard</a></li>
                 <li><a href="#faq">FAQ</a></li>
                 <li><a href="#contact">Contact</a></li>
@@ -937,6 +1079,57 @@
         </div>
     </section>
 
+    <section id="events">
+        <h2 class="section-title">Community Event Calendar</h2>
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <div>
+                    <h3 style="color: var(--accent-cyan); font-size: 1.3rem;"><i class="fas fa-calendar-alt"></i> Upcoming Schedule</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Never miss a game night or tournament match.</p>
+                </div>
+                <button class="btn btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1rem;" onclick="showToast('Syncing with global events feed...', 'fa-sync')"><i class="fas fa-sync-alt"></i> Refresh Feed</button>
+            </div>
+
+            <div class="event-list">
+                <div class="event-item">
+                    <div class="event-date-box">
+                        <span class="event-month">AUG</span>
+                        <span class="event-day">14</span>
+                    </div>
+                    <div class="event-details">
+                        <h4>Minecraft Season 4 Hardcore Launch</h4>
+                        <p>Server-wide survival wipe and custom world boundary opening.</p>
+                    </div>
+                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Minecraft+Season+4+Hardcore+Launch&dates=20260814T180000Z/20260814T210000Z&details=Join+the+official+Frostveil+Season+4+survival+launch+at+mc.frostveil.com!" target="_blank" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fas fa-plus"></i> Add to Google Calendar</a>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-date-box">
+                        <span class="event-month">AUG</span>
+                        <span class="event-day">20</span>
+                    </div>
+                    <div class="event-details">
+                        <h4>eFootball Pro League 1v1 Finals</h4>
+                        <p>Top 8 contenders fight for the championship prize pool and Discord role.</p>
+                    </div>
+                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=eFootball+Pro+League+Finals&dates=20260820T190000Z/20260820T220000Z&details=Watch+the+top+8+contenders+fight+for+the+championship+in+the+Frostveil+Discord+Hub." target="_blank" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fas fa-plus"></i> Add to Google Calendar</a>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-date-box">
+                        <span class="event-month">AUG</span>
+                        <span class="event-day">28</span>
+                    </div>
+                    <div class="event-details">
+                        <h4>Roblox Custom Game Night</h4>
+                        <p>Community votes for custom party games, obbies, and survival games.</p>
+                    </div>
+                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Roblox+Custom+Game+Night&dates=20260828T200000Z/20260828T230000Z&details=Community+game+night+in+our+official+Frostveil+Roblox+group+servers." target="_blank" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fas fa-plus"></i> Add to Google Calendar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="leaderboard">
         <h2 class="section-title">Community Leaderboard</h2>
         <div style="overflow-x: auto;">
@@ -979,8 +1172,14 @@
 
     <section id="faq">
         <h2 class="section-title">Frequently Asked Questions</h2>
-        <div class="faq-container">
-            <div class="faq-item">
+        
+        <div class="faq-search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="faqSearchInput" class="faq-search-input" placeholder="Type keywords to filter questions (e.g. Minecraft, tourney, staff)..." onkeyup="filterFAQ()">
+        </div>
+
+        <div class="faq-container" id="faqContainer">
+            <div class="faq-item" data-keywords="minecraft server join ip address java edition">
                 <div class="faq-question" onclick="toggleFAQ(this)">
                     How do I join the Frostveil Minecraft server?
                     <i class="fas fa-chevron-down"></i>
@@ -990,7 +1189,7 @@
                 </div>
             </div>
 
-            <div class="faq-item">
+            <div class="faq-item" data-keywords="tournament rewards efootall prizes winners">
                 <div class="faq-question" onclick="toggleFAQ(this)">
                     How do tournament rewards work in eFootball?
                     <i class="fas fa-chevron-down"></i>
@@ -1000,7 +1199,7 @@
                 </div>
             </div>
 
-            <div class="faq-item">
+            <div class="faq-item" data-keywords="staff applications apply moderator admin open">
                 <div class="faq-question" onclick="toggleFAQ(this)">
                     Are staff applications open?
                     <i class="fas fa-chevron-down"></i>
@@ -1148,6 +1347,10 @@
             <a href="https://www.instagram.com/communityoffrostveil/?hl=en" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
         </div>
 
+        <div class="visitor-counter">
+            <i class="fas fa-users"></i> Total Visitors: <span class="visitor-digits" id="visitorCounter">048291</span>
+        </div>
+
         <div style="margin-top: 2rem; font-size: 0.9rem; color: var(--text-muted);">
             &copy; 2026 Community of Frostveil. All rights reserved.
         </div>
@@ -1262,9 +1465,8 @@
 
         // Modals Logic
         function openCombinedModal() {
-            // Replace TRAILER_VIDEO_ID_HERE and ANOTHER_VIDEO_ID_HERE with actual YouTube IDs
-            document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/TRAILER_VIDEO_ID_HERE?autoplay=1&enablejsapi=1";
-            document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ANOTHER_VIDEO_ID_HERE?autoplay=1&enablejsapi=1";
+            document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/ZCM4ZONooq8?autoplay=1&enablejsapi=1";
+            document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ZCM4ZONooq8?autoplay=1&enablejsapi=1";
             document.getElementById('combinedModal').style.display = 'flex';
         }
 
@@ -1298,10 +1500,25 @@
             document.getElementById('voiceModal').style.display = 'none';
         }
 
-        // FAQ Accordion Toggle
+        // FAQ Accordion Toggle & Live Search Filter
         function toggleFAQ(element) {
             const parent = element.parentElement;
             parent.classList.toggle('active');
+        }
+
+        function filterFAQ() {
+            const query = document.getElementById('faqSearchInput').value.toLowerCase();
+            const items = document.querySelectorAll('.faq-item');
+
+            items.forEach(item => {
+                const text = item.innerText.toLowerCase();
+                const keywords = item.getAttribute('data-keywords') || '';
+                if (text.includes(query) || keywords.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         }
 
         // Live Discord API Fetch
@@ -1353,6 +1570,18 @@
             }
         }
         fetchMinecraftStatus();
+
+        // Visitor Counter Simulation (Increments slightly on load)
+        window.addEventListener('DOMContentLoaded', () => {
+            let visits = localStorage.getItem('frostveil_visits');
+            if (!visits) {
+                visits = 48291;
+            } else {
+                visits = parseInt(visits) + 1;
+            }
+            localStorage.setItem('frostveil_visits', visits);
+            document.getElementById('visitorCounter').innerText = String(visits).padStart(6, '0');
+        });
 
         // Enhanced Staff Application Submission Webhook
         async function submitStaffApp(e) {
@@ -1508,25 +1737,6 @@
                 document.getElementById('secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
             }
         }, 1000);
-
-
-
-                // Modals Logic (Fixed with correct video ID placeholders)
-                // Modals Logic (Fixed with your specific YouTube video ID)
-        function openCombinedModal() {
-            // Both frames will now play your video using ID: ZCM4ZONooq8
-            document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/ZCM4ZONooq8?autoplay=1&enablejsapi=1";
-            document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ZCM4ZONooq8?autoplay=1&enablejsapi=1";
-            
-            document.getElementById('combinedModal').style.display = 'flex';
-        }
-
-        function closeCombinedModal() {
-            document.getElementById('combinedTrailerFrame').src = "";
-            document.getElementById('combinedVideoFrame').src = "";
-            document.getElementById('combinedModal').style.display = 'none';
-        }
-
     </script>
 </body>
 </html>
