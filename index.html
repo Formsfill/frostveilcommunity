@@ -776,57 +776,26 @@
             <p>Welcome to the ultimate gaming hub. Forge alliances, conquer leaderboards, and become part of our legendary community.</p>
             <div class="hero-btns">
                 <a href="https://discord.gg/ZUfZb4UYt3" target="_blank" class="btn btn-primary"><i class="fab fa-discord"></i> Join Discord</a>
-                <button class="btn btn-outline" onclick="openVideoModal()"><i class="fas fa-play"></i> Watch Video</button>
-
-<button class="btn btn-outline" onclick="openCombinedModal()"><i class="fas fa-play"></i> Watch Video & Trailer</button>
-
-
+                <button class="btn btn-outline" onclick="openCombinedModal()"><i class="fas fa-play"></i> Watch Video & Trailer</button>
             </div>
         </div>
-
-        <div class="modal-overlay" id="videoModal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeVideoModal()">&times;</span>
-        <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Community Video</h3>
-    <div class="video-container" style="margin-bottom: 1.5rem;">
-    <iframe id="combinedTrailerFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-
-<div class="video-container">
-    <iframe id="combinedVideoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-
-    </div>
-</div>
-
-<div class="modal-overlay" id="combinedModal">
-    <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
-        <span class="modal-close" onclick="closeCombinedModal()">&times;</span>
-        
-        <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Community Trailer</h3>
-        <div class="video-container" style="margin-bottom: 1.5rem;">
-            <iframe id="combinedTrailerFrame" src="" allowfullscreen></iframe>
-        </div>
-
-        <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Community Video</h3>
-        <div class="video-container">
-            <iframe id="combinedVideoFrame" src="" allowfullscreen></iframe>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal-overlay" id="videoModal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeVideoModal()">&times;</span>
-        <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Community Video</h3>
-        <div class="video-container">
-            <iframe id="videoFrame" src="" allowfullscreen></iframe>
-        </div>
-    </div>
-</div>
-
     </section>
+
+    <div class="modal-overlay" id="combinedModal">
+        <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <span class="modal-close" onclick="closeCombinedModal()">&times;</span>
+            
+            <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Community Trailer</h3>
+            <div class="video-container" style="margin-bottom: 1.5rem;">
+                <iframe id="combinedTrailerFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Community Video</h3>
+            <div class="video-container">
+                <iframe id="combinedVideoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
 
     <section id="status">
         <h2 class="section-title">Live Server Status</h2>
@@ -1065,15 +1034,6 @@
         </form>
     </section>
 
-    <div class="modal-overlay" id="trailerModal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeTrailerModal()">&times;</span>
-            <div class="video-container">
-                <iframe id="trailerFrame" src="" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-
     <div class="modal-overlay" id="staffModal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeStaffModal()">&times;</span>
@@ -1301,14 +1261,17 @@
         }
 
         // Modals Logic
-        function openTrailerModal() {
-            document.getElementById('trailerFrame').src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
-            document.getElementById('trailerModal').style.display = 'flex';
+        function openCombinedModal() {
+            // Replace TRAILER_VIDEO_ID_HERE and ANOTHER_VIDEO_ID_HERE with actual YouTube IDs
+            document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/TRAILER_VIDEO_ID_HERE?autoplay=1&enablejsapi=1";
+            document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ANOTHER_VIDEO_ID_HERE?autoplay=1&enablejsapi=1";
+            document.getElementById('combinedModal').style.display = 'flex';
         }
 
-        function closeTrailerModal() {
-            document.getElementById('trailerFrame').src = "";
-            document.getElementById('trailerModal').style.display = 'none';
+        function closeCombinedModal() {
+            document.getElementById('combinedTrailerFrame').src = "";
+            document.getElementById('combinedVideoFrame').src = "";
+            document.getElementById('combinedModal').style.display = 'none';
         }
 
         function openStaffModal() {
@@ -1341,10 +1304,9 @@
             parent.classList.toggle('active');
         }
 
-        // Live Discord API Fetch (Uses Invite Code - No Widget Needed)
+        // Live Discord API Fetch
         async function fetchDiscordStatus() {
             const INVITE_CODE = "ZUfZb4UYt3"; 
-
             const countElem = document.getElementById('discord-member-count');
             const badgeElem = document.getElementById('discord-status-badge');
 
@@ -1419,9 +1381,7 @@
                         { name: "🎯 Desired Role", value: `\`${pos}\``, inline: false },
                         { name: "💬 Experience & Motivation", value: `> ${exp.replace(/\n/g, '\n> ')}`, inline: false }
                     ],
-                    footer: {
-                        text: "Frostveil Community Management System • Automated Log"
-                    },
+                    footer: { text: "Frostveil Community Management System • Automated Log" },
                     timestamp: new Date().toISOString()
                 }]
             };
@@ -1468,9 +1428,7 @@
                         { name: "🎮 Tournament", value: `\`${game}\``, inline: true },
                         { name: "🆔 Game ID / User Tag", value: `\`${gameId}\``, inline: false }
                     ],
-                    footer: {
-                        text: "Frostveil Esports Management System"
-                    },
+                    footer: { text: "Frostveil Esports Management System" },
                     timestamp: new Date().toISOString()
                 }]
             };
@@ -1517,9 +1475,7 @@
                         { name: "📂 Inquiry Topic", value: `\`${topic}\``, inline: true },
                         { name: "📝 Message Content", value: `> ${msg.replace(/\n/g, '\n> ')}`, inline: false }
                     ],
-                    footer: {
-                        text: "Frostveil Support Hub • Direct Feedback Log"
-                    },
+                    footer: { text: "Frostveil Support Hub • Direct Feedback Log" },
                     timestamp: new Date().toISOString()
                 }]
             };
@@ -1552,21 +1508,6 @@
                 document.getElementById('secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
             }
         }, 1000);
-
-
-
-
-            function openCombinedModal() {
-    document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/TRAILER_VIDEO_ID_HERE?autoplay=1&enablejsapi=1";
-    document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ANOTHER_VIDEO_ID_HERE?autoplay=1&enablejsapi=1";
-    document.getElementById('combinedModal').style.display = 'flex';
-}
-
-function closeCombinedModal() {
-    document.getElementById('combinedTrailerFrame').src = "";
-    document.getElementById('combinedVideoFrame').src = "";
-    document.getElementById('combinedModal').style.display = 'none';
-}
     </script>
 </body>
 </html>
