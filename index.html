@@ -776,32 +776,40 @@
             <p>Welcome to the ultimate gaming hub. Forge alliances, conquer leaderboards, and become part of our legendary community.</p>
             <div class="hero-btns">
                 <a href="https://discord.gg/ZUfZb4UYt3" target="_blank" class="btn btn-primary"><i class="fab fa-discord"></i> Join Discord</a>
-                <button class="btn btn-outline" onclick="openTrailerModal()"><i class="fas fa-play"></i> Community Video</button>
+                <button class="btn btn-outline" onclick="openVideoModal()"><i class="fas fa-play"></i> Watch Video</button>
 
-<button class="btn btn-outline" onclick="openTrailerModal()"><i class="fas fa-play"></i> Community Trailer</button>
-<button class="btn btn-outline" onclick="openVideoModal()"><i class="fas fa-play"></i> Watch Video</button>
+<button class="btn btn-outline" onclick="openCombinedModal()"><i class="fas fa-play"></i> Watch Video & Trailer</button>
+
 
             </div>
         </div>
 
-        <div class="modal-overlay" id="trailerModal">
+        <div class="modal-overlay" id="videoModal">
     <div class="modal-content">
-        <span class="modal-close" onclick="closeTrailerModal()">&times;</span>
+        <span class="modal-close" onclick="closeVideoModal()">&times;</span>
+        <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Community Video</h3>
         <div class="video-container">
-            <iframe id="trailerFrame" src="" allowfullscreen></iframe>
+            <iframe id="videoFrame" src="" allowfullscreen></iframe>
         </div>
     </div>
 </div>
 
-<div class="modal-overlay" id="trailerModal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeTrailerModal()">&times;</span>
+<div class="modal-overlay" id="combinedModal">
+    <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+        <span class="modal-close" onclick="closeCombinedModal()">&times;</span>
+        
         <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Community Trailer</h3>
+        <div class="video-container" style="margin-bottom: 1.5rem;">
+            <iframe id="combinedTrailerFrame" src="" allowfullscreen></iframe>
+        </div>
+
+        <h3 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Community Video</h3>
         <div class="video-container">
-            <iframe id="trailerFrame" src="" allowfullscreen></iframe>
+            <iframe id="combinedVideoFrame" src="" allowfullscreen></iframe>
         </div>
     </div>
 </div>
+
 
 <div class="modal-overlay" id="videoModal">
     <div class="modal-content">
@@ -1543,24 +1551,16 @@
 
 
 
-            function openTrailerModal() {
-    document.getElementById('trailerFrame').src = "https://www.youtube.com/embed/TRAILER_VIDEO_ID_HERE?autoplay=1";
-    document.getElementById('trailerModal').style.display = 'flex';
+            function openCombinedModal() {
+    document.getElementById('combinedTrailerFrame').src = "https://www.youtube.com/embed/TRAILER_VIDEO_ID_HERE?autoplay=1";
+    document.getElementById('combinedVideoFrame').src = "https://www.youtube.com/embed/ANOTHER_VIDEO_ID_HERE?autoplay=1";
+    document.getElementById('combinedModal').style.display = 'flex';
 }
 
-function closeTrailerModal() {
-    document.getElementById('trailerFrame').src = "";
-    document.getElementById('trailerModal').style.display = 'none';
-}
-
-function openVideoModal() {
-    document.getElementById('videoFrame').src = "https://www.youtube.com/embed/ANOTHER_VIDEO_ID_HERE?autoplay=1";
-    document.getElementById('videoModal').style.display = 'flex';
-}
-
-function closeVideoModal() {
-    document.getElementById('videoFrame').src = "";
-    document.getElementById('videoModal').style.display = 'none';
+function closeCombinedModal() {
+    document.getElementById('combinedTrailerFrame').src = "";
+    document.getElementById('combinedVideoFrame').src = "";
+    document.getElementById('combinedModal').style.display = 'none';
 }
     </script>
 </body>
